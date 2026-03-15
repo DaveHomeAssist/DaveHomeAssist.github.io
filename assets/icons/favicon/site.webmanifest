@@ -1,0 +1,19 @@
+{
+  "name": "DaveHomeAssist",
+  "short_name": "DHA",
+  "icons": [
+    {
+      "src": "/assets/icons/favicon/android-chrome-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/favicon/android-chrome-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#10151f",
+  "background_color": "#10151f",
+  "display": "standalone"
+}

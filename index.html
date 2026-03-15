@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DaveHomeAssist — Project Index</title>
-        <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon/favicon-16.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/favicon/apple-touch-icon.png" />
+    <meta name="theme-color" content="#10151f">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/icons/favicon/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="assets/icons/favicon/favicon.png" type="image/png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="assets/icons/favicon/site.webmanifest">
 <style>
         html {
             scroll-behavior: smooth;
@@ -14,25 +21,29 @@
 
         :root {
             color-scheme: dark;
-            --bg-base: #0f172a;
-            --bg-card: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --accent: #38bdf8;
-            --accent-purple: #a78bfa;
-            --border: #475569;
-            --focus-ring: #7dd3fc;
+            --bg-base: #0e131b;
+            --bg-base-2: #121927;
+            --bg-card: #171f2e;
+            --text-primary: #f5f8ff;
+            --text-secondary: #9ba8bd;
+            --accent: #27c2a6;
+            --accent-2: #f0a33a;
+            --accent-soft: #1d6e66;
+            --border: #334057;
+            --focus-ring: #7fe8d6;
+            --shadow-lg: 0 24px 44px -34px rgba(0, 0, 0, 0.8);
+            --shadow-md: 0 14px 28px -20px rgba(0, 0, 0, 0.7);
 
-            --tag-tool-bg: #103b5a;
-            --tag-tool-fg: #7dd3fc;
-            --tag-garden-bg: #16342f;
-            --tag-garden-fg: #4ade80;
-            --tag-dev-bg: #322453;
-            --tag-dev-fg: #ddd6fe;
-            --tag-live-bg: #14532d;
-            --tag-live-fg: #86efac;
-            --tag-external-bg: #3f3f46;
-            --tag-external-fg: #d4d4d8;
+            --tag-tool-bg: #153a55;
+            --tag-tool-fg: #8fd9ff;
+            --tag-garden-bg: #1f3f2f;
+            --tag-garden-fg: #8ee8a2;
+            --tag-dev-bg: #3a2f1f;
+            --tag-dev-fg: #ffddad;
+            --tag-live-bg: #1d5a47;
+            --tag-live-fg: #abf1d6;
+            --tag-external-bg: #323844;
+            --tag-external-fg: #d8dce3;
 
             --space-1: 0.25rem;
             --space-2: 0.5rem;
@@ -56,25 +67,29 @@
         @media (prefers-color-scheme: light) {
             :root {
                 color-scheme: light;
-                --bg-base: #f8fafc;
+                --bg-base: #f4f6fa;
+                --bg-base-2: #ffffff;
                 --bg-card: #ffffff;
-                --text-primary: #0f172a;
-                --text-secondary: #475569;
-                --accent: #0369a1;
-                --accent-purple: #6d28d9;
-                --border: #cbd5e1;
-                --focus-ring: #0284c7;
+                --text-primary: #141f31;
+                --text-secondary: #52607b;
+                --accent: #0f8b77;
+                --accent-2: #a46308;
+                --accent-soft: #d8eee7;
+                --border: #d0d8e8;
+                --focus-ring: #0f8b77;
+                --shadow-lg: 0 24px 44px -34px rgba(15, 23, 42, 0.24);
+                --shadow-md: 0 14px 28px -20px rgba(15, 23, 42, 0.2);
 
-                --tag-tool-bg: #dbeafe;
-                --tag-tool-fg: #075985;
-                --tag-garden-bg: #dcfce7;
-                --tag-garden-fg: #166534;
-                --tag-dev-bg: #ede9fe;
-                --tag-dev-fg: #5b21b6;
-                --tag-live-bg: #dcfce7;
-                --tag-live-fg: #166534;
-                --tag-external-bg: #e4e4e7;
-                --tag-external-fg: #3f3f46;
+                --tag-tool-bg: #d6ebf7;
+                --tag-tool-fg: #0b5574;
+                --tag-garden-bg: #d9f3df;
+                --tag-garden-fg: #1f5f2f;
+                --tag-dev-bg: #fdf0d7;
+                --tag-dev-fg: #834b09;
+                --tag-live-bg: #d5f3e9;
+                --tag-live-fg: #146345;
+                --tag-external-bg: #eceff5;
+                --tag-external-fg: #3a4a66;
             }
         }
 
@@ -93,15 +108,34 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-base);
+            font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background:
+                radial-gradient(1300px 520px at 12% -6%, color-mix(in srgb, var(--accent-soft) 36%, transparent), transparent 66%),
+                radial-gradient(1100px 420px at 84% 0%, color-mix(in srgb, var(--accent-2) 20%, transparent), transparent 72%),
+                linear-gradient(180deg, var(--bg-base-2), var(--bg-base));
             color: var(--text-primary);
             padding: var(--space-8);
             line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: linear-gradient(
+                to bottom,
+                color-mix(in srgb, var(--border) 26%, transparent) 1px,
+                transparent 1px
+            );
+            background-size: 100% 32px;
+            opacity: 0.14;
+            z-index: -1;
         }
 
         .container {
-            width: min(100%, 72rem);
+            width: min(100%, 76rem);
             margin: 0 auto;
         }
 
@@ -112,12 +146,20 @@
             margin-bottom: var(--space-6);
             color: var(--text-secondary);
             font-size: var(--fs-sm);
+            border: 1px solid var(--border);
+            border-radius: 0.9rem;
+            padding: 0.65rem 0.85rem;
+            background: color-mix(in srgb, var(--bg-card) 92%, transparent);
+            box-shadow: var(--shadow-md);
         }
 
         .brand {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-primary);
-            letter-spacing: 0.01em;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-size: 0.76rem;
+            font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
         }
 
         .utility-link {
@@ -144,17 +186,42 @@
             display: block;
         }
 
-        header {
+        .hero {
             text-align: left;
-            margin-bottom: var(--space-12);
-            padding-bottom: var(--space-8);
-            border-bottom: 2px solid var(--border);
+            margin-bottom: var(--space-8);
+            padding: clamp(1.1rem, 2.8vw, 2rem);
+            border: 1px solid var(--border);
+            border-radius: 1.2rem;
+            background:
+                linear-gradient(160deg, color-mix(in srgb, var(--bg-card) 90%, transparent) 0%, color-mix(in srgb, var(--bg-card) 72%, transparent) 100%);
+            box-shadow: var(--shadow-lg);
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(16rem, 0.8fr);
+            gap: var(--space-6);
+            align-items: stretch;
+        }
+
+        .hero-copy {
+            display: grid;
+            align-content: start;
+        }
+
+        .hero-kicker {
+            font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+            font-size: var(--fs-xs);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: var(--space-2);
+            font-weight: 500;
         }
 
         h1 {
-            font-size: var(--fs-2xl);
+            font-size: clamp(1.95rem, 3.2vw, 2.75rem);
+            line-height: 1.07;
             margin-bottom: var(--space-2);
-            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            font-weight: 800;
+            background: linear-gradient(130deg, var(--text-primary), color-mix(in srgb, var(--text-primary) 72%, var(--accent-2)));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -162,7 +229,7 @@
 
         .subtitle {
             color: var(--text-secondary);
-            font-size: var(--fs-md);
+            font-size: 1.05rem;
             max-width: 52ch;
         }
 
@@ -182,27 +249,30 @@
             border: 1px solid var(--border);
             text-decoration: none;
             font-size: var(--fs-sm);
-            font-weight: 600;
-            transition: border-color 0.2s ease, transform 0.1s ease;
+            font-weight: 700;
+            transition: border-color 0.2s ease, transform 0.12s ease, box-shadow 0.2s ease;
         }
 
         .hero-cta.primary {
-            background: var(--accent);
-            color: var(--bg-base);
+            background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 65%, var(--accent-2)));
+            color: #081418;
             border-color: transparent;
         }
 
         .hero-cta.secondary {
-            background: var(--bg-card);
+            background: color-mix(in srgb, var(--bg-card) 86%, transparent);
             color: var(--text-primary);
         }
 
         .hero-cta:hover {
             border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
         }
 
         .hero-cta:active {
             transform: translateY(1px);
+            box-shadow: none;
         }
 
         .hero-cta:focus-visible {
@@ -210,16 +280,69 @@
             outline-offset: 2px;
         }
 
+        .hero-panel {
+            border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+            border-radius: 0.95rem;
+            background:
+                linear-gradient(155deg, color-mix(in srgb, var(--accent-soft) 30%, var(--bg-card)) 0%, color-mix(in srgb, var(--bg-card) 78%, transparent) 100%);
+            padding: var(--space-4) var(--space-5);
+            display: grid;
+            align-content: start;
+            gap: var(--space-3);
+        }
+
+        .hero-panel-title {
+            font-size: 0.8rem;
+            font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: var(--space-1);
+        }
+
+        .hero-panel-list {
+            list-style: none;
+            display: grid;
+            gap: 0.42rem;
+        }
+
+        .hero-panel-list li {
+            display: flex;
+            justify-content: space-between;
+            gap: var(--space-3);
+            align-items: baseline;
+            border-bottom: 1px solid color-mix(in srgb, var(--border) 52%, transparent);
+            padding-bottom: 0.42rem;
+        }
+
+        .hero-panel-label {
+            color: var(--text-secondary);
+            font-size: var(--fs-sm);
+        }
+
+        .hero-panel-value {
+            color: var(--text-primary);
+            font-weight: 800;
+            font-size: 1.02rem;
+        }
+
+        .hero-panel-note {
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+            max-width: 32ch;
+        }
+
         .section-jump-nav {
             position: sticky;
             top: var(--space-3);
             z-index: 3;
             margin-bottom: var(--space-5);
-            background: color-mix(in srgb, var(--bg-base) 92%, transparent);
-            backdrop-filter: blur(4px);
+            background: color-mix(in srgb, var(--bg-base) 88%, transparent);
+            backdrop-filter: blur(8px);
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
             padding: var(--space-2);
+            box-shadow: var(--shadow-md);
         }
 
         .section-jump-list {
@@ -255,6 +378,11 @@
             margin-bottom: var(--space-6);
             display: grid;
             gap: var(--space-3);
+            background: color-mix(in srgb, var(--bg-card) 74%, transparent);
+            border: 1px solid var(--border);
+            border-radius: 0.95rem;
+            padding: var(--space-4);
+            box-shadow: var(--shadow-md);
         }
 
         .filter-chips {
@@ -319,7 +447,9 @@
 
         .section-heading {
             font-size: 1.1rem;
-            margin-bottom: var(--space-3);
+            margin-bottom: var(--space-4);
+            font-weight: 800;
+            letter-spacing: 0.01em;
         }
 
         .project-item.is-hidden,
@@ -348,7 +478,7 @@
         }
 
         .project {
-            background: var(--bg-card);
+            background: linear-gradient(170deg, color-mix(in srgb, var(--bg-card) 88%, transparent) 0%, color-mix(in srgb, var(--bg-card) 74%, transparent) 100%);
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
             padding: var(--space-5) var(--space-6);
@@ -357,11 +487,14 @@
             align-items: center;
             text-decoration: none;
             color: var(--text-primary);
-            transition: border-color 0.2s ease, transform 0.1s ease;
+            transition: border-color 0.2s ease, transform 0.12s ease, box-shadow 0.2s ease;
+            box-shadow: var(--shadow-md);
         }
 
         .project:hover {
             border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .project:focus-visible {
@@ -439,6 +572,11 @@
             font-size: 1.2rem;
             margin-left: var(--space-4);
             flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .project:hover .arrow {
+            transform: translateX(3px);
         }
 
         .external-icon {
@@ -492,6 +630,9 @@
         }
 
         @media (max-width: 48rem) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
             .project {
                 padding: var(--space-4) var(--space-5);
             }
@@ -506,6 +647,9 @@
         @media (max-width: 30rem) {
             body { padding: var(--space-4); }
             h1 { font-size: 1.5rem; }
+            .hero {
+                padding: var(--space-4);
+            }
             .project {
                 flex-wrap: wrap;
                 align-items: flex-start;
@@ -543,13 +687,25 @@
             </a>
         </div>
 
-        <header>
-            <h1>Project Index</h1>
-            <p class="subtitle">Live tools and pages — DaveHomeAssist</p>
-            <div class="hero-actions">
-                <a class="hero-cta primary" href="https://promptlab.tools/">Open Prompt Lab</a>
-                <a class="hero-cta secondary" href="#projects">View All Projects</a>
+        <header class="hero">
+            <div class="hero-copy">
+                <p class="hero-kicker">Workspace Hub</p>
+                <h1>Projects, Prototypes, and Live Tools</h1>
+                <p class="subtitle">A focused launchpad for DaveHomeAssist builds across tools, development work, and garden systems.</p>
+                <div class="hero-actions">
+                    <a class="hero-cta primary" href="https://promptlab.tools/">Open Prompt Lab</a>
+                    <a class="hero-cta secondary" href="#projects">Browse All Projects</a>
+                </div>
             </div>
+            <aside class="hero-panel" aria-label="Workspace snapshot">
+                <h2 class="hero-panel-title">Now Shipping</h2>
+                <ul class="hero-panel-list">
+                    <li><span class="hero-panel-label">Projects</span><span class="hero-panel-value" id="hero-stat-projects">0</span></li>
+                    <li><span class="hero-panel-label">Sections</span><span class="hero-panel-value" id="hero-stat-sections">0</span></li>
+                    <li><span class="hero-panel-label">Live Links</span><span class="hero-panel-value" id="hero-stat-live">0</span></li>
+                </ul>
+                <p class="hero-panel-note">Trailkeeper and Garden OS are in active iteration with Prompt Lab as the external flagship.</p>
+            </aside>
         </header>
 
         <nav class="section-jump-nav" aria-label="Project sections">
@@ -762,6 +918,9 @@
             const searchInput = document.getElementById("project-search");
             const sections = Array.from(document.querySelectorAll(".project-section"));
             const noResults = document.getElementById("no-results");
+            const statProjects = document.getElementById("hero-stat-projects");
+            const statSections = document.getElementById("hero-stat-sections");
+            const statLive = document.getElementById("hero-stat-live");
 
             const cards = sections.flatMap((section) =>
                 Array.from(section.querySelectorAll(".project-list > li")).map((item) => {
@@ -772,6 +931,17 @@
             );
 
             let activeFilter = "all";
+
+            if (statProjects) {
+                statProjects.textContent = String(cards.length);
+            }
+            if (statSections) {
+                statSections.textContent = String(sections.length);
+            }
+            if (statLive) {
+                const liveCount = cards.filter(({ item }) => item.querySelector(".tag-live")).length;
+                statLive.textContent = String(liveCount);
+            }
 
             function applyFilters() {
                 const query = (searchInput.value || "").trim().toLowerCase();
