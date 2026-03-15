@@ -6,14 +6,61 @@
     <title>DaveHomeAssist — Project Index</title>
     <style>
         :root {
+            color-scheme: dark;
             --bg-base: #0f172a;
             --bg-card: #1e293b;
-            --bg-surface: #334155;
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
             --accent: #38bdf8;
             --accent-purple: #a78bfa;
             --border: #475569;
+            --focus-ring: #7dd3fc;
+
+            --tag-tool-bg: #103b5a;
+            --tag-tool-fg: #7dd3fc;
+            --tag-garden-bg: #16342f;
+            --tag-garden-fg: #4ade80;
+            --tag-dev-bg: #322453;
+            --tag-dev-fg: #ddd6fe;
+
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-12: 3rem;
+
+            --radius-sm: 0.75rem;
+            --radius-pill: 999px;
+
+            --fs-xs: 0.75rem;
+            --fs-sm: 0.9rem;
+            --fs-md: 1rem;
+            --fs-lg: 1.15rem;
+            --fs-2xl: 2rem;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                color-scheme: light;
+                --bg-base: #f8fafc;
+                --bg-card: #ffffff;
+                --text-primary: #0f172a;
+                --text-secondary: #475569;
+                --accent: #0369a1;
+                --accent-purple: #6d28d9;
+                --border: #cbd5e1;
+                --focus-ring: #0284c7;
+
+                --tag-tool-bg: #dbeafe;
+                --tag-tool-fg: #075985;
+                --tag-garden-bg: #dcfce7;
+                --tag-garden-fg: #166534;
+                --tag-dev-bg: #ede9fe;
+                --tag-dev-fg: #5b21b6;
+            }
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,25 +69,25 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-base);
             color: var(--text-primary);
-            padding: 2rem;
+            padding: var(--space-8);
             line-height: 1.6;
         }
 
         .container {
-            max-width: 800px;
+            width: min(100%, 72rem);
             margin: 0 auto;
         }
 
         header {
             text-align: center;
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
+            margin-bottom: var(--space-12);
+            padding-bottom: var(--space-8);
             border-bottom: 2px solid var(--border);
         }
 
         h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: var(--fs-2xl);
+            margin-bottom: var(--space-2);
             background: linear-gradient(135deg, var(--accent), var(--accent-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -49,73 +96,104 @@
 
         .subtitle {
             color: var(--text-secondary);
-            font-size: 1rem;
+            font-size: var(--fs-md);
         }
 
         .project-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-4);
         }
 
         .project {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius-sm);
+            padding: var(--space-5) var(--space-6);
             display: flex;
             justify-content: space-between;
             align-items: center;
             text-decoration: none;
             color: var(--text-primary);
-            transition: border-color 0.2s;
+            transition: border-color 0.2s ease, transform 0.1s ease;
         }
 
         .project:hover {
             border-color: var(--accent);
         }
 
+        .project:focus-visible {
+            outline: 3px solid var(--focus-ring);
+            outline-offset: 2px;
+            border-color: var(--accent);
+        }
+
+        .project:active {
+            transform: translateY(1px);
+        }
+
         .project-info {
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
+            gap: var(--space-1);
+            min-width: 0;
+            flex: 1 1 auto;
         }
 
         .project-name {
-            font-size: 1.15rem;
+            font-size: var(--fs-lg);
             font-weight: 600;
         }
 
         .project-desc {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: var(--fs-sm);
+        }
+
+        .project-thumb-wrap {
+            width: 9rem;
+            height: 6rem;
+            border: 1px solid var(--border);
+            border-radius: 0.625rem;
+            overflow: hidden;
+            margin-left: var(--space-4);
+            flex-shrink: 0;
+            background: color-mix(in srgb, var(--bg-card) 70%, var(--bg-base) 30%);
+        }
+
+        .project-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .project-tag {
-            font-size: 0.75rem;
+            font-size: 0.8125rem;
             font-weight: 600;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-pill);
             white-space: nowrap;
             flex-shrink: 0;
-            margin-left: 1rem;
+            margin-left: var(--space-4);
         }
 
-        .tag-tool { background: #38bdf822; color: var(--accent); }
-        .tag-garden { background: #22c55e22; color: #4ade80; }
-        .tag-dev { background: #a78bfa22; color: var(--accent-purple); }
+        .tag-tool { background: var(--tag-tool-bg); color: var(--tag-tool-fg); }
+        .tag-garden { background: var(--tag-garden-bg); color: var(--tag-garden-fg); }
+        .tag-dev { background: var(--tag-dev-bg); color: var(--tag-dev-fg); }
 
         .arrow {
             color: var(--text-secondary);
             font-size: 1.2rem;
-            margin-left: 1rem;
+            margin-left: var(--space-4);
             flex-shrink: 0;
         }
 
         footer {
             text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
+            margin-top: var(--space-12);
+            padding-top: var(--space-8);
             border-top: 1px solid var(--border);
             color: var(--text-secondary);
             font-size: 0.85rem;
@@ -126,12 +204,61 @@
             text-decoration: none;
         }
 
-        @media (max-width: 600px) {
-            body { padding: 1rem; }
+        footer a:hover,
+        footer a:focus-visible {
+            text-decoration: underline;
+            text-underline-offset: 0.15em;
+        }
+
+        footer a:focus-visible {
+            outline: 2px solid var(--focus-ring);
+            outline-offset: 2px;
+        }
+
+        @media (min-width: 90rem) {
+            .project-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: var(--space-4) var(--space-5);
+            }
+        }
+
+        @media (max-width: 64rem) {
+            body { padding: var(--space-6); }
+        }
+
+        @media (max-width: 48rem) {
+            .project {
+                padding: var(--space-4) var(--space-5);
+            }
+            .project-name { font-size: 1.05rem; }
+            .project-desc { font-size: 0.875rem; }
+            .project-thumb-wrap {
+                width: 7.5rem;
+                height: 5rem;
+            }
+        }
+
+        @media (max-width: 30rem) {
+            body { padding: var(--space-4); }
             h1 { font-size: 1.5rem; }
-            .project { flex-wrap: wrap; gap: 0.5rem; }
+            .project {
+                flex-wrap: wrap;
+                align-items: flex-start;
+                gap: var(--space-2);
+            }
+            .project-thumb-wrap {
+                width: 100%;
+                height: 9rem;
+                margin-left: 0;
+                order: 2;
+            }
             .project-tag { margin-left: 0; }
             .arrow { display: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .project { transition: none; }
+            .project:active { transform: none; }
         }
     </style>
 </head>
@@ -142,79 +269,123 @@
             <p class="subtitle">Live tools and pages — DaveHomeAssist</p>
         </header>
 
-        <div class="project-list">
-            <a class="project" href="https://promptlab.tools/">
-                <div class="project-info">
-                    <span class="project-name">Prompt Lab</span>
-                    <span class="project-desc">Prompt engineering workbench with A/B testing, linting, and multi-provider LLM support</span>
-                </div>
-                <span class="project-tag tag-tool">Tool</span>
-                <span class="arrow">&rarr;</span>
-            </a>
+        <main>
+            <nav aria-label="Project links">
+                <ul class="project-list">
+                    <li>
+                        <a class="project" href="https://promptlab.tools/">
+                            <div class="project-info">
+                                <span class="project-name">Prompt Lab</span>
+                                <span class="project-desc">Prompt engineering workbench with A/B testing, linting, and multi-provider LLM support</span>
+                            </div>
+                            <div class="project-thumb-wrap" aria-hidden="true">
+                                <img class="project-thumb" src="icons/prompt-lab.png" alt="" loading="lazy">
+                            </div>
+                            <span class="project-tag tag-tool">Tool</span>
+                            <span class="arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
 
-            <a class="project" href="https://davehomeassist.github.io/gemini-api-cost-calculator/">
-                <div class="project-info">
-                    <span class="project-name">Gemini API Cost Calculator</span>
-                    <span class="project-desc">Real-time cost comparison across Gemini, Claude, and competitor models</span>
-                </div>
-                <span class="project-tag tag-tool">Tool</span>
-                <span class="arrow">&rarr;</span>
-            </a>
+                    <li>
+                        <a class="project" href="https://davehomeassist.github.io/gemini-api-cost-calculator/">
+                            <div class="project-info">
+                                <span class="project-name">Gemini API Cost Calculator</span>
+                                <span class="project-desc">Real-time cost comparison across Gemini, Claude, and competitor models</span>
+                            </div>
+                            <div class="project-thumb-wrap" aria-hidden="true">
+                                <img class="project-thumb" src="icons/cost-calculator.png" alt="" loading="lazy">
+                            </div>
+                            <span class="project-tag tag-tool">Tool</span>
+                            <span class="arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
 
-            <a class="project" href="https://davehomeassist.github.io/NotionWidgets/">
-                <div class="project-info">
-                    <span class="project-name">Notion Widgets</span>
-                    <span class="project-desc">Embeddable widget collection for Notion dashboards</span>
-                </div>
-                <span class="project-tag tag-tool">Tool</span>
-                <span class="arrow">&rarr;</span>
-            </a>
+                    <li>
+                        <a class="project" href="https://davehomeassist.github.io/NotionWidgets/">
+                            <div class="project-info">
+                                <span class="project-name">Notion Widgets</span>
+                                <span class="project-desc">Embeddable widget collection for Notion dashboards</span>
+                            </div>
+                            <div class="project-thumb-wrap" aria-hidden="true">
+                                <img class="project-thumb" src="icons/notion-widgets.png" alt="" loading="lazy">
+                            </div>
+                            <span class="project-tag tag-tool">Tool</span>
+                            <span class="arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
 
-            <a class="project" href="https://davehomeassist.github.io/web-templates/">
-                <div class="project-info">
-                    <span class="project-name">Web Templates</span>
-                    <span class="project-desc">8 layout patterns — filterable tables, kanban boards, roadmaps, directories, and more</span>
-                </div>
-                <span class="project-tag tag-dev">Dev</span>
-                <span class="arrow">&rarr;</span>
-            </a>
+                    <li>
+                        <a class="project" href="https://davehomeassist.github.io/web-templates/">
+                            <div class="project-info">
+                                <span class="project-name">Web Templates</span>
+                                <span class="project-desc">8 layout patterns — filterable tables, kanban boards, roadmaps, directories, and more</span>
+                            </div>
+                            <div class="project-thumb-wrap" aria-hidden="true">
+                                <img class="project-thumb" src="icons/web-templates.png" alt="" loading="lazy">
+                            </div>
+                            <span class="project-tag tag-dev">Dev</span>
+                            <span class="arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
 
-            <a class="project" href="https://davehomeassist.github.io/sdlc-tool-stack-map/">
-                <div class="project-info">
-                    <span class="project-name">SDLC Tool Stack Map</span>
-                    <span class="project-desc">Interactive map of an SDLC tool stack</span>
-                </div>
-                <span class="project-tag tag-dev">Dev</span>
-                <span class="arrow">&rarr;</span>
-            </a>
+                    <li>
+                        <a class="project" href="https://davehomeassist.github.io/sdlc-tool-stack-map/">
+                            <div class="project-info">
+                                <span class="project-name">SDLC Tool Stack Map</span>
+                                <span class="project-desc">Interactive map of an SDLC tool stack</span>
+                            </div>
+                            <div class="project-thumb-wrap" aria-hidden="true">
+                                <img class="project-thumb" src="icons/sdlc-stack-map.png" alt="" loading="lazy">
+                            </div>
+                            <span class="project-tag tag-dev">Dev</span>
+                            <span class="arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
 
-            <a class="project" href="https://davehomeassist.github.io/garden-os/">
-                <div class="project-info">
-                    <span class="project-name">Garden OS</span>
-                    <span class="project-desc">Structured growing system — scoring, cell traits, ops guide</span>
-                </div>
-                <span class="project-tag tag-garden">Garden</span>
-                <span class="arrow">&rarr;</span>
-            </a>
+                    <li>
+                        <a class="project" href="https://davehomeassist.github.io/garden-os/">
+                            <div class="project-info">
+                                <span class="project-name">Garden OS</span>
+                                <span class="project-desc">Structured growing system — scoring, cell traits, ops guide</span>
+                            </div>
+                            <div class="project-thumb-wrap" aria-hidden="true">
+                                <img class="project-thumb" src="icons/garden-os.png" alt="" loading="lazy">
+                            </div>
+                            <span class="project-tag tag-garden">Garden</span>
+                            <span class="arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
 
-            <a class="project" href="https://davehomeassist.github.io/garden-planner/">
-                <div class="project-info">
-                    <span class="project-name">Garden Planner</span>
-                    <span class="project-desc">Visual garden bed layout and planting planner</span>
-                </div>
-                <span class="project-tag tag-garden">Garden</span>
-                <span class="arrow">&rarr;</span>
-            </a>
+                    <li>
+                        <a class="project" href="https://davehomeassist.github.io/garden-planner/">
+                            <div class="project-info">
+                                <span class="project-name">Garden Planner</span>
+                                <span class="project-desc">Visual garden bed layout and planting planner</span>
+                            </div>
+                            <div class="project-thumb-wrap" aria-hidden="true">
+                                <img class="project-thumb" src="icons/garden-planner.png" alt="" loading="lazy">
+                            </div>
+                            <span class="project-tag tag-garden">Garden</span>
+                            <span class="arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
 
-            <a class="project" href="https://davehomeassist.github.io/garden-cage-build-guide/">
-                <div class="project-info">
-                    <span class="project-name">Garden Cage Build Guide</span>
-                    <span class="project-desc">Interactive ops guide for an 8x4 ft cattle panel garden cage build</span>
-                </div>
-                <span class="project-tag tag-garden">Garden</span>
-                <span class="arrow">&rarr;</span>
-            </a>
-        </div>
+                    <li>
+                        <a class="project" href="https://davehomeassist.github.io/garden-cage-build-guide/">
+                            <div class="project-info">
+                                <span class="project-name">Garden Cage Build Guide</span>
+                                <span class="project-desc">Interactive ops guide for an 8x4 ft cattle panel garden cage build</span>
+                            </div>
+                            <div class="project-thumb-wrap" aria-hidden="true">
+                                <img class="project-thumb" src="icons/garden-cage-build-guide.png" alt="" loading="lazy">
+                            </div>
+                            <span class="project-tag tag-garden">Garden</span>
+                            <span class="arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </main>
 
         <footer>
             <a href="https://github.com/DaveHomeAssist">github.com/DaveHomeAssist</a>
