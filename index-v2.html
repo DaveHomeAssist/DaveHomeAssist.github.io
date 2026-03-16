@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaveHomeAssist — Developer Portfolio</title>
+    <meta name="description" content="Browser-native tools, garden systems, and interactive experiments — all zero-backend, all open source.">
+    <meta name="theme-color" content="#0e131b" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f4f6fa" media="(prefers-color-scheme: light)">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/icons/favicon/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/favicon/apple-touch-icon.png">
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+/* ============================================================
+   DESIGN TOKENS — DARK (default)
+   ============================================================ */
+:root {
+    color-scheme: dark;
+    --bg-base:    #0e131b;
+    --bg-card:    #171f2e;
+    --bg-header:  rgba(14, 19, 27, 0.82);
+    --text-1:     #f5f8ff;
+    --text-2:     #9ba8bd;
+    --accent:     #27c2a6;
+    --accent-hover:#2fe0c0;
+    --amber:      #f0a33a;
+    --border:     #334057;
+    --border-subtle: rgba(51, 64, 87, 0.5);
+    --tag-green-bg:  rgba(39,194,166,0.12);
+    --tag-green-fg:  #27c2a6;
+    --tag-gray-bg:   rgba(155,168,189,0.10);
+    --tag-gray-fg:   #9ba8bd;
+    --tag-purple-bg: rgba(168,130,240,0.12);
+    --tag-purple-fg: #a882f0;
+    --tag-blue-bg:   rgba(96,165,250,0.12);
+    --tag-blue-fg:   #60a5fa;
+    --tag-amber-bg:  rgba(240,163,58,0.12);
+    --tag-amber-fg:  #f0a33a;
+    --tag-yellow-bg: rgba(250,204,21,0.12);
+    --tag-yellow-fg: #facc15;
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.24), 0 0 0 1px var(--border-subtle);
+    --shadow-card-hover: 0 4px 16px rgba(0,0,0,0.32), 0 0 0 1px var(--border);
+    --hero-grad-from: #f5f8ff;
+    --hero-grad-to:   #f0a33a;
+    --focus-ring: 0 0 0 2px var(--bg-base), 0 0 0 4px var(--accent);
+}
+
+/* ============================================================
+   DESIGN TOKENS — LIGHT
+   ============================================================ */
+@media (prefers-color-scheme: light) {
+    :root {
+        color-scheme: light;
+        --bg-base:    #f4f6fa;
+        --bg-card:    #ffffff;
+        --bg-header:  rgba(244, 246, 250, 0.82);
+        --text-1:     #141f31;
+        --text-2:     #52607b;
+        --accent:     #0f8b77;
+        --accent-hover:#0da08a;
+        --amber:      #a46308;
+        --border:     #d0d8e8;
+        --border-subtle: rgba(208, 216, 232, 0.6);
+        --tag-green-bg:  rgba(15,139,119,0.10);
+        --tag-green-fg:  #0f8b77;
+        --tag-gray-bg:   rgba(82,96,123,0.08);
+        --tag-gray-fg:   #52607b;
+        --tag-purple-bg: rgba(128,90,213,0.10);
+        --tag-purple-fg: #7c3aed;
+        --tag-blue-bg:   rgba(37,99,235,0.10);
+        --tag-blue-fg:   #2563eb;
+        --tag-amber-bg:  rgba(164,99,8,0.10);
+        --tag-amber-fg:  #a46308;
+        --tag-yellow-bg: rgba(202,138,4,0.10);
+        --tag-yellow-fg: #a16207;
+        --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px var(--border-subtle);
+        --shadow-card-hover: 0 4px 16px rgba(0,0,0,0.10), 0 0 0 1px var(--border);
+        --hero-grad-from: #141f31;
+        --hero-grad-to:   #a46308;
+    }
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+body {
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-1);
+    background: var(--bg-base);
+    -webkit-font-smoothing: antialiased;
+}
+.mono {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* ============================================================
+   FOCUS & A11Y
+   ============================================================ */
+:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: 4px;
+}
+a { color: inherit; text-decoration: none; }
+.sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ============================================================
+   HEADER — sticky, slim, blurred
+   ============================================================ */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-header);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-subtle);
+    height: 56px;
+    display: flex;
+    align-items: center;
+}
+.site-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.wordmark {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-1);
+}
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+.header-nav a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-2);
+    transition: color 0.15s;
+}
+.header-nav a:hover { color: var(--text-1); }
+.header-nav svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+    fill: var(--text-2);
+    transition: fill 0.15s;
+}
+.header-nav a:hover svg { fill: var(--text-1); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+    padding: 5rem 0 3.5rem;
+    text-align: center;
+}
+.hero-kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+}
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    background: linear-gradient(135deg, var(--hero-grad-from) 60%, var(--hero-grad-to));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+.hero-sub {
+    font-size: 1.1rem;
+    color: var(--text-2);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.65;
+}
+.hero-ctas {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+}
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1.6rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent), #1fa88e);
+    color: #0a1018;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(39,194,166,0.3);
+}
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+.btn-ghost:hover {
+    border-color: var(--text-2);
+    color: var(--text-1);
+}
+
+/* Featured strip — 3 mini preview cards */
+.featured-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 680px;
+    margin: 0 auto;
+}
+.strip-card {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-2);
+    transition: border-color 0.15s;
+}
+.strip-card:hover { border-color: var(--border); }
+.strip-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    line-height: 1;
+}
+.strip-card strong {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-1);
+}
+
+/* ============================================================
+   SECTION SHARED
+   ============================================================ */
+.section {
+    padding: 4rem 0;
+}
+.eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+.section-intro {
+    font-size: 0.95rem;
+    color: var(--text-2);
+    margin-bottom: 1.5rem;
+    max-width: 540px;
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about-text {
+    font-size: 1.05rem;
+    color: var(--text-2);
+    max-width: 640px;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+}
+.pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.tech-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    white-space: nowrap;
+}
+
+/* ============================================================
+   FEATURED PROJECT CARDS (large)
+   ============================================================ */
+.flagship-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+}
+.flagship-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+}
+.flagship-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+    border-color: var(--border);
+}
+.flagship-bar {
+    height: 3px;
+    width: 100%;
+}
+.flagship-body {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.flagship-body h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+.flagship-body p {
+    font-size: 0.88rem;
+    color: var(--text-2);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    flex: 1;
+}
+.flagship-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+.flagship-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+.tag-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+/* Tag color variants */
+.tag-green   { background: var(--tag-green-bg);  color: var(--tag-green-fg); }
+.tag-gray    { background: var(--tag-gray-bg);   color: var(--tag-gray-fg); }
+.tag-purple  { background: var(--tag-purple-bg); color: var(--tag-purple-fg); }
+.tag-blue    { background: var(--tag-blue-bg);   color: var(--tag-blue-fg); }
+.tag-amber   { background: var(--tag-amber-bg);  color: var(--tag-amber-fg); }
+.tag-yellow  { background: var(--tag-yellow-bg); color: var(--tag-yellow-fg); }
+
+.status-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--tag-green-bg);
+    color: var(--tag-green-fg);
+}
+.card-arrow {
+    font-size: 1.1rem;
+    color: var(--text-2);
+    transition: transform 0.15s, color 0.15s;
+}
+.flagship-card:hover .card-arrow {
+    transform: translateX(3px);
+    color: var(--accent);
+}
+
+/* ============================================================
+   FILTER BAR (sticky below header)
+   ============================================================ */
+.filter-bar {
+    position: sticky;
+    top: 56px;
+    z-index: 90;
+    background: var(--bg-header);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.65rem 0;
+}
+.filter-bar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+}
+.filter-chips {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+.chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.chip:hover {
+    border-color: var(--text-2);
+    color: var(--text-1);
+}
+.chip[aria-pressed="true"] {
+    background: var(--accent);
+    color: #0a1018;
+    border-color: var(--accent);
+}
+.search-wrap {
+    position: relative;
+    flex-shrink: 0;
+}
+.search-input {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    padding: 0.4rem 0.85rem 0.4rem 2rem;
+    width: 200px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-1);
+    transition: border-color 0.15s, width 0.2s;
+}
+.search-input::placeholder { color: var(--text-2); opacity: 0.6; }
+.search-input:focus {
+    border-color: var(--accent);
+    width: 240px;
+    outline: none;
+}
+.search-icon {
+    position: absolute;
+    left: 0.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    color: var(--text-2);
+    pointer-events: none;
+}
+.search-kbd {
+    position: absolute;
+    right: 0.65rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-2);
+    opacity: 0.5;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.05rem 0.35rem;
+    pointer-events: none;
+    line-height: 1.4;
+}
+
+/* ============================================================
+   PROJECT GRID (smaller cards)
+   ============================================================ */
+.grid-section { margin-bottom: 2.5rem; }
+.grid-section h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.grid-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.15rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s,
+                opacity 0.3s ease, max-height 0.35s ease, padding 0.35s ease,
+                margin 0.35s ease;
+    max-height: 300px;
+    overflow: hidden;
+}
+.grid-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+    border-color: var(--border);
+}
+.grid-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+}
+.grid-card-head h4 {
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+.grid-card p {
+    font-size: 0.82rem;
+    color: var(--text-2);
+    line-height: 1.55;
+    flex: 1;
+}
+.grid-card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+}
+
+/* Filter hide state — CSS transition driven */
+.grid-card.hidden-card {
+    opacity: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-width: 0;
+    pointer-events: none;
+    transform: scale(0.95);
+    overflow: hidden;
+}
+
+/* ============================================================
+   ANIMATE-IN (IntersectionObserver)
+   ============================================================ */
+.animate-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.animate-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Hero stagger */
+.hero-stagger {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: heroIn 0.6s ease forwards;
+}
+.hero-stagger:nth-child(1) { animation-delay: 0.05s; }
+.hero-stagger:nth-child(2) { animation-delay: 0.15s; }
+.hero-stagger:nth-child(3) { animation-delay: 0.25s; }
+.hero-stagger:nth-child(4) { animation-delay: 0.35s; }
+.hero-stagger:nth-child(5) { animation-delay: 0.45s; }
+@keyframes heroIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Disable all animation for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .animate-in { opacity: 1; transform: none; }
+    .hero-stagger { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-subtle);
+    padding: 2.5rem 0;
+    margin-top: 2rem;
+}
+.footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.78rem;
+    color: var(--text-2);
+}
+.footer-inner a {
+    color: var(--text-2);
+    transition: color 0.15s;
+}
+.footer-inner a:hover { color: var(--text-1); }
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+    .hero { padding: 3.5rem 0 2.5rem; }
+    .featured-strip { grid-template-columns: 1fr; max-width: 360px; }
+    .flagship-grid { grid-template-columns: 1fr; }
+    .project-grid { grid-template-columns: 1fr; }
+    .filter-bar .container { flex-direction: column; align-items: flex-start; }
+    .search-input { width: 100%; }
+    .search-input:focus { width: 100%; }
+    .search-wrap { width: 100%; }
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-right { justify-content: center; }
+}
+@media (max-width: 480px) {
+    .hero h1 { font-size: 1.7rem; }
+    .hero-sub { font-size: 0.95rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header" role="banner">
+    <div class="container">
+        <a href="/" class="wordmark" aria-label="DaveHomeAssist home">DaveHomeAssist</a>
+        <nav class="header-nav" aria-label="Primary">
+            <a href="#about">About</a>
+            <a href="https://github.com/DaveHomeAssist" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            </a>
+        </nav>
+    </div>
+</header>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" aria-labelledby="hero-heading">
+    <div class="container">
+        <p class="hero-kicker mono hero-stagger">Developer Portfolio &middot; 2026</p>
+        <h1 id="hero-heading" class="hero-stagger">Built from scratch. Shipped for real.</h1>
+        <p class="hero-sub hero-stagger">Browser-native tools, garden systems, and interactive experiments&nbsp;&mdash; all zero-backend, all open source.</p>
+        <div class="hero-ctas hero-stagger">
+            <a href="https://promptlab.tools/" class="btn-primary" target="_blank" rel="noopener noreferrer">Open Prompt Lab &rarr;</a>
+            <a href="#projects" class="btn-ghost">View all projects &darr;</a>
+        </div>
+        <div class="featured-strip hero-stagger">
+            <a href="https://promptlab.tools/" class="strip-card" target="_blank" rel="noopener noreferrer">
+                <span class="strip-icon" aria-hidden="true">&#9881;&#65039;</span>
+                <span><strong>Prompt Lab</strong>A/B test your prompts</span>
+            </a>
+            <a href="https://davehomeassist.github.io/trailkeeper/" class="strip-card" target="_blank" rel="noopener noreferrer">
+                <span class="strip-icon" aria-hidden="true">&#127956;&#65039;</span>
+                <span><strong>Trailkeeper</strong>Backcountry field log</span>
+            </a>
+            <a href="https://davehomeassist.github.io/garden-os/" class="strip-card" target="_blank" rel="noopener noreferrer">
+                <span class="strip-icon" aria-hidden="true">&#127793;</span>
+                <span><strong>Garden OS</strong>Raised bed ecosystem</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     ABOUT
+     ============================================================ -->
+<section class="section" id="about" aria-labelledby="about-heading">
+    <div class="container">
+        <p class="eyebrow" id="about-heading">About</p>
+        <p class="about-text animate-in">Dave builds tools that solve real problems for real people. Every project in this portfolio runs entirely in the browser&nbsp;&mdash; no servers, no databases, no infrastructure. If it needs a backend, it doesn't ship.</p>
+        <div class="pill-row animate-in">
+            <span class="tech-pill">Vanilla JS</span>
+            <span class="tech-pill">React</span>
+            <span class="tech-pill">Vite</span>
+            <span class="tech-pill">GitHub Pages</span>
+            <span class="tech-pill">localStorage</span>
+            <span class="tech-pill">Open-Meteo API</span>
+            <span class="tech-pill">Overpass API</span>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     FLAGSHIP PROJECTS
+     ============================================================ -->
+<section class="section" id="flagship" aria-labelledby="flagship-heading">
+    <div class="container">
+        <p class="eyebrow" id="flagship-heading">Flagship Projects</p>
+        <div class="flagship-grid">
+            <!-- Prompt Lab -->
+            <a href="https://promptlab.tools/" class="flagship-card animate-in" target="_blank" rel="noopener noreferrer">
+                <div class="flagship-bar" style="background:linear-gradient(90deg,#27c2a6,#1fa88e)"></div>
+                <div class="flagship-body">
+                    <h3>Prompt Lab</h3>
+                    <p>Prompt engineering workbench with A/B testing, golden response benchmarks, and multi-provider LLM support. Ships as a browser extension, desktop app, and web tool.</p>
+                    <div class="flagship-meta">
+                        <div class="flagship-tags">
+                            <span class="tag-pill tag-blue">React</span>
+                            <span class="tag-pill tag-purple">Vite</span>
+                            <span class="tag-pill tag-amber">IndexedDB</span>
+                        </div>
+                        <span class="status-pill">Active</span>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Trailkeeper -->
+            <a href="https://davehomeassist.github.io/trailkeeper/" class="flagship-card animate-in" target="_blank" rel="noopener noreferrer">
+                <div class="flagship-bar" style="background:linear-gradient(90deg,#0e7490,#155e75)"></div>
+                <div class="flagship-body">
+                    <h3>Trailkeeper</h3>
+                    <p>Backcountry field log for hiking trips. Weather-aware planning, trail enrichment via Overpass API, and offline-capable gear checklists.</p>
+                    <div class="flagship-meta">
+                        <div class="flagship-tags">
+                            <span class="tag-pill tag-green">Vanilla JS</span>
+                            <span class="tag-pill tag-amber">Open-Meteo</span>
+                            <span class="tag-pill tag-gray">Overpass</span>
+                        </div>
+                        <span class="status-pill">Active</span>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Garden OS -->
+            <a href="https://davehomeassist.github.io/garden-os/" class="flagship-card animate-in" target="_blank" rel="noopener noreferrer">
+                <div class="flagship-bar" style="background:linear-gradient(90deg,#166534,#15803d)"></div>
+                <div class="flagship-body">
+                    <h3>Garden OS</h3>
+                    <p>Raised bed planning ecosystem with a scoring engine, build guides, ops guides, and a 12-chapter narrative strategy game.</p>
+                    <div class="flagship-meta">
+                        <div class="flagship-tags">
+                            <span class="tag-pill tag-green">Vanilla JS</span>
+                            <span class="tag-pill tag-amber">localStorage</span>
+                            <span class="tag-pill tag-gray">Zero-backend</span>
+                        </div>
+                        <span class="status-pill">Active</span>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     FILTER BAR + PROJECT GRID
+     ============================================================ -->
+<div class="filter-bar" id="projects" role="search" aria-label="Filter projects">
+    <div class="container">
+        <div class="filter-chips" role="group" aria-label="Project categories">
+            <button class="chip" aria-pressed="true" data-filter="all">All</button>
+            <button class="chip" aria-pressed="false" data-filter="tools">Tools</button>
+            <button class="chip" aria-pressed="false" data-filter="experiments">Experiments</button>
+            <button class="chip" aria-pressed="false" data-filter="garden">Garden</button>
+        </div>
+        <div class="search-wrap">
+            <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <circle cx="6.5" cy="6.5" r="5.25"/><line x1="10.5" y1="10.5" x2="15" y2="15"/>
+            </svg>
+            <label for="project-search" class="sr-only">Search projects</label>
+            <input type="text" id="project-search" class="search-input" placeholder="Search projects…" autocomplete="off">
+            <kbd class="search-kbd" aria-hidden="true">/</kbd>
+        </div>
+    </div>
+</div>
+
+<section class="section" aria-label="All projects">
+    <div class="container">
+
+        <!-- DEVELOPER TOOLS -->
+        <div class="grid-section" data-category="tools">
+            <p class="eyebrow">Developer Tools</p>
+            <p class="section-intro">Standalone utilities built for daily use.</p>
+            <div class="project-grid">
+                <a href="https://davehomeassist.github.io/gemini-api-cost-calculator/" class="grid-card animate-in" data-category="tools" target="_blank" rel="noopener noreferrer">
+                    <div class="grid-card-head">
+                        <h4>Gemini API Cost Calculator</h4>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                    <p>Real-time cost comparison across Gemini, Claude, and competitor models</p>
+                    <div class="grid-card-foot">
+                        <span class="tag-pill tag-green">Live Tool</span>
+                    </div>
+                </a>
+                <a href="https://davehomeassist.github.io/NotionWidgets/" class="grid-card animate-in" data-category="tools" target="_blank" rel="noopener noreferrer">
+                    <div class="grid-card-head">
+                        <h4>Notion Widgets</h4>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                    <p>Embeddable widget collection for Notion dashboards</p>
+                    <div class="grid-card-foot">
+                        <span class="tag-pill tag-green">Live Tool</span>
+                    </div>
+                </a>
+                <a href="https://davehomeassist.github.io/graph-explorer/" class="grid-card animate-in" data-category="tools" target="_blank" rel="noopener noreferrer">
+                    <div class="grid-card-head">
+                        <h4>Graph Explorer</h4>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                    <p>Dataset-agnostic graph visualization engine with map pack system</p>
+                    <div class="grid-card-foot">
+                        <span class="tag-pill tag-green">Live Tool</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- INTERACTIVE EXPERIMENTS -->
+        <div class="grid-section" data-category="experiments">
+            <p class="eyebrow">Interactive Experiments</p>
+            <p class="section-intro">Design explorations, demos, and reference builds.</p>
+            <div class="project-grid">
+                <a href="https://davehomeassist.github.io/web-templates/" class="grid-card animate-in" data-category="experiments" target="_blank" rel="noopener noreferrer">
+                    <div class="grid-card-head">
+                        <h4>Reference Layout Pack</h4>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                    <p>8 layout patterns — filterable tables, kanban boards, roadmaps, directories</p>
+                    <div class="grid-card-foot">
+                        <span class="tag-pill tag-amber">Reference</span>
+                    </div>
+                </a>
+                <a href="https://davehomeassist.github.io/sdlc-tool-stack-map/" class="grid-card animate-in" data-category="experiments" target="_blank" rel="noopener noreferrer">
+                    <div class="grid-card-head">
+                        <h4>SDLC Tool Stack Map</h4>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                    <p>Interactive comparison of Atlassian, modern, and hybrid SDLC workflows</p>
+                    <div class="grid-card-foot">
+                        <span class="tag-pill tag-amber">Reference</span>
+                    </div>
+                </a>
+                <a href="https://davehomeassist.github.io/elysium-landing/" class="grid-card animate-in" data-category="experiments" target="_blank" rel="noopener noreferrer">
+                    <div class="grid-card-head">
+                        <h4>Elysium Digital</h4>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                    <p>Luxury-tier landing page prototype with premium design patterns</p>
+                    <div class="grid-card-foot">
+                        <span class="tag-pill tag-gray">Demo</span>
+                    </div>
+                </a>
+                <a href="https://davehomeassist.github.io/shieldbox-security-event-quote-request-v4-gold-master.html/" class="grid-card animate-in" data-category="experiments" target="_blank" rel="noopener noreferrer">
+                    <div class="grid-card-head">
+                        <h4>Shieldbox Security</h4>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                    <p>Event security quote request form — gold master demo build</p>
+                    <div class="grid-card-foot">
+                        <span class="tag-pill tag-gray">Demo</span>
+                    </div>
+                </a>
+                <a href="https://davehomeassist.github.io/freelance/" class="grid-card animate-in" data-category="experiments" target="_blank" rel="noopener noreferrer">
+                    <div class="grid-card-head">
+                        <h4>Rapid Sites</h4>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                    <p>Professional websites in 48 hours — freelance services landing page</p>
+                    <div class="grid-card-foot">
+                        <span class="tag-pill tag-blue">Service</span>
+                    </div>
+                </a>
+                <a href="https://davehomeassist.github.io/contractor/" class="grid-card animate-in" data-category="experiments" target="_blank" rel="noopener noreferrer">
+                    <div class="grid-card-head">
+                        <h4>Summit Contracting</h4>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                    <p>Licensed home contractor — service landing page and portfolio</p>
+                    <div class="grid-card-foot">
+                        <span class="tag-pill tag-blue">Service</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- GARDEN ECOSYSTEM -->
+        <div class="grid-section" data-category="garden">
+            <p class="eyebrow">Garden Ecosystem</p>
+            <p class="section-intro">Everything growing in Mom's backyard — planning tools, build guides, and a narrative game.</p>
+            <div class="project-grid">
+                <a href="https://davehomeassist.github.io/garden-os/garden-league-simulator-v3.html" class="grid-card animate-in" data-category="garden" target="_blank" rel="noopener noreferrer">
+                    <div class="grid-card-head">
+                        <h4>Season Engine</h4>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                    <p>12-chapter narrative strategy game. Inherit Mom's raised bed, survive seasonal events, harvest toward her sauce recipe.</p>
+                    <div class="grid-card-foot">
+                        <span class="tag-pill tag-yellow">Game</span>
+                    </div>
+                </a>
+                <a href="https://davehomeassist.github.io/garden-os/garden-planner-v4.html" class="grid-card animate-in" data-category="garden" target="_blank" rel="noopener noreferrer">
+                    <div class="grid-card-head">
+                        <h4>Garden Planner</h4>
+                        <span class="card-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                    <p>4x8 raised bed layout tool with companion scoring, zone modeling, and harvest tracking</p>
+                    <div class="grid-card-foot">
+                        <span class="tag-pill tag-green">Live Tool</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+        <div class="footer-links">
+            <a href="https://github.com/DaveHomeAssist" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="mailto:hello@davehomeassist.com">hello@davehomeassist.com</a>
+        </div>
+        <div class="footer-right">
+            <span>Last updated <time id="last-updated"></time></span>
+            <span>Built with vanilla JS and too much coffee</span>
+        </div>
+    </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT — minimal, vanilla
+     ============================================================ -->
+<script>
+(function () {
+    'use strict';
+
+    /* ── Last updated ────────────────────────────────────── */
+    var ts = document.getElementById('last-updated');
+    if (ts) ts.textContent = new Date(document.lastModified).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'short', day: 'numeric'
+    });
+
+    /* ── IntersectionObserver for .animate-in ────────────── */
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReduced && 'IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    // Stagger siblings inside the same parent grid
+                    var parent = entry.target.parentElement;
+                    var siblings = Array.from(parent.querySelectorAll('.animate-in:not(.visible)'));
+                    var idx = siblings.indexOf(entry.target);
+                    var delay = Math.max(0, idx) * 60;
+                    setTimeout(function () {
+                        entry.target.classList.add('visible');
+                    }, delay);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        document.querySelectorAll('.animate-in').forEach(function (el) {
+            observer.observe(el);
+        });
+    } else {
+        // No animation — show everything
+        document.querySelectorAll('.animate-in').forEach(function (el) {
+            el.classList.add('visible');
+        });
+    }
+
+    /* ── Filter chips ────────────────────────────────────── */
+    var chips = document.querySelectorAll('.chip[data-filter]');
+    var gridSections = document.querySelectorAll('.grid-section[data-category]');
+    var allCards = document.querySelectorAll('.grid-card[data-category]');
+    var searchInput = document.getElementById('project-search');
+
+    function getActiveFilter() {
+        var active = document.querySelector('.chip[aria-pressed="true"]');
+        return active ? active.dataset.filter : 'all';
+    }
+
+    function applyFilters() {
+        var filter = getActiveFilter();
+        var query = (searchInput.value || '').toLowerCase().trim();
+
+        gridSections.forEach(function (section) {
+            var cat = section.dataset.category;
+            var matchesFilter = filter === 'all' || cat === filter;
+            section.style.display = matchesFilter ? '' : 'none';
+        });
+
+        allCards.forEach(function (card) {
+            var cat = card.dataset.category;
+            var matchesFilter = filter === 'all' || cat === filter;
+            var text = card.textContent.toLowerCase();
+            var matchesSearch = !query || text.indexOf(query) !== -1;
+            if (matchesFilter && matchesSearch) {
+                card.classList.remove('hidden-card');
+            } else {
+                card.classList.add('hidden-card');
+            }
+        });
+    }
+
+    chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            chips.forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+            chip.setAttribute('aria-pressed', 'true');
+            applyFilters();
+        });
+    });
+
+    if (searchInput) {
+        searchInput.addEventListener('input', applyFilters);
+    }
+
+    /* ── "/" keyboard shortcut to focus search ───────────── */
+    document.addEventListener('keydown', function (e) {
+        if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+            searchInput.focus();
+        }
+    });
+
+    /* ── Hide kbd hint when input is focused ─────────────── */
+    var kbdHint = document.querySelector('.search-kbd');
+    if (searchInput && kbdHint) {
+        searchInput.addEventListener('focus', function () { kbdHint.style.display = 'none'; });
+        searchInput.addEventListener('blur', function () {
+            if (!searchInput.value) kbdHint.style.display = '';
+        });
+    }
+
+})();
+</script>
+</body>
+</html>
