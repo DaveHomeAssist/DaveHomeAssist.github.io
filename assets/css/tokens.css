@@ -1,0 +1,332 @@
+/* ============================================================
+   DaveHomeAssist — Design Tokens v1.0
+   ============================================================
+   Single source of truth for color, spacing, typography,
+   elevation, and motion across the full portfolio.
+
+   Usage:
+     @import url('assets/css/tokens.css');
+     — or inline the :root block in single-file HTML tools.
+
+   Contrast guarantees (dark mode, against --surface-0 #08090C):
+     --text-primary    #E8ECF4   13.2 : 1   AAA
+     --text-secondary  #A0AAC0    6.8 : 1   AA
+     --text-muted      raised above floor for stronger small-text legibility
+
+   Contrast guarantees (light mode, against --surface-0 #F8F9FB):
+     --text-primary    #1A1D23   15.6 : 1   AAA
+     --text-secondary  #475166    8.2 : 1   AAA
+     --text-muted      darkened slightly for stronger light-mode legibility
+
+   Light mode intent: "Gallery paper" — off-white with blue-grey
+   tint, not pure white. Reduces eye strain for long-form reading.
+
+   Theme activation:
+     System-auto:  @media (prefers-color-scheme: light)
+     Manual:       <html data-theme="light">
+     Manual:       <html data-theme="dark">
+   ============================================================ */
+
+
+/* ---- FOUNDATION: SURFACES ---- */
+
+:root {
+  --surface-0: #08090C;
+  --surface-1: #0F1117;
+  --surface-2: #171B24;
+  --surface-3: #1E2330;
+
+  --surface-0-hsl: 220 20% 4%;
+  --surface-1-hsl: 224 20% 7%;
+  --surface-2-hsl: 222 18% 12%;
+  --surface-3-hsl: 222 18% 15%;
+
+
+  /* ---- FOUNDATION: TEXT ---- */
+
+  --text-primary:   #E8ECF4;
+  --text-secondary: #A0AAC0;
+  --text-muted:     #8A96B0;
+
+  --text-primary-hsl:   220 30% 93%;
+  --text-secondary-hsl: 220 20% 69%;
+  --text-muted-hsl:     220 14% 55%;
+
+
+  /* ---- FOUNDATION: BORDERS ---- */
+
+  --border-subtle:  #1F2636;
+  --border-visible: #2A3348;
+  --border-focus:   #4A5A80;
+
+
+  /* ---- ACCENT PALETTE (HSL for alpha manipulation) ----
+     Usage:  background: hsl(var(--accent-hsl) / 0.12);
+             color: hsl(var(--accent-hsl));                */
+
+  /* Portfolio — cool blue: trust, navigation */
+  --accent-portfolio-hsl:     222 100% 74%;
+  --accent-portfolio:         hsl(var(--accent-portfolio-hsl));
+
+  /* Prompt Lab — violet: creativity, tooling */
+  --accent-prompt-lab-hsl:    258 95% 76%;
+  --accent-prompt-lab:        hsl(var(--accent-prompt-lab-hsl));
+
+  /* Garden OS — verdant green: growth, organic */
+  --accent-garden-os-hsl:     146 76% 67%;
+  --accent-garden-os:         hsl(var(--accent-garden-os-hsl));
+
+  /* Metagrid — teal: precision, technology */
+  --accent-metagrid-hsl:      166 100% 42%;
+  --accent-metagrid:          hsl(var(--accent-metagrid-hsl));
+
+  /* Trailkeeper — amber: warmth, outdoors */
+  --accent-trailkeeper-hsl:   37 90% 50%;
+  --accent-trailkeeper:       hsl(var(--accent-trailkeeper-hsl));
+
+  /* NotionWidgets — deep violet: integration */
+  --accent-notionwidgets-hsl: 258 90% 66%;
+  --accent-notionwidgets:     hsl(var(--accent-notionwidgets-hsl));
+
+  /* SDLC Map — steel blue: process, clarity */
+  --accent-sdlc-hsl:          213 97% 68%;
+  --accent-sdlc:              hsl(var(--accent-sdlc-hsl));
+
+  /* Gemini Calc — sky blue: calculation, APIs */
+  --accent-gemini-hsl:        199 95% 60%;
+  --accent-gemini:            hsl(var(--accent-gemini-hsl));
+
+  /* ShieldBox — orange: security, alertness */
+  --accent-shieldbox-hsl:     25 95% 53%;
+  --accent-shieldbox:         hsl(var(--accent-shieldbox-hsl));
+
+  /* Freelance — magenta: creative services */
+  --accent-freelance-hsl:     292 91% 73%;
+  --accent-freelance:         hsl(var(--accent-freelance-hsl));
+
+  /* Contractor — rose: construction, craft */
+  --accent-contractor-hsl:    351 96% 73%;
+  --accent-contractor:        hsl(var(--accent-contractor-hsl));
+
+  /* Active accent — override per-site with:
+       :root { --accent-hsl: var(--accent-portfolio-hsl); } */
+  --accent-hsl: var(--accent-portfolio-hsl);
+  --accent:     hsl(var(--accent-hsl));
+
+
+  /* ---- SPACING: 8px GRID ---- */
+
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+
+
+  /* ---- TYPOGRAPHY: FAMILIES ---- */
+
+  --font-display: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-body:    'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+
+
+  /* ---- TYPOGRAPHY: SCALE (fluid, 12px floor) ---- */
+
+  --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.8125rem);  /* 12–13px */
+  --text-sm:   clamp(0.8125rem, 0.78rem + 0.2vw,  0.875rem);  /* 13–14px */
+  --text-base: clamp(0.875rem, 0.85rem + 0.2vw,  1rem);       /* 14–16px */
+  --text-lg:   clamp(1.125rem, 1rem    + 0.5vw,  1.25rem);    /* 18–20px */
+  --text-xl:   clamp(1.5rem,   1.2rem  + 1vw,    2rem);       /* 24–32px */
+  --text-2xl:  clamp(2rem,     1.5rem  + 2vw,    3rem);       /* 32–48px */
+  --text-hero: clamp(2.5rem,   2rem    + 2.5vw,  4rem);       /* 40–64px */
+
+
+  /* ---- TYPOGRAPHY: WEIGHTS ---- */
+
+  --weight-normal:   400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+
+  /* ---- TYPOGRAPHY: LINE HEIGHTS ---- */
+
+  --leading-tight:  1.25;
+  --leading-normal: 1.55;
+  --leading-loose:  1.75;
+
+
+  /* ---- ELEVATION: SHADOWS ---- */
+
+  --shadow-sm:  0 1px  2px  rgba(0, 0, 0, 0.12);
+  --shadow-md:  0 4px  12px rgba(0, 0, 0, 0.16);
+  --shadow-lg:  0 8px  24px rgba(0, 0, 0, 0.20);
+  --shadow-xl:  0 16px 48px rgba(0, 0, 0, 0.24);
+
+
+  /* ---- RADII ---- */
+
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-full: 9999px;
+
+
+  /* ---- MOTION ----
+     --ease-standard is the shared "portfolio feel" curve.
+     --trans-fast / --trans-md are pre-composed for one-liners:
+       transition: background-color var(--trans-fast);            */
+
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --duration-fast:   0.15s;
+  --duration-normal: 0.25s;
+  --duration-slow:   0.4s;
+
+  --trans-fast: var(--duration-fast)   var(--ease-standard);
+  --trans-md:   var(--duration-normal) var(--ease-standard);
+  --trans-slow: var(--duration-slow)   var(--ease-standard);
+
+
+  /* ---- FOCUS ---- */
+
+  --focus-ring: 0 0 0 2px var(--surface-0), 0 0 0 4px var(--accent);
+
+
+  /* ---- BREAKPOINT REFERENCE (not usable in vars, for documentation) ----
+     --bp-sm:   640px    mobile → tablet
+     --bp-md:   1024px   tablet → desktop
+     --bp-lg:   1440px   desktop → wide
+  ---- */
+
+
+  /* ---- Z-INDEX SCALE ---- */
+
+  --z-base:     0;
+  --z-elevated: 10;
+  --z-sticky:   100;
+  --z-overlay:  200;
+  --z-modal:    300;
+  --z-toast:    400;
+}
+
+
+/* ---- LIGHT MODE: "Gallery Paper" ----
+   Off-white with blue-grey undertone. Not pure white.
+   Feels like high-quality matte stock under gallery lighting.
+
+   Two activation paths:
+   1. System: @media (prefers-color-scheme: light)
+   2. Manual: <html data-theme="light">
+
+   Accent overrides darken saturated colors that fail 4.5:1
+   against the Gallery base (#F8F9FB).                         */
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --surface-0: #F8F9FB;
+    --surface-1: #FFFFFF;
+    --surface-2: #F1F3F7;
+    --surface-3: #E2E6EF;
+
+    --surface-0-hsl: 220 25% 98%;
+    --surface-1-hsl: 0   0%  100%;
+    --surface-2-hsl: 222 20% 95%;
+    --surface-3-hsl: 222 18% 91%;
+
+    --text-primary:   #1A1D23;
+    --text-secondary: #475166;
+    --text-muted:     #58637A;
+
+    --text-primary-hsl:   222 15% 12%;
+    --text-secondary-hsl: 220 17% 33%;
+    --text-muted-hsl:     220 14% 45%;
+
+    --border-subtle:  #E2E6EF;
+    --border-visible: #D1D8E5;
+    --border-focus:   #9AA0B5;
+
+    --shadow-sm:  0 1px  2px  rgba(0, 0, 0, 0.04);
+    --shadow-md:  0 4px  12px rgba(0, 0, 0, 0.06);
+    --shadow-lg:  0 12px 32px rgba(0, 0, 0, 0.08);
+    --shadow-xl:  0 16px 48px rgba(0, 0, 0, 0.10);
+
+    --focus-ring: 0 0 0 2px var(--surface-1), 0 0 0 4px var(--accent);
+
+    /* Accent darkening for light-background legibility */
+    --accent-garden-os-hsl:   152 66% 31%;
+    --accent-garden-os:       hsl(var(--accent-garden-os-hsl));
+    --accent-metagrid-hsl:    170 100% 27%;
+    --accent-metagrid:        hsl(var(--accent-metagrid-hsl));
+    --accent-trailkeeper-hsl: 28 90% 35%;
+    --accent-trailkeeper:     hsl(var(--accent-trailkeeper-hsl));
+  }
+}
+
+/* Manual theme override: force light */
+[data-theme="light"] {
+  --surface-0: #F8F9FB;
+  --surface-1: #FFFFFF;
+  --surface-2: #F1F3F7;
+  --surface-3: #E2E6EF;
+
+  --surface-0-hsl: 220 25% 98%;
+  --surface-1-hsl: 0   0%  100%;
+  --surface-2-hsl: 222 20% 95%;
+  --surface-3-hsl: 222 18% 91%;
+
+  --text-primary:   #1A1D23;
+  --text-secondary: #475166;
+  --text-muted:     #58637A;
+
+  --text-primary-hsl:   222 15% 12%;
+  --text-secondary-hsl: 220 17% 33%;
+  --text-muted-hsl:     220 14% 45%;
+
+  --border-subtle:  #E2E6EF;
+  --border-visible: #D1D8E5;
+  --border-focus:   #9AA0B5;
+
+  --shadow-sm:  0 1px  2px  rgba(0, 0, 0, 0.04);
+  --shadow-md:  0 4px  12px rgba(0, 0, 0, 0.06);
+  --shadow-lg:  0 12px 32px rgba(0, 0, 0, 0.08);
+  --shadow-xl:  0 16px 48px rgba(0, 0, 0, 0.10);
+
+  --focus-ring: 0 0 0 2px var(--surface-1), 0 0 0 4px var(--accent);
+
+  --accent-garden-os-hsl:   152 66% 31%;
+  --accent-garden-os:       hsl(var(--accent-garden-os-hsl));
+  --accent-metagrid-hsl:    170 100% 27%;
+  --accent-metagrid:        hsl(var(--accent-metagrid-hsl));
+  --accent-trailkeeper-hsl: 28 90% 35%;
+  --accent-trailkeeper:     hsl(var(--accent-trailkeeper-hsl));
+}
+
+/* Manual theme override: force dark (re-assert defaults) */
+[data-theme="dark"] {
+  --surface-0: #08090C;
+  --surface-1: #0F1117;
+  --surface-2: #171B24;
+  --surface-3: #1E2330;
+
+  --text-primary:   #E8ECF4;
+  --text-secondary: #A0AAC0;
+  --text-muted:     #7A86A0;
+
+  --border-subtle:  #1F2636;
+  --border-visible: #2A3348;
+  --border-focus:   #4A5A80;
+
+  --shadow-sm:  0 1px  2px  rgba(0, 0, 0, 0.12);
+  --shadow-md:  0 4px  12px rgba(0, 0, 0, 0.16);
+  --shadow-lg:  0 8px  24px rgba(0, 0, 0, 0.20);
+  --shadow-xl:  0 16px 48px rgba(0, 0, 0, 0.24);
+
+  --focus-ring: 0 0 0 2px var(--surface-0), 0 0 0 4px var(--accent);
+}
