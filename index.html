@@ -106,6 +106,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        :focus-visible { outline: 2px solid var(--focus-ring, #5b9bd5); outline-offset: 2px; }
 
         .visually-hidden {
             position: absolute;
@@ -652,12 +653,12 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            html {
-                scroll-behavior: auto;
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
             }
-            .project { transition: none; }
-            .project:active { transform: none; }
-            .hero-cta { transition: none; }
         }
     </style>
 </head>
@@ -679,7 +680,7 @@
                 <h1>Projects, Prototypes, and Live Tools</h1>
                 <p class="subtitle">A focused launchpad for DaveHomeAssist builds across tools, development work, and garden systems.</p>
                 <div class="hero-actions">
-                    <a class="hero-cta primary" href="https://promptlab.tools/">Open Prompt Lab</a>
+                    <a class="hero-cta primary" href="https://promptlab.tools/" rel="noopener noreferrer">Open Prompt Lab</a>
                     <a class="hero-browse-link" href="#projects">Browse all projects &darr;</a>
                 </div>
             </div>
