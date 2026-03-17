@@ -25,13 +25,14 @@
   --border-hi:#ffffff28;
   --text:#e8eaed;
   --text-2:#9aa0ab;
-  --text-3:#5a6070;
+  --text-3:#8a909c;
   --teal:#27c2a6;
   --teal-dim:#27c2a620;
   --teal-border:#27c2a640;
   --amber:#f0a33a;
   --amber-dim:#f0a33a18;
   --amber-border:#f0a33a38;
+  --focus-ring:0 0 0 2px var(--bg),0 0 0 4px var(--teal);
   --font:'Manrope',sans-serif;
   --mono:'IBM Plex Mono',monospace;
   --radius:10px;
@@ -50,7 +51,7 @@
     --border-hi:#00000028;
     --text:#0f1012;
     --text-2:#4a5260;
-    --text-3:#8a909c;
+    --text-3:#667085;
     --teal-dim:#27c2a614;
     --teal-border:#27c2a630;
     --amber-dim:#f0a33a10;
@@ -61,7 +62,7 @@
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.6;overflow-x:hidden}
 ::selection{background:var(--teal);color:#0a0b0d}
-:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:4px}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
@@ -74,7 +75,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:0}
 
 /* HEADER */
-header{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-bottom:1px solid var(--border)}
+header{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-bottom:1px solid var(--border);transition:box-shadow .2s}
+header.is-scrolled{box-shadow:0 4px 20px rgba(0,0,0,0.3)}
 header::after{content:'';position:absolute;inset-x:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--teal-border),transparent)}
 .wordmark{font-weight:800;font-size:1rem;letter-spacing:-.02em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:.5rem}
 .wordmark-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);display:inline-block;box-shadow:0 0 8px var(--teal)}
@@ -151,18 +153,20 @@ h2{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-.03em;ma
 .tag{font-family:var(--mono);font-size:.65rem;padding:.15rem .5rem;background:var(--bg3);color:var(--text-3);border-radius:4px;border:1px solid var(--border)}
 
 /* FILTER + SEARCH */
-.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:2rem;position:sticky;top:56px;z-index:50;padding:.75rem 0;background:var(--bg)}
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:2rem;position:sticky;top:56px;z-index:50;padding:.75rem 0;background:rgba(10,11,13,0.85);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .filter-bar::before{content:'';position:absolute;inset-x:0;top:0;height:56px;background:linear-gradient(var(--bg),transparent);pointer-events:none;transform:translateY(-100%)}
 .search-wrap{flex:1;min-width:180px;max-width:280px;position:relative}
 .search-wrap svg{position:absolute;left:.65rem;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-3)}
 #search{width:100%;padding:.5rem .75rem .5rem 2rem;background:var(--bg2);border:1px solid var(--border-med);border-radius:var(--radius);font-family:var(--font);font-size:.85rem;color:var(--text);transition:border-color .15s}
 #search::placeholder{color:var(--text-3)}
 #search:focus{outline:none;border-color:var(--teal-border)}
+#search:focus-visible{border-color:var(--teal);box-shadow:var(--focus-ring)}
 .kbd{font-family:var(--mono);font-size:.65rem;padding:.1rem .35rem;background:var(--bg3);border:1px solid var(--border-hi);border-radius:4px;color:var(--text-3);position:absolute;right:.5rem;top:50%;transform:translateY(-50%)}
 .filter-chips{display:flex;gap:.35rem;flex-wrap:wrap}
-.filter-chip{padding:.4rem .8rem;border-radius:100px;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--border-med);background:transparent;color:var(--text-2);font-family:var(--font);transition:all .15s}
+.filter-chip{padding:.6rem 1.2rem;border-radius:100px;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--border-med);background:transparent;color:var(--text-2);font-family:var(--font);transition:all .15s}
 .filter-chip:hover{border-color:var(--border-hi);color:var(--text)}
 .filter-chip.active{background:var(--teal);color:#0a0b0d;border-color:transparent;box-shadow:0 0 12px var(--teal-dim)}
+.btn:focus-visible,.preview-chip:focus-visible,.feat-card:focus-visible,.proj-card:focus-visible,.filter-chip:focus-visible,.footer-link:focus-visible,nav a:focus-visible,.wordmark:focus-visible{box-shadow:var(--focus-ring)}
 
 /* PROJECT SECTIONS */
 .project-section{margin-bottom:3rem}
@@ -173,7 +177,7 @@ h2{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-.03em;ma
 
 /* PROJECT GRID */
 .project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
-.proj-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;flex-direction:column;gap:.6rem;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s,background .2s,opacity .3s;position:relative;overflow:hidden}
+.proj-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:flex;flex-direction:column;gap:.6rem;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s,background .2s,opacity .25s,max-height .3s;position:relative;overflow:hidden;max-height:300px}
 .proj-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--teal-dim),transparent);opacity:0;transition:opacity .2s}
 .proj-card:hover{border-color:var(--border-hi);transform:translateY(-2px)}
 .proj-card:hover::before{opacity:1}
@@ -186,7 +190,7 @@ h2{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-.03em;ma
 .proj-tag{font-family:var(--mono);font-size:.62rem;padding:.12rem .45rem;background:var(--bg3);color:var(--text-3);border-radius:4px;border:1px solid var(--border)}
 
 /* CARD STATES */
-.proj-card.is-hidden{opacity:0;transform:translateY(6px);pointer-events:none;position:absolute;visibility:hidden}
+.proj-card.is-hidden{opacity:0;transform:translateY(6px);pointer-events:none;max-height:0;overflow:hidden;margin:0;padding:0;border:0;transition:opacity .25s,transform .25s,max-height .3s .1s}
 .card-hidden{opacity:0;transform:translateY(16px)}
 .card-visible{opacity:1;transform:translateY(0);transition:opacity .4s,transform .4s}
 @media(prefers-reduced-motion:reduce){.card-hidden,.card-visible,.proj-card{transition:none!important}}
@@ -207,7 +211,11 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .animate-in{animation:fadeUp .6s ease both}
 .delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.3s}.delay-4{animation-delay:.4s}.delay-5{animation-delay:.5s}
-@media(prefers-reduced-motion:reduce){.animate-in{animation:none}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .animate-in{animation:none!important}
+}
 
 /* MOBILE */
 @media(max-width:960px){.featured-grid{grid-template-columns:1fr 1fr}}
@@ -259,18 +267,18 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
   <h1 id="hero-heading" class="animate-in delay-1">Built from scratch.<br><em>Shipped for real.</em></h1>
   <p class="hero-sub animate-in delay-2">Tools, garden systems, and interactive experiments — all zero-backend, all running in a browser tab.</p>
   <div class="hero-actions animate-in delay-3">
-    <a href="https://promptlab.tools/" class="btn btn-primary">
+    <a href="https://promptlab.tools/" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
       Open Prompt Lab
     </a>
     <a href="#projects" class="btn btn-secondary">View all projects <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
   </div>
   <div class="preview-strip animate-in delay-4" role="list" aria-label="Featured projects">
-    <a href="https://promptlab.tools/" class="preview-chip" role="listitem"><span class="preview-chip-dot" aria-hidden="true"></span>Prompt Lab</a>
-    <a href="https://davehomeassist.github.io/trailkeeper/" class="preview-chip" role="listitem"><span class="preview-chip-dot" aria-hidden="true"></span>Trailkeeper</a>
-    <a href="https://davehomeassist.github.io/garden-os/" class="preview-chip" role="listitem"><span class="preview-chip-dot" aria-hidden="true"></span>Garden OS</a>
-    <a href="https://davehomeassist.github.io/garden-os/garden-league-simulator-v3.html" class="preview-chip" role="listitem"><span class="preview-chip-dot" aria-hidden="true"></span>Season Engine</a>
-    <a href="https://davehomeassist.github.io/graph-explorer/" class="preview-chip" role="listitem"><span class="preview-chip-dot" aria-hidden="true"></span>Graph Explorer</a>
+    <a href="https://promptlab.tools/" class="preview-chip" role="listitem" target="_blank" rel="noopener noreferrer"><span class="preview-chip-dot" aria-hidden="true"></span>Prompt Lab</a>
+    <a href="https://davehomeassist.github.io/trailkeeper/" class="preview-chip" role="listitem" target="_blank" rel="noopener noreferrer"><span class="preview-chip-dot" aria-hidden="true"></span>Trailkeeper</a>
+    <a href="https://davehomeassist.github.io/garden-os/" class="preview-chip" role="listitem" target="_blank" rel="noopener noreferrer"><span class="preview-chip-dot" aria-hidden="true"></span>Garden OS</a>
+    <a href="https://davehomeassist.github.io/garden-os/garden-league-simulator-v4.html" class="preview-chip" role="listitem" target="_blank" rel="noopener noreferrer"><span class="preview-chip-dot" aria-hidden="true"></span>Season Engine</a>
+    <a href="https://davehomeassist.github.io/graph-explorer/" class="preview-chip" role="listitem" target="_blank" rel="noopener noreferrer"><span class="preview-chip-dot" aria-hidden="true"></span>Graph Explorer</a>
   </div>
 </section>
 
@@ -314,7 +322,7 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
     <p class="section-intro">Three projects that pushed the most — each a self-contained system built over months of iteration.</p>
     <div class="featured-grid" role="list">
 
-      <a href="https://promptlab.tools/" class="feat-card js-reveal" role="listitem">
+      <a href="https://promptlab.tools/" class="feat-card js-reveal" role="listitem" target="_blank" rel="noopener noreferrer">
         <div class="feat-thumb" aria-hidden="true"><div class="feat-thumb-pattern">
           <svg width="100%" height="100%" viewBox="0 0 360 200" fill="none"><rect width="360" height="200" fill="#0f1012"/><rect x="20" y="30" width="200" height="8" rx="4" fill="#27c2a620"/><rect x="20" y="46" width="160" height="8" rx="4" fill="#27c2a615"/><rect x="20" y="62" width="180" height="8" rx="4" fill="#27c2a615"/><rect x="240" y="20" width="100" height="160" rx="8" fill="#141518" stroke="#27c2a630"/><rect x="252" y="32" width="76" height="6" rx="3" fill="#27c2a640"/><rect x="252" y="46" width="60" height="4" rx="2" fill="#ffffff15"/><rect x="252" y="56" width="70" height="4" rx="2" fill="#ffffff10"/><rect x="252" y="66" width="50" height="4" rx="2" fill="#ffffff10"/><rect x="20" y="100" width="100" height="32" rx="6" fill="#27c2a618" stroke="#27c2a638"/><rect x="130" y="100" width="80" height="32" rx="6" fill="#141518" stroke="#ffffff12"/><text x="52" y="121" font-family="IBM Plex Mono" font-size="9" fill="#27c2a6">Run prompt</text><rect x="20" y="148" width="200" height="1" fill="#ffffff08"/><rect x="20" y="158" width="120" height="5" rx="2.5" fill="#f0a33a25"/><rect x="20" y="170" width="90" height="5" rx="2.5" fill="#f0a33a18"/></svg>
         </div></div>
@@ -326,7 +334,7 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
         </div>
       </a>
 
-      <a href="https://davehomeassist.github.io/trailkeeper/" class="feat-card js-reveal" role="listitem">
+      <a href="https://davehomeassist.github.io/trailkeeper/" class="feat-card js-reveal" role="listitem" target="_blank" rel="noopener noreferrer">
         <div class="feat-thumb" aria-hidden="true"><div class="feat-thumb-pattern">
           <svg width="100%" height="100%" viewBox="0 0 360 200" fill="none"><rect width="360" height="200" fill="#0a0e0c"/><path d="M0 140 Q60 90 120 110 Q180 130 240 80 Q300 30 360 60" stroke="#27c2a650" stroke-width="2" fill="none"/><path d="M0 160 Q80 120 160 140 Q240 160 360 120" stroke="#27c2a625" stroke-width="1.5" fill="none"/><circle cx="240" cy="80" r="8" fill="#27c2a6" opacity=".8"/><circle cx="240" cy="80" r="16" fill="none" stroke="#27c2a640"/><circle cx="240" cy="80" r="24" fill="none" stroke="#27c2a620"/><rect x="20" y="20" width="130" height="60" rx="8" fill="#0f1814" stroke="#27c2a625"/><text x="32" y="40" font-family="IBM Plex Mono" font-size="8" fill="#27c2a6">Burlington, VT</text><rect x="32" y="48" width="80" height="4" rx="2" fill="#27c2a630"/><text x="32" y="68" font-family="IBM Plex Mono" font-size="7" fill="#5a6070">62°F · 10% rain</text></svg>
         </div></div>
@@ -338,7 +346,7 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
         </div>
       </a>
 
-      <a href="https://davehomeassist.github.io/garden-os/" class="feat-card js-reveal" role="listitem">
+      <a href="https://davehomeassist.github.io/garden-os/" class="feat-card js-reveal" role="listitem" target="_blank" rel="noopener noreferrer">
         <div class="feat-thumb" aria-hidden="true"><div class="feat-thumb-pattern">
           <svg width="100%" height="100%" viewBox="0 0 360 200" fill="none"><rect width="360" height="200" fill="#0d0f0a"/><rect x="20" y="20" width="200" height="100" rx="8" fill="#111408" stroke="#3d7a4f40"/><rect x="28" y="28" width="40" height="40" rx="4" fill="#5aab6b25" stroke="#5aab6b40"/><rect x="72" y="28" width="40" height="40" rx="4" fill="#e8c84a20" stroke="#e8c84a35"/><rect x="116" y="28" width="40" height="40" rx="4" fill="#5aab6b25" stroke="#5aab6b40"/><rect x="160" y="28" width="40" height="40" rx="4" fill="#d4854a20" stroke="#d4854a35"/><rect x="28" y="72" width="40" height="40" rx="4" fill="#5b9bd525" stroke="#5b9bd540"/><rect x="72" y="72" width="40" height="40" rx="4" fill="#5aab6b25" stroke="#5aab6b40"/><rect x="116" y="72" width="40" height="40" rx="4" fill="#e8c84a20" stroke="#e8c84a35"/><rect x="160" y="72" width="40" height="40" rx="4" fill="#5aab6b25" stroke="#5aab6b40"/><text x="41" y="53" font-size="16">🍅</text><text x="85" y="53" font-size="16">🌿</text><text x="129" y="53" font-size="16">🥬</text><text x="173" y="53" font-size="16">🥕</text><text x="41" y="97" font-size="16">🌱</text><text x="85" y="97" font-size="16">🍅</text><text x="129" y="97" font-size="16">🌿</text><text x="173" y="97" font-size="16">🥬</text><rect x="230" y="20" width="110" height="100" rx="8" fill="#111408" stroke="#3d7a4f30"/><text x="242" y="38" font-family="IBM Plex Mono" font-size="8" fill="#5aab6b">Bed score</text><text x="242" y="56" font-family="Manrope" font-size="22" font-weight="800" fill="#e8c84a">7.3</text><rect x="242" y="64" width="70" height="4" rx="2" fill="#5aab6b60"/><rect x="242" y="64" width="51" height="4" rx="2" fill="#5aab6b"/><rect x="20" y="136" width="320" height="44" rx="6" fill="#141518" stroke="#ffffff08"/><text x="32" y="154" font-family="IBM Plex Mono" font-size="7" fill="#5a6070">SEASON ENGINE</text><text x="32" y="169" font-family="Manrope" font-size="9" font-weight="600" fill="#9aa0ab">Chapter 5 · Spring · Pest event incoming</text></svg>
         </div></div>
@@ -381,11 +389,11 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
       <h3 class="section-heading">Developer Tools <span class="section-count"></span></h3>
       <p class="section-desc">Standalone utilities built for daily use.</p>
       <div class="project-grid" role="list">
-        <a href="https://promptlab.tools/" class="proj-card js-reveal" role="listitem" data-tags="tools"><div class="proj-header"><span class="proj-title">Prompt Lab</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Chrome extension + desktop app for prompt engineering with starter libraries and A/B testing.</p><div class="proj-tags"><span class="proj-tag">React</span><span class="proj-tag">Vite</span><span class="proj-tag">IndexedDB</span></div></a>
-        <a href="https://davehomeassist.github.io/gemini-api-cost-calculator/" class="proj-card js-reveal" role="listitem" data-tags="tools"><div class="proj-header"><span class="proj-title">Gemini API Cost Calculator</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Real-time cost comparison across Gemini, Claude, and competitor models.</p><div class="proj-tags"><span class="proj-tag">Vanilla JS</span><span class="proj-tag">Single HTML</span></div></a>
-        <a href="https://davehomeassist.github.io/NotionWidgets/" class="proj-card js-reveal" role="listitem" data-tags="tools"><div class="proj-header"><span class="proj-title">Notion Widgets</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Embeddable widget collection for Notion dashboards — status, quest log, approvals.</p><div class="proj-tags"><span class="proj-tag">Vanilla JS</span><span class="proj-tag">Notion</span></div></a>
-        <a href="https://davehomeassist.github.io/trailkeeper/" class="proj-card js-reveal" role="listitem" data-tags="tools"><div class="proj-header"><span class="proj-title">Trailkeeper</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Hiking day planner with weather, trail enrichment, nearby discovery, and offline support.</p><div class="proj-tags"><span class="proj-tag">Open-Meteo</span><span class="proj-tag">Overpass</span></div></a>
-        <a href="https://davehomeassist.github.io/graph-explorer/" class="proj-card js-reveal" role="listitem" data-tags="tools"><div class="proj-header"><span class="proj-title">Graph Explorer</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Dataset-agnostic graph visualization engine with map pack system and light/dark modes.</p><div class="proj-tags"><span class="proj-tag">SVG</span><span class="proj-tag">Vanilla JS</span></div></a>
+        <a href="https://promptlab.tools/" class="proj-card js-reveal" role="listitem" data-tags="tools" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Prompt Lab</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Chrome extension + desktop app for prompt engineering with starter libraries and A/B testing.</p><div class="proj-tags"><span class="proj-tag">React</span><span class="proj-tag">Vite</span><span class="proj-tag">IndexedDB</span></div></a>
+        <a href="https://davehomeassist.github.io/gemini-api-cost-calculator/" class="proj-card js-reveal" role="listitem" data-tags="tools" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Gemini API Cost Calculator</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Real-time cost comparison across Gemini, Claude, and competitor models.</p><div class="proj-tags"><span class="proj-tag">Vanilla JS</span><span class="proj-tag">Single HTML</span></div></a>
+        <a href="https://davehomeassist.github.io/NotionWidgets/" class="proj-card js-reveal" role="listitem" data-tags="tools" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Notion Widgets</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Embeddable widget collection for Notion dashboards — status, quest log, approvals.</p><div class="proj-tags"><span class="proj-tag">Vanilla JS</span><span class="proj-tag">Notion</span></div></a>
+        <a href="https://davehomeassist.github.io/trailkeeper/" class="proj-card js-reveal" role="listitem" data-tags="tools" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Trailkeeper</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Hiking day planner with weather, trail enrichment, nearby discovery, and offline support.</p><div class="proj-tags"><span class="proj-tag">Open-Meteo</span><span class="proj-tag">Overpass</span></div></a>
+        <a href="https://davehomeassist.github.io/graph-explorer/" class="proj-card js-reveal" role="listitem" data-tags="tools" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Graph Explorer</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Dataset-agnostic graph visualization engine with map pack system and light/dark modes.</p><div class="proj-tags"><span class="proj-tag">SVG</span><span class="proj-tag">Vanilla JS</span></div></a>
       </div>
     </div>
 
@@ -394,12 +402,12 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
       <h3 class="section-heading">Showcase <span class="section-count"></span></h3>
       <p class="section-desc">Design explorations, client demos, and reference builds.</p>
       <div class="project-grid" role="list">
-        <a href="https://davehomeassist.github.io/web-templates/" class="proj-card js-reveal" role="listitem" data-tags="showcase"><div class="proj-header"><span class="proj-title">Reference Layout Pack</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">8 layout patterns — filterable tables, kanban boards, roadmaps, directories, and more.</p><div class="proj-tags"><span class="proj-tag">Reference</span></div></a>
-        <a href="https://davehomeassist.github.io/sdlc-tool-stack-map/" class="proj-card js-reveal" role="listitem" data-tags="showcase"><div class="proj-header"><span class="proj-title">SDLC Tool Stack Map</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Interactive comparison of Atlassian, modern, and hybrid SDLC workflows.</p><div class="proj-tags"><span class="proj-tag">Reference</span></div></a>
-        <a href="https://davehomeassist.github.io/elysium-landing/" class="proj-card js-reveal" role="listitem" data-tags="showcase"><div class="proj-header"><span class="proj-title">Elysium Digital</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Luxury-tier landing page prototype with premium design patterns.</p><div class="proj-tags"><span class="proj-tag">Demo</span></div></a>
-        <a href="https://davehomeassist.github.io/shieldbox-security-event-quote-request-v4-gold-master.html/" class="proj-card js-reveal" role="listitem" data-tags="showcase"><div class="proj-header"><span class="proj-title">Shieldbox Security</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Event security quote request form — gold master demo build.</p><div class="proj-tags"><span class="proj-tag">Demo</span></div></a>
-        <a href="https://davehomeassist.github.io/freelance/" class="proj-card js-reveal" role="listitem" data-tags="showcase"><div class="proj-header"><span class="proj-title">Rapid Sites</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Professional websites in 48 hours — freelance services landing page.</p><div class="proj-tags"><span class="proj-tag">Service</span></div></a>
-        <a href="https://davehomeassist.github.io/contractor/" class="proj-card js-reveal" role="listitem" data-tags="showcase"><div class="proj-header"><span class="proj-title">Summit Contracting</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Licensed home contractor — service landing page and portfolio.</p><div class="proj-tags"><span class="proj-tag">Service</span></div></a>
+        <a href="https://davehomeassist.github.io/web-templates/" class="proj-card js-reveal" role="listitem" data-tags="showcase" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Reference Layout Pack</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">8 layout patterns — filterable tables, kanban boards, roadmaps, directories, and more.</p><div class="proj-tags"><span class="proj-tag">Reference</span></div></a>
+        <a href="https://davehomeassist.github.io/sdlc-tool-stack-map/" class="proj-card js-reveal" role="listitem" data-tags="showcase" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">SDLC Tool Stack Map</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Interactive comparison of Atlassian, modern, and hybrid SDLC workflows.</p><div class="proj-tags"><span class="proj-tag">Reference</span></div></a>
+        <a href="https://davehomeassist.github.io/elysium-landing/" class="proj-card js-reveal" role="listitem" data-tags="showcase" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Elysium Digital</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Luxury-tier landing page prototype with premium design patterns.</p><div class="proj-tags"><span class="proj-tag">Demo</span></div></a>
+        <a href="https://davehomeassist.github.io/shieldbox-security-event-quote-request-v4-gold-master.html/" class="proj-card js-reveal" role="listitem" data-tags="showcase" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Shieldbox Security</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Event security quote request form — gold master demo build.</p><div class="proj-tags"><span class="proj-tag">Demo</span></div></a>
+        <a href="https://davehomeassist.github.io/freelance/" class="proj-card js-reveal" role="listitem" data-tags="showcase" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Rapid Sites</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Professional websites in 48 hours — freelance services landing page.</p><div class="proj-tags"><span class="proj-tag">Service</span></div></a>
+        <a href="https://davehomeassist.github.io/contractor/" class="proj-card js-reveal" role="listitem" data-tags="showcase" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Summit Contracting</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Licensed home contractor — service landing page and portfolio.</p><div class="proj-tags"><span class="proj-tag">Service</span></div></a>
       </div>
     </div>
 
@@ -408,9 +416,9 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
       <h3 class="section-heading">Garden Ecosystem <span class="section-count"></span></h3>
       <p class="section-desc">Everything growing in Mom's backyard — planning tools, build guides, and a narrative game.</p>
       <div class="project-grid" role="list">
-        <a href="https://davehomeassist.github.io/garden-os/" class="proj-card js-reveal" role="listitem" data-tags="garden"><div class="proj-header"><span class="proj-title">Garden OS</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Hub for the garden ecosystem — planner, build guides, ops guides, scoring tools.</p><div class="proj-tags"><span class="proj-tag">Ecosystem</span></div></a>
-        <a href="https://davehomeassist.github.io/garden-os/garden-league-simulator-v3.html" class="proj-card js-reveal" role="listitem" data-tags="garden"><div class="proj-header"><span class="proj-title">Season Engine</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">12-chapter narrative strategy game — characters, events, keepsakes, recipes, carry-forward state.</p><div class="proj-tags"><span class="proj-tag">Game</span><span class="proj-tag">Single HTML</span></div></a>
-        <a href="https://davehomeassist.github.io/garden-os/garden-planner-v4.html" class="proj-card js-reveal" role="listitem" data-tags="garden"><div class="proj-header"><span class="proj-title">Garden Planner</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Interactive raised bed layout tool with companion scoring, zone modeling, and harvest tracking.</p><div class="proj-tags"><span class="proj-tag">Vanilla JS</span><span class="proj-tag">Print layout</span></div></a>
+        <a href="https://davehomeassist.github.io/garden-os/" class="proj-card js-reveal" role="listitem" data-tags="garden" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Garden OS</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Hub for the garden ecosystem — planner, build guides, ops guides, scoring tools.</p><div class="proj-tags"><span class="proj-tag">Ecosystem</span></div></a>
+        <a href="https://davehomeassist.github.io/garden-os/garden-league-simulator-v4.html" class="proj-card js-reveal" role="listitem" data-tags="garden" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Season Engine</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">12-chapter narrative strategy game — characters, events, keepsakes, recipes, carry-forward state.</p><div class="proj-tags"><span class="proj-tag">Game</span><span class="proj-tag">Single HTML</span></div></a>
+        <a href="https://davehomeassist.github.io/garden-os/garden-planner-v4.html" class="proj-card js-reveal" role="listitem" data-tags="garden" target="_blank" rel="noopener noreferrer"><div class="proj-header"><span class="proj-title">Garden Planner</span><svg class="proj-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></div><p class="proj-desc">Interactive raised bed layout tool with companion scoring, zone modeling, and harvest tracking.</p><div class="proj-tags"><span class="proj-tag">Vanilla JS</span><span class="proj-tag">Print layout</span></div></a>
       </div>
     </div>
 
@@ -453,6 +461,10 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
     if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('search').focus()}
     if(e.key==='Escape'&&document.activeElement.id==='search'){document.getElementById('search').blur()}
   });
+
+  // Header scroll shadow
+  var hdr=document.querySelector('header');
+  window.addEventListener('scroll',function(){hdr.classList.toggle('is-scrolled',window.scrollY>10)},{passive:true});
 
   // IntersectionObserver
   var prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;

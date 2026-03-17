@@ -1,5 +1,5 @@
 /* ============================================================
-   DaveHomeAssist — Base Reset & Defaults v1.0
+   DaveHomeAssist — Base Reset & Defaults v1.1
    ============================================================
    Applies token values to a clean document baseline.
    Assumes tokens.css is loaded first.
@@ -66,6 +66,9 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
   color: var(--text-primary);
+}
+
+h1, h2, h3 {
   text-wrap: balance;
 }
 
@@ -81,6 +84,13 @@ p {
   color: var(--text-secondary);
   max-width: 68ch;
   text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+li,
+td,
+blockquote {
+  overflow-wrap: break-word;
 }
 
 /* Secondary and muted text */
@@ -326,6 +336,7 @@ img {
 input, button, textarea, select {
   font: inherit;
   color: inherit;
+  line-height: inherit;
 }
 
 button {
@@ -358,6 +369,7 @@ span a {
 table {
   border-collapse: collapse;
   width: 100%;
+  max-width: 100%;
 }
 
 th {
