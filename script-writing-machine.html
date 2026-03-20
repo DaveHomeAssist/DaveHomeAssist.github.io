@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Lab – Script Agent</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #0d1117;
+            color: #e6edf3;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+
+        .layout {
+            display: flex;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 980px;
+            align-items: flex-start;
+        }
+
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 14px;
+            padding: 1.75rem;
+            width: 100%;
+            max-width: 480px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .output-panel {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 14px;
+            padding: 1.75rem;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            min-height: 200px;
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem;
+        }
+
+        .output-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: #7c3aed;
+            border-radius: 50%;
+        }
+
+        .dot.idle {
+            background: #30363d;
+        }
+
+        .dot.loading {
+            background: #f59e0b;
+            animation: pulse 1s infinite;
+        }
+
+        .dot.done {
+            background: #22c55e;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.4
+            }
+        }
+
+        .btn-copy {
+            background: transparent;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #8b949e;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            padding: 0.3rem 0.75rem;
+            text-transform: uppercase;
+            transition: border-color 0.2s, color 0.2s;
+            display: none;
+        }
+
+        .btn-copy:hover {
+            border-color: #7c3aed;
+            color: #c4b5fd;
+        }
+
+        .btn-copy.visible {
+            display: block;
+        }
+
+        .btn-copy.copied {
+            color: #22c55e;
+            border-color: #22c55e;
+        }
+
+        .output-body {
+            flex: 1;
+            font-size: 0.93rem;
+            line-height: 1.7;
+            color: #e6edf3;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .output-placeholder {
+            color: #484f58;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        .output-meta {
+            font-size: 0.72rem;
+            color: #484f58;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            border-top: 1px solid #21262d;
+            padding-top: 0.75rem;
+            display: none;
+        }
+
+        .output-meta.visible {
+            display: block;
+        }
+
+        /* form styles (unchanged from original) */
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .badge {
+            color: #8b949e;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #8b949e;
+        }
+
+        label .required {
+            color: #7c3aed;
+            margin-left: 3px;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            color: #e6edf3;
+            font-size: 0.95rem;
+            padding: 0.65rem 0.85rem;
+            outline: none;
+            width: 100%;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #7c3aed;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 96px;
+        }
+
+        select {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #21262d;
+            margin: 0.25rem 0;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .tone-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .tone-chip {
+            background: transparent;
+            border: 1px solid #30363d;
+            border-radius: 999px;
+            color: #e6edf3;
+            font-size: 0.82rem;
+            padding: 0.35rem 0.85rem;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+            user-select: none;
+        }
+
+        .tone-chip:hover {
+            border-color: #7c3aed;
+        }
+
+        .tone-chip.active {
+            background: #7c3aed22;
+            border-color: #7c3aed;
+            color: #c4b5fd;
+        }
+
+        .btn-generate {
+            background: #7c3aed;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.75rem;
+            width: 100%;
+            transition: background 0.2s, opacity 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-generate:hover {
+            background: #6d28d9;
+        }
+
+        .btn-generate:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 800px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .card {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav aria-label="Breadcrumb" style="padding:8px 16px;font-size:.85rem;">
+      <a href="index.html" style="color:#8b949e;text-decoration:underline;">&#8592; Back to Portfolio</a>
+    </nav>
+    <div class="layout">
+
+        <!-- FORM CARD -->
+        <div class="card">
+            <div class="card-header">
+                <div class="dot"></div>
+                <span>Prompt Lab</span>
+                <span class="badge">SCRIPT AGENT</span>
+            </div>
+            <hr class="divider" />
+
+            <div class="field">
+                <label>Brand / Product <span class="required">*</span></label>
+                <input type="text" id="brand" placeholder="e.g. Prompt Lab" />
+            </div>
+
+            <div class="field">
+                <label>Tagline</label>
+                <input type="text" id="tagline" placeholder="e.g. Craft better prompts." />
+            </div>
+
+            <div class="field">
+                <label>What It Does <span class="required">*</span></label>
+                <textarea id="description" placeholder="Describe what the product does..."></textarea>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="field">
+                <label>Target Audience <span class="required">*</span></label>
+                <input type="text" id="audience" placeholder="e.g. Solo developers and prompt engineers" />
+            </div>
+
+            <div class="row">
+                <div class="field">
+                    <label>Duration</label>
+                    <select id="duration">
+                        <option value="15">:15 sec</option>
+                        <option value="30" selected>:30 sec</option>
+                        <option value="60">:60 sec</option>
+                        <option value="90">:90 sec</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Format</label>
+                    <select id="format">
+                        <option value="tv_olv" selected>TV / OLV</option>
+                        <option value="social">Social</option>
+                        <option value="radio">Radio</option>
+                        <option value="podcast">Podcast</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Tone</label>
+                <div class="tone-grid" id="toneGrid">
+                    <span class="tone-chip" data-tone="Direct">Direct</span>
+                    <span class="tone-chip" data-tone="Witty">Witty</span>
+                    <span class="tone-chip" data-tone="Emotional">Emotional</span>
+                    <span class="tone-chip" data-tone="Dramatic">Dramatic</span>
+                    <span class="tone-chip" data-tone="Playful">Playful</span>
+                    <span class="tone-chip" data-tone="Authoritative">Authoritative</span>
+                    <span class="tone-chip" data-tone="Conversational">Conversational</span>
+                    <span class="tone-chip" data-tone="Aspirational">Aspirational</span>
+                </div>
+            </div>
+
+            <button class="btn-generate" id="generateBtn" onclick="generate()">Generate Script →</button>
+        </div>
+
+        <!-- OUTPUT PANEL -->
+        <div class="output-panel">
+            <div class="output-header">
+                <div class="output-title">
+                    <div class="dot idle" id="statusDot"></div>
+                    <span id="statusLabel">OUTPUT</span>
+                </div>
+                <button class="btn-copy" id="copyBtn" onclick="copyScript()">Copy</button>
+            </div>
+            <hr class="divider" />
+            <div class="output-body" id="outputBody">
+                <span class="output-placeholder">Fill in the form and hit Generate. Your script will appear here.</span>
+            </div>
+            <div class="output-meta" id="outputMeta"></div>
+        </div>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.tone-chip').forEach(chip => {
+            chip.addEventListener('click', () => chip.classList.toggle('active'));
+        });
+
+        function getFormData() {
+            return {
+                brand: document.getElementById('brand').value.trim(),
+                tagline: document.getElementById('tagline').value.trim(),
+                description: document.getElementById('description').value.trim(),
+                audience: document.getElementById('audience').value.trim(),
+                duration: document.getElementById('duration').value,
+                format: document.getElementById('format').value,
+                tones: [...document.querySelectorAll('.tone-chip.active')].map(c => c.dataset.tone)
+            };
+        }
+
+        function buildPrompt(d) {
+            const formatLabel = {
+                tv_olv: 'TV / Online Video',
+                social: 'Social Media',
+                radio: 'Radio',
+                podcast: 'Podcast Ad'
+            }[d.format] || d.format;
+
+            const toneStr = d.tones.length ? d.tones.join(', ') : 'neutral';
+            const taglineStr = d.tagline ? `Tagline: "${d.tagline}"` : '';
+
+            return `You are an expert advertising copywriter. Write a ${d.duration}-second ${formatLabel} script for the following brand.
+
+Brand: ${d.brand}
+${taglineStr}
+What it does: ${d.description}
+Target audience: ${d.audience}
+Tone: ${toneStr}
+
+Requirements:
+- Fit the script to exactly ${d.duration} seconds of spoken word (approx ${Math.round(d.duration * 2.5)} words)
+- Format with clear scene or VO direction labels (e.g. VO:, SFX:, SUPER:, END CARD:)
+- End with a clear call to action
+- Do not include any preamble or explanation — output only the script`;
+        }
+
+        function setStatus(state) {
+            const dot = document.getElementById('statusDot');
+            const label = document.getElementById('statusLabel');
+            dot.className = 'dot ' + state;
+            label.textContent = { idle: 'OUTPUT', loading: 'GENERATING...', done: 'SCRIPT READY' }[state] || 'OUTPUT';
+        }
+
+        async function generate() {
+            const data = getFormData();
+            if (!data.brand || !data.description || !data.audience) {
+                alert('Please fill in Brand, What It Does, and Target Audience.');
+                return;
+            }
+
+            const btn = document.getElementById('generateBtn');
+            const outputBody = document.getElementById('outputBody');
+            const copyBtn = document.getElementById('copyBtn');
+            const outputMeta = document.getElementById('outputMeta');
+
+            btn.disabled = true;
+            copyBtn.classList.remove('visible');
+            outputMeta.classList.remove('visible');
+            outputBody.textContent = '';
+            setStatus('loading');
+
+            const startTime = Date.now();
+
+            try {
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1000,
+                        stream: true,
+                        messages: [{ role: 'user', content: buildPrompt(data) }]
+                    })
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.error?.message || 'API error');
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let scriptText = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n').filter(l => l.startsWith('data: '));
+
+                    for (const line of lines) {
+                        const json = line.slice(6);
+                        if (json === '[DONE]') continue;
+                        try {
+                            const evt = JSON.parse(json);
+                            if (evt.type === 'content_block_delta' && evt.delta?.text) {
+                                scriptText += evt.delta.text;
+                                outputBody.textContent = scriptText;
+                            }
+                        } catch { }
+                    }
+                }
+
+                const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                const wordCount = scriptText.trim().split(/\s+/).length;
+                outputMeta.textContent = `${wordCount} words · generated in ${elapsed}s · ${data.duration}s ${data.format.toUpperCase()} · tone: ${data.tones.join(', ') || 'neutral'}`;
+                outputMeta.classList.add('visible');
+                copyBtn.classList.add('visible');
+                setStatus('done');
+
+            } catch (err) {
+                outputBody.textContent = `Error: ${err.message}`;
+                setStatus('idle');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function copyScript() {
+            const text = document.getElementById('outputBody').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>
