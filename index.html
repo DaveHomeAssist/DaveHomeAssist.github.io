@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DaveHomeAssist — Browser-native tools</title>
+<meta name="description" content="Browser-native tools, garden systems, and interactive experiments from DaveHomeAssist. Zero-backend, open-source, and built to ship.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0a0b0d">
+<link rel="canonical" href="https://davehomeassist.github.io/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -12,6 +16,16 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/favicon/apple-touch-icon.png">
+<link rel="manifest" href="assets/icons/favicon/site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://davehomeassist.github.io/">
+<meta property="og:title" content="DaveHomeAssist — Browser-native tools">
+<meta property="og:description" content="Browser-native tools, garden systems, and interactive experiments from DaveHomeAssist. Zero-backend, open-source, and built to ship.">
+<meta property="og:image" content="https://davehomeassist.github.io/assets/icons/favicon/android-chrome-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DaveHomeAssist — Browser-native tools">
+<meta name="twitter:description" content="Browser-native tools, garden systems, and interactive experiments from DaveHomeAssist. Zero-backend, open-source, and built to ship.">
+<meta name="twitter:image" content="https://davehomeassist.github.io/assets/icons/favicon/android-chrome-512.png">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -166,7 +180,7 @@ h2{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-.03em;ma
 .filter-chips{display:flex;gap:.35rem;flex-wrap:wrap}
 .filter-chip{padding:.6rem 1.2rem;border-radius:100px;font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid var(--border-med);background:transparent;color:var(--text-2);font-family:var(--font);transition:all .15s}
 .filter-chip:hover{border-color:var(--border-hi);color:var(--text)}
-.filter-chip.active{background:var(--teal);color:#0a0b0d;border-color:transparent;box-shadow:0 0 12px var(--teal-dim)}
+.filter-chip.is-active{background:var(--teal);color:#0a0b0d;border-color:transparent;box-shadow:0 0 12px var(--teal-dim)}
 .btn:focus-visible,.preview-chip:focus-visible,.feat-card:focus-visible,.project-link:focus-visible,.filter-chip:focus-visible,.footer-link:focus-visible,nav a:focus-visible,.wordmark:focus-visible{box-shadow:var(--focus-ring)}
 
 /* PROJECT TABLE */
@@ -382,7 +396,7 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
         <span class="kbd" aria-hidden="true">/</span>
       </div>
       <div class="filter-chips" role="group" aria-label="Filter by category">
-        <button class="filter-chip active" data-filter="all" aria-pressed="true">All</button>
+        <button class="filter-chip is-active" data-filter="all" aria-pressed="true">All</button>
         <button class="filter-chip" data-filter="tools" aria-pressed="false">Developer Tools</button>
         <button class="filter-chip" data-filter="showcase" aria-pressed="false">Showcase</button>
         <button class="filter-chip" data-filter="garden" aria-pressed="false">Garden</button>
@@ -535,7 +549,7 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
         </tbody>
       </table>
     </div>
-    <p class="no-results" id="no-results" role="alert" aria-live="polite">No projects match your search.</p>
+    <p class="no-results" id="noResults" role="alert" aria-live="polite">No projects match your search.</p>
   </div>
 </section>
 
@@ -545,7 +559,7 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
   <div class="footer-inner">
     <div class="footer-left">
       <div style="margin-bottom:.25rem;font-weight:600;color:var(--text-2)">DaveHomeAssist</div>
-      <div>Last updated: <span id="last-updated"></span></div>
+      <div>Last updated: <span id="lastUpdated"></span></div>
     </div>
     <div class="footer-right">
       <a href="index-v1.html" class="footer-link">v1 archive</a>
@@ -561,7 +575,7 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
   // Last modified
   var d=new Date(document.lastModified);
   var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  document.getElementById('last-updated').textContent=months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();
+  document.getElementById('lastUpdated').textContent=months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();
 
   // Keyboard: / focuses search
   document.addEventListener('keydown',function(e){
@@ -588,7 +602,7 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
   var chips=document.querySelectorAll('.filter-chip');
   var searchInput=document.getElementById('search');
   var rows=document.querySelectorAll('.project-row');
-  var noResults=document.getElementById('no-results');
+  var noResults=document.getElementById('noResults');
   var activeFilter='all';
 
   function applyFilters(){
@@ -610,8 +624,8 @@ footer::before{content:'';position:absolute;inset-x:0;top:-1px;height:1px;backgr
 
   chips.forEach(function(chip){
     chip.addEventListener('click',function(){
-      chips.forEach(function(c){c.classList.remove('active');c.setAttribute('aria-pressed','false')});
-      chip.classList.add('active');chip.setAttribute('aria-pressed','true');
+      chips.forEach(function(c){c.classList.remove('is-active');c.setAttribute('aria-pressed','false')});
+      chip.classList.add('is-active');chip.setAttribute('aria-pressed','true');
       activeFilter=chip.getAttribute('data-filter');
       applyFilters();
     });

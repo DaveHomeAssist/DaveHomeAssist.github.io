@@ -9,13 +9,13 @@
   const root = document.documentElement;
   const button = document.querySelector("[data-theme-toggle]");
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-  const storageKey = "dha-theme";
-  const themeOrder = ["auto", "dark", "light"];
+  const STORAGE_KEY = "dha-theme";
+  const THEME_ORDER = ["auto", "dark", "light"];
 
   const readStoredTheme = () => {
     try {
-      const storedTheme = window.localStorage.getItem(storageKey);
-      return themeOrder.includes(storedTheme) ? storedTheme : "auto";
+      const storedTheme = window.localStorage.getItem(STORAGE_KEY);
+      return THEME_ORDER.includes(storedTheme) ? storedTheme : "auto";
     } catch {
       return "auto";
     }
@@ -23,7 +23,7 @@
 
   const writeStoredTheme = (theme) => {
     try {
-      window.localStorage.setItem(storageKey, theme);
+      window.localStorage.setItem(STORAGE_KEY, theme);
     } catch {
       // Ignore storage failures and still keep in-memory state applied.
     }
@@ -72,8 +72,8 @@
   applyTheme(currentTheme);
 
   const cycleTheme = () => {
-    const currentIndex = themeOrder.indexOf(currentTheme);
-    const nextTheme = themeOrder[(currentIndex + 1) % themeOrder.length];
+    const currentIndex = THEME_ORDER.indexOf(currentTheme);
+    const nextTheme = THEME_ORDER[(currentIndex + 1) % THEME_ORDER.length];
     currentTheme = nextTheme;
     writeStoredTheme(currentTheme);
     applyTheme(currentTheme);

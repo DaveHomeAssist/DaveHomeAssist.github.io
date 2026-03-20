@@ -31,3 +31,4 @@ GitHub Pages org site for DaveHomeAssist. Contains multiple landing page iterati
 ## Session Log
 
 [2026-03-18] [DaveHomeAssist] [docs] Add AGENTS baseline
+[2026-03-19] [DaveHomeAssist] [seo] Nova pass — technical SEO and crawlability audit across all 5 index variants
