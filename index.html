@@ -161,7 +161,14 @@ h2{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-.03em;ma
 .feat-body{padding:1.25rem;flex:1;display:flex;flex-direction:column}
 .feat-status{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--mono);font-size:.68rem;padding:.2rem .5rem;border-radius:100px;margin-bottom:.75rem;width:fit-content;background:#27c2a615;color:var(--teal);border:1px solid var(--teal-border)}
 .feat-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--teal);box-shadow:0 0 4px var(--teal);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@media (prefers-reduced-motion: no-preference){
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+}
+@media (prefers-reduced-motion: reduce){
+  .badge-pulse,
+  [class*="pulse"],
+  .feat-status::before{animation:none!important}
+}
 .feat-title{font-size:1.1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.5rem}
 .feat-desc{font-size:.875rem;color:var(--text-2);line-height:1.65;flex:1;margin-bottom:1rem}
 .feat-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:auto}
