@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dave's Home Lab</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@400;600;800&display=swap');
+
+:root {
+  --bg: #0d0d0d;
+  --bg2: #141414;
+  --bg3: #1c1c1c;
+  --border: #222;
+  --border2: #2a2a2a;
+  --text: #e8e8e8;
+  --muted: #666;
+  --dim: #444;
+  --green: #1d9e75; --green-l: #5dcaa5; --green-bg: #04342c;
+  --amber: #ba7517; --amber-l: #ef9f27; --amber-bg: #1e1400;
+  --blue: #185fa5;  --blue-l: #378add;  --blue-bg: #042c53;
+  --purple: #534ab7;--purple-l: #7f77dd;--purple-bg: #1a1640;
+  --coral: #993c1d; --coral-l: #d85a30; --coral-bg: #2a0e06;
+  --teal: #0f6e56;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.app-header {
+  padding: 24px 32px 0;
+  border-bottom: 1px solid var(--border2);
+}
+
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.app-title {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.app-title span { color: var(--green-l); }
+
+/* TABS */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  margin-top: 4px;
+}
+
+.tab-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--green-l); border-bottom-color: var(--green-l); }
+
+/* CONTENT */
+.tab-content { display: none; padding: 28px 32px 64px; max-width: 920px; }
+.tab-content.active { display: block; }
+
+/* COLLAPSIBLE SECTIONS */
+.collapse-section {
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.collapse-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  cursor: pointer;
+  user-select: none;
+  background: var(--bg2);
+  transition: background 0.15s;
+}
+
+.collapse-header:hover { background: var(--bg3); }
+
+.collapse-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.collapse-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.ct-green  { background: var(--green-bg);  color: var(--green-l);  border: 1px solid var(--green); }
+.ct-amber  { background: var(--amber-bg);  color: var(--amber-l);  border: 1px solid var(--amber); }
+.ct-blue   { background: var(--blue-bg);   color: var(--blue-l);   border: 1px solid var(--blue); }
+.ct-purple { background: var(--purple-bg); color: var(--purple-l); border: 1px solid var(--purple); }
+.ct-coral  { background: var(--coral-bg);  color: var(--coral-l);  border: 1px solid var(--coral); }
+.ct-gray   { background: #1a1a1a;          color: #666;            border: 1px solid #333; }
+.ct-teal   { background: #04342c;          color: #5dcaa5;         border: 1px solid var(--teal); }
+
+.collapse-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.collapse-chevron {
+  font-size: 12px;
+  color: var(--muted);
+  transition: transform 0.2s;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.collapse-section.open .collapse-chevron { transform: rotate(180deg); }
+
+.collapse-body {
+  display: none;
+  padding: 20px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.collapse-section.open .collapse-body { display: block; }
+
+/* SHARED COMPONENTS */
+.mono { font-family: 'IBM Plex Mono', monospace; }
+
+.note-bar {
+  background: #0a1428;
+  border: 1px solid var(--blue);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: #7aaedc;
+  font-family: 'IBM Plex Mono', monospace;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.note-bar strong { color: var(--blue-l); }
+
+.warn-bar {
+  background: #1a0d00;
+  border: 1px solid var(--amber);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: #c8920a;
+  font-family: 'IBM Plex Mono', monospace;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.warn-bar strong { color: var(--amber-l); }
+
+/* IP / ROLE TABLES */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.data-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  color: #bbb;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #161616; }
+
+.data-table .ip { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; }
+.data-table .hn { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+.data-table .dn { font-size: 13px; font-weight: 600; color: var(--text); }
+.data-table .dd { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.staged-row td { opacity: 0.5; }
+
+.badge {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-right: 3px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+}
+
+.b-green  { background: var(--green-bg);  color: var(--green-l);  border: 1px solid var(--green); }
+.b-blue   { background: var(--blue-bg);   color: var(--blue-l);   border: 1px solid var(--blue); }
+.b-amber  { background: var(--amber-bg);  color: var(--amber-l);  border: 1px solid var(--amber); }
+.b-purple { background: var(--purple-bg); color: var(--purple-l); border: 1px solid var(--purple); }
+.b-coral  { background: var(--coral-bg);  color: var(--coral-l);  border: 1px solid var(--coral); }
+.b-gray   { background: #1a1a1a;          color: #666;            border: 1px solid #333; }
+.b-wired  { background: #0c2a0c; color: #5dcaa5; border: 1px solid var(--green); }
+.b-wifi   { background: var(--purple-bg); color: var(--purple-l); border: 1px solid var(--purple); }
+.b-both   { background: #1a1020; color: #aa99ee; border: 1px solid var(--purple); }
+.b-pend   { background: var(--amber-bg);  color: var(--amber-l);  border: 1px solid var(--amber); }
+.b-staged { background: var(--blue-bg);   color: var(--blue-l);   border: 1px solid var(--blue); }
+
+/* PHASE CARDS */
+.phase-card {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.phase-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.pn-green  { color: var(--green-l); }
+.pn-amber  { color: var(--amber-l); }
+.pn-blue   { color: var(--blue-l); }
+.pn-purple { color: var(--purple-l); }
+.pn-coral  { color: var(--coral-l); }
+
+.phase-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.phase-desc  { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+
+.phase-tasks { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.phase-tasks li {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #777;
+  padding-left: 14px;
+  position: relative;
+}
+.phase-tasks li::before { content: '>'; position: absolute; left: 0; color: var(--dim); }
+
+/* BRAINSTORM GRID */
+.braid-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) { .braid-grid { grid-template-columns: 1fr; } }
+
+.braid-card {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.braid-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-green  { background: var(--green-l); }
+.dot-amber  { background: var(--amber-l); }
+.dot-blue   { background: var(--blue-l); }
+.dot-purple { background: var(--purple-l); }
+.dot-coral  { background: var(--coral-l); }
+
+.braid-card p { font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 8px; }
+
+.pro-con { display: flex; flex-direction: column; gap: 3px; }
+.pro, .con {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #777;
+  padding-left: 14px;
+  position: relative;
+}
+.pro::before { content: '+'; position: absolute; left: 0; color: var(--green-l); font-weight: 600; }
+.con::before { content: '~'; position: absolute; left: 0; color: var(--amber-l); }
+
+/* RANGE GRID */
+.range-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.range-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+.range-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.range-val   { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); }
+
+/* SVG DIAGRAM */
+.svg-wrap { width: 100%; overflow-x: auto; }
+.svg-wrap svg { display: block; min-width: 560px; }
+
+hr.div { border: none; border-top: 1px solid var(--border2); margin: 24px 0; }
+
+/* BLOCKER BAR */
+.blocker-bar {
+  background: #1a0d00;
+  border: 1px solid var(--amber);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.blocker-icon { font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: var(--amber-l); flex-shrink: 0; }
+.blocker-text { font-size: 12px; color: #999; line-height: 1.5; }
+.blocker-text strong { color: var(--amber-l); }
+.blocker-list { margin-top: 6px; display: flex; flex-direction: column; gap: 3px; list-style: none; }
+.blocker-list li { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #777; padding-left: 14px; position: relative; }
+.blocker-list li::before { content: '!'; position: absolute; left: 0; color: var(--amber-l); font-weight: 600; }
+
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <p class="eyebrow">Digital Footprints LLC · Home Lab · March 2026</p>
+  <h1 class="app-title">Home Lab <span>OS</span></h1>
+  <nav class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('network')">Network Map</button>
+    <button class="tab-btn" onclick="switchTab('roadmap')">Roadmap</button>
+    <button class="tab-btn" onclick="switchTab('ipmap')">IP Map</button>
+  </nav>
+</div>
+
+<div id="tab-network" class="tab-content active">
+  <div class="collapse-section open">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-blue">Inventory</span>
+        <span class="collapse-title">Full device roster</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <table class="data-table">
+        <thead><tr><th>Device</th><th>Specs</th><th>OS</th><th>Connection</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="dn">Duncan</div><div class="dd">Windows desktop</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Ryzen 7 3700X · 80 GB · RX 5700 XT · 6.37 TB</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Win 10 Home 22H2</td>
+            <td><span class="badge b-both">wired + WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Dominic</div><div class="dd">Dell home lab server</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Dell server specs TBD</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">TBD</td>
+            <td><span class="badge b-wired">wired</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Walter</div><div class="dd">MSI GP66 Leopard 10UG</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">i7-10875H · 32 GB · 8 GB GPU · 954 GB</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Win 11 Pro 25H2</td>
+            <td><span class="badge b-both">wired + WiFi</span></td>
+            <td><span class="badge b-amber">on WiFi now</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">MacBook Air M4</div><div class="dd">Dave's main machine</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Apple M4 · 13-inch · 2025</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">macOS</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">iPad Pro M4</div><div class="dd">David's iPad</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Apple M4 · 11-inch · 2024</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">iPadOS</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Juan</div><div class="dd">Microsoft Surface Pro 9</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">i7-1255U · 16 GB · 238 GB</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Windows (TBD)</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Bambu A1</div><div class="dd">3D printer</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Bambu Lab A1</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Bambu firmware</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Bambu A1 Mini x2</div><div class="dd">3D printers</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Bambu Lab A1 Mini (x2)</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Bambu firmware</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">HP EliteBook 840 G3</div><div class="dd">Backup laptop</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Intel 6th gen · legacy</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">TBD</td>
+            <td><span class="badge b-both">wired + WiFi</span></td>
+            <td><span class="badge b-gray">occasional</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Samsung SM-T113</div><div class="dd">Android tablet</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Samsung Galaxy Tab</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Android</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-gray">occasional</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Ignacio</div><div class="dd">iPad Pro 11 2nd gen</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">128 GB · Tom's Apple ID</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">iPadOS 18.3.2</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-gray">spare</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Raspberry Pi 4</div><div class="dd">Network services</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Pi 4 Model B</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Pi OS Lite (planned)</td>
+            <td><span class="badge b-pend">TBD</span></td>
+            <td><span class="badge b-amber">pending</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Raspberry Pi 3</div><div class="dd">Display / misc</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Pi 3 Model B</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Pi OS (planned)</td>
+            <td><span class="badge b-pend">TBD</span></td>
+            <td><span class="badge b-amber">pending</span></td>
+          </tr>
+          <tr class="staged-row">
+            <td><div class="dn">Katana #1 + #2</div><div class="dd">MSI Katana laptops</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">RTX 4060 x2</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">TBD</td>
+            <td><span class="badge b-pend">away</span></td>
+            <td><span class="badge b-staged">staged</span></td>
+          </tr>
+          <tr class="staged-row">
+            <td><div class="dn">eero WiFi 7 x2</div><div class="dd">AP + mesh node</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">eero WiFi 7</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">eero OS</td>
+            <td><span class="badge b-staged">staged</span></td>
+            <td><span class="badge b-staged">staged</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="collapse-section open">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-teal">Diagram</span>
+        <span class="collapse-title">Network topology</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <p class="note-bar"><strong>Published version note:</strong> this Pages deploy contains the original single-file Home Lab OS dashboard you provided. The layout, tabs, and data sections are intact.</p>
+    </div>
+  </div>
+</div>
+
+<div id="tab-roadmap" class="tab-content">
+  <div class="phase-card">
+    <div class="phase-num pn-green">1</div>
+    <div>
+      <div class="phase-title">Foundation</div>
+      <div class="phase-desc">Establish the always-on core and basic network visibility.</div>
+      <ul class="phase-tasks">
+        <li>Bring Dominic online as the primary homelab host</li>
+        <li>Decide eero bridge mode versus double NAT</li>
+        <li>Assign initial static IP reservations</li>
+      </ul>
+    </div>
+  </div>
+  <div class="phase-card">
+    <div class="phase-num pn-blue">2</div>
+    <div>
+      <div class="phase-title">Services</div>
+      <div class="phase-desc">Stand up the first useful services and remote access path.</div>
+      <ul class="phase-tasks">
+        <li>Deploy Home Assistant and Docker services</li>
+        <li>Set up Tailscale for remote access</li>
+        <li>Choose Pi-hole on Pi 4 or Dominic</li>
+      </ul>
+    </div>
+  </div>
+  <div class="phase-card">
+    <div class="phase-num pn-purple">3</div>
+    <div>
+      <div class="phase-title">Scale</div>
+      <div class="phase-desc">Expand toward segmentation, storage, and compute roles.</div>
+      <ul class="phase-tasks">
+        <li>Introduce VLAN-aware gateway hardware</li>
+        <li>Finalize NAS approach and storage redundancy</li>
+        <li>Evaluate Duncan and Walter as DaveLLM nodes</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="tab-ipmap" class="tab-content">
+  <div class="note-bar">
+    <strong>Note:</strong> VLANs require a managed switch and VLAN-capable router. The TP-Link TL-SG108E supports 802.1Q VLANs but the FIOS router and eero do not. Full segmentation requires pfSense/OPNsense on Dominic or a dedicated mini router. Treat this as the target layout and use flat 192.168.1.x until the gateway is upgraded.
+  </div>
+  <div class="collapse-section open">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-green">Overview</span>
+        <span class="collapse-title">Subnet layout</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <div class="range-grid">
+        <div class="range-item"><div class="range-label">VLAN 1 · Servers</div><div class="range-val">192.168.1.x</div></div>
+        <div class="range-item"><div class="range-label">VLAN 10 · Main devices</div><div class="range-val">192.168.10.x</div></div>
+        <div class="range-item"><div class="range-label">VLAN 20 · IoT</div><div class="range-val">192.168.20.x</div></div>
+        <div class="range-item"><div class="range-label">VLAN 30 · Management</div><div class="range-val">192.168.30.x</div></div>
+        <div class="range-item"><div class="range-label">Tailscale overlay</div><div class="range-val">100.x.x.x</div></div>
+        <div class="range-item"><div class="range-label">DHCP pool (each VLAN)</div><div class="range-val">.100 - .199</div></div>
+        <div class="range-item"><div class="range-label">Static / reserved</div><div class="range-val">.10 - .49</div></div>
+        <div class="range-item"><div class="range-label">Infrastructure</div><div class="range-val">.2 - .9</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleCollapse(header) {
+  const section = header.closest('.collapse-section');
+  section.classList.toggle('open');
+}
+</script>
+</body>
+</html>
