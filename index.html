@@ -5,26 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dave Robertson — Projects</title>
 <meta name="description" content="Portfolio of tools, apps, and experiments by Dave Robertson.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #faf9f6;
     --bg-card: #ffffff;
     --bg-hover: #f5f3ef;
+    --bg-muted: #f1ece5;
     --border: #e8e4dd;
     --border-hover: #d4cfc6;
     --text: #1a1a1a;
     --text-secondary: #6b6560;
-    --text-muted: #9c958e;
-    --accent: #c44d2c;
-    --accent-soft: rgba(196,77,44,0.08);
+    --text-muted: #6b645d;
+    --accent: #a13d22;
+    --accent-soft: rgba(161,61,34,0.10);
+    --focus-ring: rgba(161,61,34,0.22);
     --green: #2d6a4f;
     --blue: #2c5282;
     --serif: 'Instrument Serif', Georgia, serif;
     --sans: 'Outfit', -apple-system, sans-serif;
     --radius: 12px;
     --max-w: 1100px;
+    --shadow-hover: 0 12px 40px rgba(0,0,0,0.06);
   }
+
+  html { scroll-behavior: smooth; }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -33,8 +40,25 @@
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
+
+  .skip-link {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 4;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg-card);
+    text-decoration: none;
+    transform: translateY(-160%);
+    transition: transform 0.2s ease;
+  }
+
+  .skip-link:focus-visible { transform: translateY(0); }
 
   /* ── Grain overlay ── */
   body::after {
@@ -74,7 +98,8 @@
 
   .hero-links {
     display: flex;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 12px 16px;
     margin-top: 24px;
   }
 
@@ -89,7 +114,14 @@
     letter-spacing: 0.02em;
   }
 
-  .hero-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .hero-link:hover,
+  .hero-link:focus-visible {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    outline: none;
+  }
+
+  .content { display: block; }
 
   /* ── Featured ── */
   .section {
@@ -98,20 +130,128 @@
     padding: 0 32px 64px;
   }
 
-  .section-label {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
+  .section-header {
     margin-bottom: 24px;
+  }
+
+  .section-label {
+    font-family: var(--serif);
+    font-size: clamp(24px, 3vw, 30px);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 8px;
     padding-bottom: 12px;
     border-bottom: 1px solid var(--border);
   }
 
+  .section-intro {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 640px;
+  }
+
+  .directory-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .search-field {
+    display: flex;
+    flex: 1 1 280px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .search-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg-card);
+    color: var(--text);
+    font: inherit;
+  }
+
+  .search-input::placeholder { color: var(--text-muted); }
+
+  .search-input:focus-visible {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--focus-ring);
+    outline: none;
+  }
+
+  .filter-group {
+    display: flex;
+    flex: 1 1 320px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .filter-chip:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-hover);
+  }
+
+  .filter-chip[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+  }
+
+  .filter-chip:focus-visible {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--focus-ring);
+    outline: none;
+  }
+
+  .chip-count {
+    display: inline-flex;
+    min-width: 1.5rem;
+    justify-content: center;
+    font-size: 12px;
+    color: inherit;
+    opacity: 0.8;
+  }
+
+  .results-summary {
+    min-height: 20px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
   .featured-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
   }
 
@@ -122,17 +262,19 @@
     padding: 28px;
     text-decoration: none;
     color: inherit;
-    transition: all 0.25s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease, transform 0.25s ease;
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
   }
 
-  .featured-card:hover {
+  .featured-card:hover,
+  .featured-card:focus-visible {
     border-color: var(--border-hover);
     transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+    box-shadow: var(--shadow-hover);
+    outline: none;
   }
 
   .featured-card::after {
@@ -148,7 +290,8 @@
     transition: transform 0.3s ease;
   }
 
-  .featured-card:hover::after { transform: scaleX(1); }
+  .featured-card:hover::after,
+  .featured-card:focus-visible::after { transform: scaleX(1); }
 
   .fc-category {
     font-size: 11px;
@@ -179,6 +322,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
     font-size: 12px;
     color: var(--text-muted);
   }
@@ -202,12 +347,13 @@
     transition: transform 0.2s;
   }
 
-  .featured-card:hover .fc-arrow { transform: translateX(4px); }
+  .featured-card:hover .fc-arrow,
+  .featured-card:focus-visible .fc-arrow { transform: translateX(4px); }
 
   /* ── Directory ── */
   .directory-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 12px;
   }
 
@@ -218,13 +364,17 @@
     padding: 20px;
     text-decoration: none;
     color: inherit;
-    transition: all 0.2s;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     display: block;
   }
 
-  .dir-card:hover {
+  .dir-card:hover,
+  .dir-card:focus-visible {
     border-color: var(--border-hover);
     background: var(--bg-hover);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.04);
+    transform: translateY(-2px);
+    outline: none;
   }
 
   .dir-name {
@@ -237,7 +387,8 @@
   }
 
   .dir-name .arrow { color: var(--text-muted); font-size: 14px; transition: transform 0.2s; }
-  .dir-card:hover .dir-name .arrow { transform: translateX(3px); color: var(--accent); }
+  .dir-card:hover .dir-name .arrow,
+  .dir-card:focus-visible .dir-name .arrow { transform: translateX(3px); color: var(--accent); }
 
   .dir-desc {
     font-size: 13px;
@@ -250,27 +401,49 @@
     font-size: 11px;
     color: var(--text-muted);
     display: flex;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 8px 12px;
   }
 
   /* ── Category sections ── */
-  .cat-section { margin-bottom: 48px; }
+  .cat-section { margin-bottom: 40px; }
   .cat-section:last-child { margin-bottom: 0; }
 
   .cat-label {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--text-secondary);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
   .cat-count {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--text-muted);
     font-weight: 400;
+  }
+
+  .empty-state {
+    padding: 24px;
+    border: 1px dashed var(--border-hover);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+  }
+
+  .empty-state-title {
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .noscript-note {
+    max-width: var(--max-w);
+    margin: 0 auto 24px;
+    padding: 0 32px;
+    color: var(--text-secondary);
   }
 
   /* ── Footer ── */
@@ -282,45 +455,126 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px 16px;
+    flex-wrap: wrap;
     font-size: 13px;
     color: var(--text-muted);
   }
 
   .footer a { color: var(--text-secondary); text-decoration: none; }
-  .footer a:hover { color: var(--accent); }
+  .footer a:hover,
+  .footer a:focus-visible {
+    color: var(--accent);
+    outline: none;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .hero { padding: 72px 28px 44px; }
+    .section, .footer { padding-left: 28px; padding-right: 28px; }
+  }
+
+  @media (max-width: 768px) {
+    .hero { padding: 60px 24px 36px; }
+    .section, .footer, .noscript-note { padding-left: 24px; padding-right: 24px; }
+    .section { padding-bottom: 56px; }
+    .featured-card { padding: 24px; }
+    .dir-card { padding: 18px; }
+    .directory-tools { gap: 12px; }
+    .filter-group { flex-basis: 100%; }
+  }
 
   @media (max-width: 640px) {
     .hero { padding: 48px 20px 32px; }
-    .section, .footer { padding-left: 20px; padding-right: 20px; }
+    .section, .footer, .noscript-note { padding-left: 20px; padding-right: 20px; }
     .featured-grid { grid-template-columns: 1fr; }
     .directory-grid { grid-template-columns: 1fr; }
+    .footer {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    .featured-card:hover,
+    .featured-card:focus-visible,
+    .dir-card:hover,
+    .dir-card:focus-visible,
+    .featured-card:hover .fc-arrow,
+    .featured-card:focus-visible .fc-arrow,
+    .dir-card:hover .dir-name .arrow,
+    .dir-card:focus-visible .dir-name .arrow {
+      transform: none;
+    }
   }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#directoryHeading">Skip to projects</a>
 <div class="page">
-  <div class="hero">
+  <header class="hero">
     <h1 class="hero-name">Dave Robertson</h1>
     <p class="hero-sub">Building tools for the outdoors, the stage, the screen, and everything in between. A collection of projects, experiments, and things that got out of hand.</p>
-    <div class="hero-links">
-      <a href="https://github.com/DaveHomeAssist" class="hero-link">GitHub</a>
-      <a href="https://promptlab.tools" class="hero-link">Prompt Lab</a>
-    </div>
-  </div>
+    <nav class="hero-links" aria-label="Primary links">
+      <a href="https://github.com/DaveHomeAssist" class="hero-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)">GitHub</a>
+      <a href="https://promptlab.tools" class="hero-link" target="_blank" rel="noopener noreferrer" aria-label="Prompt Lab (opens in a new tab)">Prompt Lab</a>
+    </nav>
+  </header>
 
-  <div class="section" id="featured">
-    <div class="section-label">Featured</div>
-    <div class="featured-grid" id="featuredGrid"></div>
-  </div>
+  <main class="content" id="mainContent">
+    <section class="section" id="featured" aria-labelledby="featuredHeading">
+      <div class="section-header">
+        <h2 class="section-label" id="featuredHeading">Featured</h2>
+        <p class="section-intro">A quick path into the strongest public builds without digging through the full directory.</p>
+      </div>
+      <div class="featured-grid" id="featuredGrid"></div>
+    </section>
 
-  <div class="section" id="directory">
-    <div class="section-label">All Projects</div>
-    <div id="directoryContent"></div>
-  </div>
+    <section class="section" id="directory" aria-labelledby="directoryHeading">
+      <div class="section-header">
+        <h2 class="section-label" id="directoryHeading">All Projects</h2>
+        <p class="section-intro">Browse the public catalog by category, or jump straight to a project with search.</p>
+      </div>
+      <div class="directory-tools">
+        <label class="search-field" for="projectSearch">
+          <span class="search-label">Search</span>
+          <input id="projectSearch" class="search-input" type="search" placeholder="Search by name, description, or tag" autocomplete="off" spellcheck="false">
+        </label>
+        <div class="filter-group" id="categoryFilters" role="group" aria-label="Filter projects by category"></div>
+      </div>
+      <p class="results-summary" id="resultsSummary" role="status" aria-live="polite"></p>
+      <div id="directoryContent"></div>
+    </section>
+  </main>
+
+  <noscript>
+    <p class="noscript-note">This project directory needs JavaScript for filtering and rendering. The raw data still lives in <a href="./project-manifest.json">project-manifest.json</a>.</p>
+  </noscript>
 
   <footer class="footer">
     <span>Built from <code>project-manifest.json</code></span>
-    <a href="https://github.com/DaveHomeAssist">View on GitHub</a>
+    <a href="https://github.com/DaveHomeAssist" target="_blank" rel="noopener noreferrer" aria-label="View DaveHomeAssist on GitHub (opens in a new tab)">View on GitHub</a>
   </footer>
 </div>
 
@@ -569,7 +823,7 @@ const FALLBACK_MANIFEST = {
       "visibility": "public",
       "featured": false,
       "hosting": "custom-domain",
-      "url": "http://shieldboxsecurity.com",
+      "url": "https://shieldboxsecurity.com",
       "repo": "https://github.com/DaveHomeAssist/shieldbox-security-event-quote-request-v4-gold-master.html",
       "localPath": "",
       "runCommand": "",
@@ -1264,10 +1518,21 @@ const FALLBACK_MANIFEST = {
 };
 
 let manifestData = FALLBACK_MANIFEST;
+const CATEGORY_ORDER = ['outdoor', 'dev-tools', 'creative', 'client-work', 'infrastructure'];
+const state = {
+  query: '',
+  category: 'all'
+};
+
+const featuredGrid = document.getElementById('featuredGrid');
+const directoryContent = document.getElementById('directoryContent');
+const categoryFilters = document.getElementById('categoryFilters');
+const resultsSummary = document.getElementById('resultsSummary');
+const projectSearch = document.getElementById('projectSearch');
 
 async function loadManifest() {
   try {
-    const response = await fetch('./project-manifest.json', { cache: 'no-store' });
+    const response = await fetch('./project-manifest.json');
     if (!response.ok) {
       throw new Error(`Manifest request failed with ${response.status}`);
     }
@@ -1277,30 +1542,180 @@ async function loadManifest() {
   }
 }
 
-async function init() {
-  await loadManifest();
-  renderFeatured();
-  renderDirectory();
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function normalizeText(value) {
+  return String(value ?? '').trim().toLowerCase();
+}
+
+function getCategoryIndex(category) {
+  const index = CATEGORY_ORDER.indexOf(category);
+  return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+}
+
+function getOrderedCategoryKeys(categoryKeys) {
+  return [...new Set(categoryKeys)].sort((a, b) => {
+    const indexDiff = getCategoryIndex(a) - getCategoryIndex(b);
+    if (indexDiff !== 0) return indexDiff;
+    return a.localeCompare(b);
+  });
+}
+
+function getFeaturedProjects() {
+  return manifestData.projects.filter(project => project.featured && project.visibility === 'public');
+}
+
+function getDirectoryProjects() {
+  return manifestData.projects.filter(project =>
+    project.visibility === 'public' &&
+    !project.featured &&
+    project.id !== 'davehomeassist-hub'
+  );
+}
+
+function getProjectHref(project) {
+  return project.url || project.repo || '#';
+}
+
+function isExternalHref(href) {
+  try {
+    return new URL(href, window.location.href).origin !== window.location.origin;
+  } catch (error) {
+    return false;
+  }
+}
+
+function buildLinkAttributes(href, className, label) {
+  const attributes = [`href="${escapeHtml(href)}"`, `class="${className}"`];
+
+  if (isExternalHref(href)) {
+    attributes.push('target="_blank"', 'rel="noopener noreferrer"', `aria-label="${escapeHtml(`${label} (opens in a new tab)`)}`);
+  }
+
+  return attributes.join(' ');
+}
+
+function matchesSearch(project) {
+  if (!normalizeText(state.query)) return true;
+
+  const haystack = [
+    project.name,
+    project.description,
+    ...(project.tags || [])
+  ].join(' ');
+
+  return normalizeText(haystack).includes(normalizeText(state.query));
+}
+
+function sanitizeState() {
+  state.query = state.query.trim();
+  if (state.category !== 'all' && !manifestData.categories[state.category]) {
+    state.category = 'all';
+  }
+}
+
+function readStateFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  state.query = params.get('q') || '';
+  state.category = params.get('category') || 'all';
+  sanitizeState();
+}
+
+function updateUrlState() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (state.query) params.set('q', state.query);
+  else params.delete('q');
+
+  if (state.category !== 'all') params.set('category', state.category);
+  else params.delete('category');
+
+  const query = params.toString();
+  const nextUrl = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`;
+  window.history.replaceState({}, '', nextUrl);
+}
+
+function syncControls() {
+  projectSearch.value = state.query;
+}
+
+function buildSummaryText(filteredCount, totalCount) {
+  if (filteredCount === 0) {
+    return 'No public projects match the current search and filter state.';
+  }
+
+  const parts = [`Showing ${filteredCount} of ${totalCount} public projects`];
+
+  if (state.category !== 'all') {
+    parts.push(`in ${manifestData.categories[state.category]?.label || state.category}`);
+  }
+
+  if (state.query) {
+    parts.push(`matching "${state.query}"`);
+  }
+
+  return `${parts.join(' ')}. Press / to focus search.`;
+}
+
+function renderCategoryFilters() {
+  const counts = getDirectoryProjects().reduce((accumulator, project) => {
+    accumulator[project.category] = (accumulator[project.category] || 0) + 1;
+    return accumulator;
+  }, {});
+
+  const orderedCategories = getOrderedCategoryKeys(Object.keys(counts));
+  const buttons = [
+    {
+      key: 'all',
+      label: 'All',
+      count: getDirectoryProjects().length
+    },
+    ...orderedCategories.map(category => ({
+      key: category,
+      label: manifestData.categories[category]?.label || category,
+      count: counts[category] || 0
+    }))
+  ];
+
+  categoryFilters.innerHTML = buttons.map(button => `
+    <button
+      type="button"
+      class="filter-chip"
+      data-category="${escapeHtml(button.key)}"
+      aria-pressed="${button.key === state.category}"
+      aria-controls="directoryContent"
+    >
+      <span>${escapeHtml(button.label)}</span>
+      <span class="chip-count">${button.count}</span>
+    </button>
+  `).join('');
 }
 
 function renderFeatured() {
-  const featured = manifestData.projects.filter(p =>
-    p.featured && (p.visibility === 'public')
-  );
+  const featured = getFeaturedProjects();
 
-  document.getElementById('featuredGrid').innerHTML = featured.map(p => {
-    const cat = manifestData.categories[p.category] || {};
-    const href = p.url || p.repo;
+  featuredGrid.innerHTML = featured.map(project => {
+    const category = manifestData.categories[project.category] || {};
+    const href = getProjectHref(project);
+    const linkAttributes = buildLinkAttributes(href, 'featured-card', `Open ${project.name}`);
+
     return `
-      <a href="${href}" target="_blank" class="featured-card">
-        <div class="fc-category">${cat.icon || ''} ${cat.label || p.category}</div>
-        <div class="fc-name">${p.name}</div>
-        <div class="fc-desc">${p.description}</div>
+      <a ${linkAttributes}>
+        <div class="fc-category">${escapeHtml(category.icon || '')} ${escapeHtml(category.label || project.category)}</div>
+        <div class="fc-name">${escapeHtml(project.name)}</div>
+        <div class="fc-desc">${escapeHtml(project.description)}</div>
         <div class="fc-footer">
           <div class="fc-tags">
-            ${p.tags.slice(0, 2).map(t => `<span class="fc-tag">${t}</span>`).join('')}
+            ${(project.tags || []).slice(0, 2).map(tag => `<span class="fc-tag">${escapeHtml(tag)}</span>`).join('')}
           </div>
-          <span class="fc-arrow">&rarr;</span>
+          <span class="fc-arrow" aria-hidden="true">&rarr;</span>
         </div>
       </a>
     `;
@@ -1308,42 +1723,122 @@ function renderFeatured() {
 }
 
 function renderDirectory() {
-  const visible = manifestData.projects.filter(p =>
-    p.visibility === 'public' && !p.featured && p.id !== 'davehomeassist-hub'
-  );
+  const allProjects = getDirectoryProjects();
+  const filteredProjects = allProjects
+    .filter(project => state.category === 'all' || project.category === state.category)
+    .filter(matchesSearch)
+    .sort((a, b) => a.name.localeCompare(b.name));
 
-  // Group by category
-  const grouped = {};
-  visible.forEach(p => {
-    if (!grouped[p.category]) grouped[p.category] = [];
-    grouped[p.category].push(p);
-  });
+  resultsSummary.textContent = buildSummaryText(filteredProjects.length, allProjects.length);
 
-  const container = document.getElementById('directoryContent');
-  container.innerHTML = Object.entries(grouped).map(([catKey, projects]) => {
-    const cat = manifestData.categories[catKey] || {};
+  if (!filteredProjects.length) {
+    directoryContent.innerHTML = `
+      <div class="empty-state">
+        <p class="empty-state-title">No projects found</p>
+        <p>Try a different search term, or switch back to the full directory.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const grouped = filteredProjects.reduce((accumulator, project) => {
+    if (!accumulator[project.category]) accumulator[project.category] = [];
+    accumulator[project.category].push(project);
+    return accumulator;
+  }, {});
+
+  const orderedCategories = getOrderedCategoryKeys(Object.keys(grouped));
+  directoryContent.innerHTML = orderedCategories.map(categoryKey => {
+    const category = manifestData.categories[categoryKey] || {};
+    const headingId = `category-${categoryKey}`;
+    const projects = grouped[categoryKey];
+
     return `
-      <div class="cat-section">
-        <div class="cat-label">${cat.icon || ''} ${cat.label || catKey} <span class="cat-count">${projects.length}</span></div>
+      <section class="cat-section" aria-labelledby="${escapeHtml(headingId)}">
+        <h3 class="cat-label" id="${escapeHtml(headingId)}">${escapeHtml(category.icon || '')} ${escapeHtml(category.label || categoryKey)} <span class="cat-count">${projects.length}</span></h3>
         <div class="directory-grid">
-          ${projects.map(p => {
-            const host = manifestData.hostingPlatforms[p.hosting] || {};
-            const href = p.url || p.repo;
+          ${projects.map(project => {
+            const host = manifestData.hostingPlatforms[project.hosting] || {};
+            const href = getProjectHref(project);
+            const linkAttributes = buildLinkAttributes(href, 'dir-card', `Open ${project.name}`);
+
             return `
-              <a href="${href}" target="_blank" class="dir-card">
-                <div class="dir-name">${p.name} <span class="arrow">&rarr;</span></div>
-                <div class="dir-desc">${p.description}</div>
+              <a ${linkAttributes}>
+                <div class="dir-name">${escapeHtml(project.name)} <span class="arrow" aria-hidden="true">&rarr;</span></div>
+                <div class="dir-desc">${escapeHtml(project.description)}</div>
                 <div class="dir-meta">
-                  <span>${host.label || p.hosting}</span>
-                  <span>${p.tags[0] || ''}</span>
+                  <span>${escapeHtml(host.label || project.hosting)}</span>
+                  <span>${escapeHtml((project.tags || [])[0] || '')}</span>
                 </div>
               </a>
             `;
           }).join('')}
         </div>
-      </div>
+      </section>
     `;
   }).join('');
+}
+
+function renderAll() {
+  renderFeatured();
+  renderCategoryFilters();
+  renderDirectory();
+}
+
+function handleSearchInput(event) {
+  state.query = event.target.value;
+  updateUrlState();
+  renderDirectory();
+}
+
+function handleCategoryClick(event) {
+  const button = event.target.closest('[data-category]');
+  if (!button) return;
+
+  state.category = button.dataset.category || 'all';
+  updateUrlState();
+  renderCategoryFilters();
+  renderDirectory();
+}
+
+function handleGlobalShortcuts(event) {
+  if (event.defaultPrevented) return;
+
+  const target = event.target;
+  const isTypingTarget =
+    target instanceof HTMLElement &&
+    (target.matches('input, textarea, select') || target.isContentEditable);
+
+  if (event.key === '/' && !isTypingTarget) {
+    event.preventDefault();
+    projectSearch.focus();
+    projectSearch.select();
+  }
+
+  if (event.key === 'Escape' && document.activeElement === projectSearch && projectSearch.value) {
+    state.query = '';
+    syncControls();
+    updateUrlState();
+    renderDirectory();
+  }
+}
+
+function bindControls() {
+  projectSearch.addEventListener('input', handleSearchInput);
+  categoryFilters.addEventListener('click', handleCategoryClick);
+  document.addEventListener('keydown', handleGlobalShortcuts);
+}
+
+async function init() {
+  readStateFromUrl();
+  bindControls();
+  syncControls();
+  renderAll();
+
+  await loadManifest();
+  sanitizeState();
+  syncControls();
+  renderAll();
 }
 
 init();
