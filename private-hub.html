@@ -317,6 +317,8 @@
 
   .meta-chip.hosting { border: 1px solid rgba(255,255,255,0.08); }
   .meta-chip.category { font-family: var(--sans); }
+  .meta-chip.hub-public { color: #5cdb6e; border: 1px solid rgba(92,219,110,0.25); }
+  .meta-chip.hub-private { color: #8a8590; border: 1px solid rgba(138,133,144,0.2); }
 
   .card-actions {
     display: flex;
@@ -389,7 +391,7 @@
 
   .row-name .sub { color: var(--text-muted); font-weight: 400; font-size: 12px; }
 
-  .row-hosting, .row-category, .row-status {
+  .row-hosting, .row-category, .row-status, .row-hub {
     font-size: 11px;
     font-family: var(--mono);
     color: var(--text-muted);
@@ -483,7 +485,7 @@
     .header, .controls, .projects-container, .stats-strip, .deps-section { padding-left: 16px; padding-right: 16px; }
     .project-grid { grid-template-columns: 1fr; }
     .project-row { grid-template-columns: 4px 1fr auto; }
-    .row-hosting, .row-category, .row-status { display: none; }
+    .row-hosting, .row-category, .row-status, .row-hub { display: none; }
     .stats-strip { flex-wrap: wrap; }
     .stat { flex: 0 0 calc(50% - 2px); }
   }
@@ -507,6 +509,7 @@
     </div>
     <div class="filter-group" id="categoryFilters"></div>
     <div class="filter-group" id="statusFilters"></div>
+    <div class="filter-group" id="hubFilters"></div>
     <div class="view-toggle">
       <button class="view-btn active" data-view="grid" title="Grid view">▦</button>
       <button class="view-btn" data-view="list" title="List view">☰</button>
@@ -1275,6 +1278,7 @@ let state = {
   search: '',
   category: null,
   status: null,
+  publicHub: null,
   view: 'grid'
 };
 
@@ -1294,14 +1298,14 @@ function renderStats() {
   const projects = manifestData.projects;
   const active = projects.filter(p => p.status === 'active').length;
   const hosted = projects.filter(p => p.hosting !== 'none' && p.hosting !== 'local').length;
-  const local = projects.filter(p => p.hosting === 'local').length;
+  const onPublic = projects.filter(p => isOnPublicHub(p)).length;
   const platforms = new Set(projects.map(p => p.hosting).filter(h => h !== 'none')).size;
 
   document.getElementById('stats').innerHTML = `
     <div class="stat"><div class="stat-value">${projects.length}</div><div class="stat-label">Total Projects</div></div>
     <div class="stat"><div class="stat-value" style="color:var(--accent-green)">${active}</div><div class="stat-label">Active</div></div>
     <div class="stat"><div class="stat-value">${hosted}</div><div class="stat-label">Deployed</div></div>
-    <div class="stat"><div class="stat-value">${local}</div><div class="stat-label">Local Only</div></div>
+    <div class="stat"><div class="stat-value">${onPublic}</div><div class="stat-label">Public Hub</div></div>
     <div class="stat"><div class="stat-value">${platforms}</div><div class="stat-label">Platforms</div></div>
   `;
 }
@@ -1319,13 +1323,23 @@ function renderFilters() {
     `<button class="filter-btn" data-status="${s}">${s.toUpperCase()}</button>`
   ).join('');
   document.getElementById('statusFilters').innerHTML = statusHTML;
+
+  document.getElementById('hubFilters').innerHTML =
+    `<button class="filter-btn" data-hub="on-public">On Public Hub</button>` +
+    `<button class="filter-btn" data-hub="not-on-public">Not on Public Hub</button>`;
 }
 
 // ── Filter logic ──
+function isOnPublicHub(p) {
+  return p.visibility === 'public';
+}
+
 function getFiltered() {
   return manifestData.projects.filter(p => {
     if (state.category && p.category !== state.category) return false;
     if (state.status && p.status !== state.status) return false;
+    if (state.publicHub === 'on-public' && !isOnPublicHub(p)) return false;
+    if (state.publicHub === 'not-on-public' && isOnPublicHub(p)) return false;
     if (state.search) {
       const q = state.search.toLowerCase();
       const haystack = [p.name, p.description, p.category, p.hosting, ...p.tags].join(' ').toLowerCase();
@@ -1380,6 +1394,7 @@ function renderCard(p) {
       <div class="card-meta">
         <span class="meta-chip category">${cat.icon || ''} ${cat.label || p.category}</span>
         <span class="meta-chip hosting">${host.label || p.hosting}</span>
+        <span class="meta-chip ${isOnPublicHub(p) ? 'hub-public' : 'hub-private'}">${isOnPublicHub(p) ? 'Public Hub' : 'Private Only'}</span>
         ${p.tags.slice(0, 3).map(t => `<span class="meta-chip">#${t}</span>`).join('')}
       </div>
       <div class="card-actions">${actions}</div>
@@ -1401,6 +1416,7 @@ function renderRow(p) {
       </div>
       <div class="row-hosting">${host.label || p.hosting}</div>
       <div class="row-category">${cat.icon || ''} ${cat.label || ''}</div>
+      <div class="row-hub"><span class="meta-chip ${isOnPublicHub(p) ? 'hub-public' : 'hub-private'}">${isOnPublicHub(p) ? 'Public' : 'Private'}</span></div>
       <div class="row-status">${p.status}</div>
       <div class="row-actions">${actions}</div>
     </div>
@@ -1481,6 +1497,18 @@ function bindEvents() {
     state.status = state.status === st ? null : st;
     document.querySelectorAll('#statusFilters .filter-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.status === state.status)
+    );
+    renderProjects();
+  });
+
+  // Hub filters
+  document.getElementById('hubFilters').addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    const hub = btn.dataset.hub;
+    state.publicHub = state.publicHub === hub ? null : hub;
+    document.querySelectorAll('#hubFilters .filter-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.hub === state.publicHub)
     );
     renderProjects();
   });
