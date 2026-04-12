@@ -100,6 +100,10 @@
   }
 
   /* ── Stats strip ── */
+  .stats-strip dl { margin: 0; }
+  .stats-strip dl > div { display: contents; }
+  .stats-strip dd { margin: 0; }
+
   .stats-strip {
     display: flex;
     gap: 4px;
@@ -424,6 +428,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 8px;
+    list-style: none;
   }
 
   .dep-card {
@@ -587,6 +592,7 @@
     <div class="result-count" id="lastUpdated"></div>
   </header>
 
+  <main>
   <div class="stats-strip" id="stats"></div>
 
   <div class="controls">
@@ -614,10 +620,13 @@
     <div class="empty-state" id="emptyState" style="display:none;">No projects match your filters.<br><button class="empty-reset" onclick="clearAllFilters()">Clear All Filters</button></div>
   </div>
 
-  <div class="deps-section" id="depsSection">
-    <div class="deps-title">Dependency Map</div>
-    <div class="deps-grid" id="depsGrid"></div>
-  </div>
+  <section class="deps-section" id="depsSection" aria-labelledby="depsTitle">
+    <h2 class="deps-title" id="depsTitle">Dependency Map</h2>
+    <ul class="deps-grid" id="depsGrid"></ul>
+  </section>
+  </main>
+
+  <div id="liveRegion" class="sr-only" aria-live="polite"></div>
 
   <div class="keyboard-hint" aria-hidden="true">
     <span><kbd>/</kbd> Search</span>
@@ -858,8 +867,8 @@ const FALLBACK_MANIFEST = {
       "status": "active",
       "visibility": "unlisted",
       "featured": false,
-      "hosting": "none",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/freelance-landing",
       "repo": "https://github.com/DaveHomeAssist/freelance-landing",
       "localPath": "",
       "runCommand": "",
@@ -1177,8 +1186,8 @@ const FALLBACK_MANIFEST = {
       "status": "active",
       "visibility": "private",
       "featured": false,
-      "hosting": "none",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/skills",
       "repo": "https://github.com/DaveHomeAssist/skills",
       "localPath": "",
       "runCommand": "",
@@ -1394,11 +1403,11 @@ function renderStats() {
   const platforms = new Set(projects.map(p => p.hosting).filter(h => h !== 'none')).size;
 
   document.getElementById('stats').innerHTML = `
-    <div class="stat"><div class="stat-value">${projects.length}</div><div class="stat-label">Total Projects</div></div>
-    <div class="stat"><div class="stat-value" style="color:var(--accent-green)">${active}</div><div class="stat-label">Active</div></div>
-    <div class="stat"><div class="stat-value">${hosted}</div><div class="stat-label">Deployed</div></div>
-    <div class="stat"><div class="stat-value">${onPublic}</div><div class="stat-label">Public Hub</div></div>
-    <div class="stat"><div class="stat-value">${platforms}</div><div class="stat-label">Platforms</div></div>
+    <dl class="stat"><div><dd class="stat-value">${projects.length}</dd><dt class="stat-label">Total Projects</dt></div></dl>
+    <dl class="stat"><div><dd class="stat-value" style="color:var(--accent-green)">${active}</dd><dt class="stat-label">Active</dt></div></dl>
+    <dl class="stat"><div><dd class="stat-value">${hosted}</dd><dt class="stat-label">Deployed</dt></div></dl>
+    <dl class="stat"><div><dd class="stat-value">${onPublic}</dd><dt class="stat-label">Public Hub</dt></div></dl>
+    <dl class="stat"><div><dd class="stat-value">${platforms}</dd><dt class="stat-label">Platforms</dt></div></dl>
   `;
 }
 
@@ -1487,7 +1496,7 @@ function renderCard(p) {
   const actions = buildActions(p);
 
   return `
-    <div class="project-card" data-status="${p.status}">
+    <article class="project-card" data-status="${p.status}">
       <div class="card-top">
         <div class="card-name">
           ${p.featured ? '<span class="featured-star">★</span>' : ''}
@@ -1503,7 +1512,7 @@ function renderCard(p) {
         ${p.tags.slice(0, 3).map(t => `<span class="meta-chip">#${t}</span>`).join('')}
       </div>
       <div class="card-actions">${actions}</div>
-    </div>
+    </article>
   `;
 }
 
@@ -1513,7 +1522,7 @@ function renderRow(p) {
   const actions = buildActions(p, true);
 
   return `
-    <div class="project-row">
+    <article class="project-row">
       <div class="row-indicator ${p.status}"></div>
       <div class="row-name">
         ${p.featured ? '★ ' : ''}${p.name}
@@ -1524,7 +1533,7 @@ function renderRow(p) {
       <div class="row-hub"><span class="meta-chip ${isOnPublicHub(p) ? 'hub-public' : 'hub-private'}">${isOnPublicHub(p) ? 'Public' : 'Private'}</span></div>
       <div class="row-status">${p.status}</div>
       <div class="row-actions">${actions}</div>
-    </div>
+    </article>
   `;
 }
 
@@ -1555,7 +1564,12 @@ function showToast(message, color) {
   toast.setAttribute('role', 'status');
   toast.setAttribute('aria-live', 'polite');
   document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 2000);
+  const liveRegion = document.getElementById('liveRegion');
+  if (liveRegion) liveRegion.textContent = message;
+  setTimeout(() => {
+    toast.remove();
+    if (liveRegion) liveRegion.textContent = '';
+  }, 2000);
 }
 
 function copyCmd(cmd) {
@@ -1572,13 +1586,13 @@ function renderDeps() {
   if (deps.length === 0) { document.getElementById('depsSection').style.display = 'none'; return; }
 
   document.getElementById('depsGrid').innerHTML = deps.map(p =>
-    `<div class="dep-card">
+    `<li class="dep-card">
       <div class="dep-arrow">${p.name} →</div>
       <div class="dep-names">${p.dependents.map(d => {
         const proj = manifestData.projects.find(x => x.id === d);
         return `<strong>${proj ? proj.name : d}</strong>`;
       }).join(', ')}</div>
-    </div>`
+    </li>`
   ).join('');
 }
 
