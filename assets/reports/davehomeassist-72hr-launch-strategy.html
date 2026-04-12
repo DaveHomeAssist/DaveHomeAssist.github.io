@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DaveHomeAssist — 72-Hour Launch Strategy</title>
+<style>
+:root { --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a; --text: #e4e4e7; --muted: #9ca3af; --accent: #60a5fa; --green: #4ade80; --yellow: #facc15; --red: #f87171; --font: Inter, system-ui, -apple-system, sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.6; padding: 2rem; }
+.shell { max-width: 960px; margin: 0 auto; }
+h1 { font-size: 2rem; letter-spacing: -0.03em; margin-bottom: 0.5rem; }
+h2 { font-size: 1.25rem; color: var(--accent); margin: 2rem 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1rem; color: var(--muted); margin: 1.5rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; }
+.subtitle { color: var(--muted); margin-bottom: 2rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.75rem 0 1.5rem; font-size: 0.9rem; }
+th { text-align: left; padding: 0.5rem 0.75rem; background: var(--surface); color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); }
+td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
+tr:hover td { background: rgba(96,165,250,0.04); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+.badge-live { background: rgba(74,222,128,0.15); color: var(--green); }
+.badge-ready { background: rgba(96,165,250,0.15); color: var(--accent); }
+.badge-wip { background: rgba(250,204,21,0.15); color: var(--yellow); }
+.badge-archive { background: rgba(156,163,175,0.1); color: var(--muted); }
+.badge-blocked { background: rgba(248,113,113,0.15); color: var(--red); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin: 0.75rem 0; }
+.card-title { font-weight: 700; margin-bottom: 0.25rem; }
+.card-meta { color: var(--muted); font-size: 0.85rem; }
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+.stat-value { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.03em; }
+.stat-label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.25rem; }
+.checklist { list-style: none; }
+.checklist li { padding: 0.4rem 0; padding-left: 1.5rem; position: relative; }
+.checklist li::before { content: ''; position: absolute; left: 0; top: 0.65rem; width: 12px; height: 12px; border: 2px solid var(--border); border-radius: 3px; }
+.timeline { display: grid; gap: 0.5rem; }
+.tl-row { display: grid; grid-template-columns: 100px 1fr auto; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); align-items: center; }
+.tl-time { color: var(--accent); font-weight: 700; font-size: 0.85rem; }
+.tl-task { font-size: 0.9rem; }
+.tl-impact { color: var(--muted); font-size: 0.8rem; text-align: right; }
+.footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; text-align: center; }
+@media (max-width: 640px) { body { padding: 1rem; } .tl-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="shell">
+
+<h1>DaveHomeAssist Portfolio</h1>
+<p class="subtitle">72-Hour Launch Strategy &middot; Generated 2026-03-30 &middot; 41 repos audited</p>
+
+<div class="stat-row">
+  <div class="stat"><div class="stat-value">41</div><div class="stat-label">Total Repos</div></div>
+  <div class="stat"><div class="stat-value">5</div><div class="stat-label">Live in Production</div></div>
+  <div class="stat"><div class="stat-value">8</div><div class="stat-label">Ready to Ship</div></div>
+  <div class="stat"><div class="stat-value">1</div><div class="stat-label">npm Dependency</div></div>
+  <div class="stat"><div class="stat-value">15</div><div class="stat-label">Portfolio-Worthy</div></div>
+  <div class="stat"><div class="stat-value">3</div><div class="stat-label">Decisions Blocking</div></div>
+</div>
+
+<h2>Tier 1 — Live in Production</h2>
+<table>
+  <tr><th>Project</th><th>Stack</th><th>Deploy</th><th>Status</th></tr>
+  <tr><td>DaveHomeAssist.github.io</td><td>Static HTML</td><td>GitHub Pages</td><td><span class="badge badge-live">Live</span></td></tr>
+  <tr><td>SAP Music</td><td>Static + Serverless</td><td>standardacidprocedure.com</td><td><span class="badge badge-live">Live</span></td></tr>
+  <tr><td>Act Two Catering</td><td>HTML + Netlify Functions</td><td>Netlify</td><td><span class="badge badge-live">Live</span></td></tr>
+  <tr><td>Quest Platform</td><td>Static</td><td>Vercel</td><td><span class="badge badge-live">Live</span></td></tr>
+  <tr><td>NeSy</td><td>Static</td><td>Vercel</td><td><span class="badge badge-live">Live</span></td></tr>
+</table>
+
+<h2>Tier 2 — Built, Ready to Deploy</h2>
+<table>
+  <tr><th>Project</th><th>Stack</th><th>Files</th><th>What's Needed</th><th>Status</th></tr>
+  <tr><td>Phillies Wire</td><td>Node pipeline + Pages</td><td>40</td><td>Push + trigger workflow</td><td><span class="badge badge-ready">Ready</span></td></tr>
+  <tr><td>Daily Prophet</td><td>PowerShell + Pages</td><td>8</td><td>Needs publish.yml</td><td><span class="badge badge-ready">Ready</span></td></tr>
+  <tr><td>PromptLab</td><td>React/Dexie + Vercel</td><td>314</td><td>Phase 2 UI unblocked</td><td><span class="badge badge-wip">WIP</span></td></tr>
+  <tr><td>Garden OS</td><td>Large app</td><td>4,161</td><td>Sprint 1 in progress</td><td><span class="badge badge-wip">WIP</span></td></tr>
+  <tr><td>Trailkeeper</td><td>Vanilla JS PWA</td><td>41</td><td>D-006 store schema blocks features</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
+  <tr><td>Metagrid</td><td>Next.js</td><td>49</td><td>Fork under DaveHomeAssist</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
+  <tr><td>NotionWidgets</td><td>Vanilla JS</td><td>32</td><td>Marketplace submission</td><td><span class="badge badge-ready">Ready</span></td></tr>
+  <tr><td>DeckForge</td><td>Vanilla JS</td><td>4</td><td>v2 reached</td><td><span class="badge badge-ready">Ready</span></td></tr>
+</table>
+
+<h2>Tier 3 — Portfolio Pieces</h2>
+<table>
+  <tr><th>Project</th><th>Notes</th><th>Files</th></tr>
+  <tr><td>ReadOut</td><td>Local TTS server (Kokoro). Running on Duncan :7778</td><td>40K+</td></tr>
+  <tr><td>DaveLLM</td><td>Electron. Ollama cluster orchestrator</td><td>23</td></tr>
+  <tr><td>Festival Atlas</td><td>Event discovery tool</td><td>84</td></tr>
+  <tr><td>MLB Ballparks Quest</td><td>Ballpark tracker</td><td>104</td></tr>
+  <tr><td>CurlPlan</td><td>Curling league planner</td><td>29</td></tr>
+  <tr><td>Skills</td><td>Prompt skill library (17 skills)</td><td>18</td></tr>
+  <tr><td>Graph Explorer</td><td>Visual graph tool</td><td>32</td></tr>
+  <tr><td>AI Agent Personalities</td><td>Agent persona library</td><td>24</td></tr>
+  <tr><td>Freelance</td><td>Portfolio landing. Contact form fixed</td><td>13</td></tr>
+  <tr><td>Contractor</td><td>Client site. Netlify deployed</td><td>13</td></tr>
+</table>
+
+<h2>72-Hour Timeline</h2>
+<div class="timeline">
+  <h3>Hours 0–4: Ship what's ready</h3>
+  <div class="tl-row"><div class="tl-time">0:00</div><div class="tl-task">Push phillies-wire to remote, trigger workflow</div><div class="tl-impact">Newsletter live</div></div>
+  <div class="tl-row"><div class="tl-time">0:05</div><div class="tl-task">Fix LinkedIn URL in video-engineer.html</div><div class="tl-impact">Last broken CTA fixed</div></div>
+  <div class="tl-row"><div class="tl-time">0:10</div><div class="tl-task">Verify NeSy Vercel connection</div><div class="tl-impact">Close open task</div></div>
+  <div class="tl-row"><div class="tl-time">0:15</div><div class="tl-task">Enable GitHub Pages on Trailkeeper</div><div class="tl-impact">PWA goes live</div></div>
+
+  <h3>Hours 4–12: Automate</h3>
+  <div class="tl-row"><div class="tl-time">4:00</div><div class="tl-task">Create Daily Prophet publish.yml</div><div class="tl-impact">Automated dispatch</div></div>
+  <div class="tl-row"><div class="tl-time">5:00</div><div class="tl-task">Add npm test to phillies-wire CI</div><div class="tl-impact">Regression safety</div></div>
+  <div class="tl-row"><div class="tl-time">6:00</div><div class="tl-task">Test email delivery with real SMTP</div><div class="tl-impact">Distribution enabled</div></div>
+
+  <h3>Hours 12–36: Documentation</h3>
+  <div class="tl-row"><div class="tl-time">12:00</div><div class="tl-task">Add README to 25 repos that lack one</div><div class="tl-impact">Portfolio presentable</div></div>
+  <div class="tl-row"><div class="tl-time">18:00</div><div class="tl-task">Add MIT LICENSE to all public repos</div><div class="tl-impact">Legal hygiene</div></div>
+  <div class="tl-row"><div class="tl-time">24:00</div><div class="tl-task">Update portfolio hub with all live links</div><div class="tl-impact">Central hub complete</div></div>
+
+  <h3>Hours 36–72: Strategic</h3>
+  <div class="tl-row"><div class="tl-time">36:00</div><div class="tl-task">Fork Metagrid under DaveHomeAssist</div><div class="tl-impact">Unblocks Metagrid</div></div>
+  <div class="tl-row"><div class="tl-time">42:00</div><div class="tl-task">Decide D-010 PromptLab feature gating</div><div class="tl-impact">Unblocks monetization</div></div>
+  <div class="tl-row"><div class="tl-time">48:00</div><div class="tl-task">Package NotionWidgets for marketplace</div><div class="tl-impact">Revenue potential</div></div>
+  <div class="tl-row"><div class="tl-time">60:00</div><div class="tl-task">Set up Samba share on Dominic</div><div class="tl-impact">Cross-machine file sharing</div></div>
+</div>
+
+<h2>Decisions Still Open</h2>
+<table>
+  <tr><th>ID</th><th>Decision</th><th>Blocks</th><th>Status</th></tr>
+  <tr><td>D-010</td><td>PromptLab feature gating (free vs paid)</td><td>Lemon Squeezy, paywall UI</td><td><span class="badge badge-blocked">Open</span></td></tr>
+  <tr><td>D-006</td><td>Trailkeeper store schema</td><td>All Trailkeeper features</td><td><span class="badge badge-blocked">Open</span></td></tr>
+  <tr><td>—</td><td>HA on Dominic: restore vs rebuild</td><td>Home Assistant config</td><td><span class="badge badge-blocked">Open</span></td></tr>
+</table>
+
+<h2>Revenue Priority</h2>
+<table>
+  <tr><th>Stream</th><th>Project</th><th>Model</th><th>Effort</th></tr>
+  <tr><td>Paid tier</td><td>PromptLab</td><td>$9/mo · $100/yr</td><td>High</td></tr>
+  <tr><td>Marketplace</td><td>NotionWidgets</td><td>$5–20 per widget</td><td>Medium</td></tr>
+  <tr><td>Skill packs</td><td>Skills repo</td><td>$29–49 one-time</td><td>Low</td></tr>
+  <tr><td>Sponsorship</td><td>Phillies Wire</td><td>$50–500/issue</td><td>Low (if audience)</td></tr>
+  <tr><td>Services</td><td>Freelance / Act Two</td><td>Hourly/project</td><td>Already active</td></tr>
+</table>
+
+<h2>Infrastructure Map</h2>
+<table>
+  <tr><th>Machine</th><th>Role</th><th>IP</th><th>Tailscale</th><th>Status</th></tr>
+  <tr><td>Duncan</td><td>Primary dev (Windows)</td><td>192.168.1.243</td><td>100.75.176.80</td><td><span class="badge badge-live">Active</span></td></tr>
+  <tr><td>Walter</td><td>Secondary dev (MSI GP66)</td><td>192.168.1.193</td><td>100.115.31.19</td><td><span class="badge badge-live">Online</span></td></tr>
+  <tr><td>Dominic</td><td>Server (Ubuntu/Docker)</td><td>192.168.1.10</td><td>100.100.62.111</td><td><span class="badge badge-live">Online</span></td></tr>
+  <tr><td>Home Assist</td><td>Dell Server</td><td>192.168.1.215</td><td>—</td><td><span class="badge badge-live">Online</span></td></tr>
+  <tr><td>Katana 1</td><td>MSI Katana</td><td>—</td><td>—</td><td><span class="badge badge-blocked">Offsite</span></td></tr>
+  <tr><td>Katana 2</td><td>MSI Katana</td><td>—</td><td>—</td><td><span class="badge badge-blocked">Offsite</span></td></tr>
+</table>
+
+<div class="footer">
+  DaveHomeAssist Portfolio Audit &middot; Generated by Claude Code (Opus 4.6) on Duncan &middot; 2026-03-30<br>
+  41 repos &middot; 5 live deployments &middot; 8 ready to ship &middot; 3 Tailscale nodes online
+</div>
+
+</div>
+</body>
+</html>

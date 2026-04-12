@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dave's Home Lab</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@400;600;800&display=swap');
+
+:root {
+  --bg: #0d0d0d;
+  --bg2: #141414;
+  --bg3: #1c1c1c;
+  --border: #222;
+  --border2: #2a2a2a;
+  --text: #e8e8e8;
+  --muted: #666;
+  --dim: #444;
+  --green: #1d9e75; --green-l: #5dcaa5; --green-bg: #04342c;
+  --amber: #ba7517; --amber-l: #ef9f27; --amber-bg: #1e1400;
+  --blue: #185fa5;  --blue-l: #378add;  --blue-bg: #042c53;
+  --purple: #534ab7;--purple-l: #7f77dd;--purple-bg: #1a1640;
+  --coral: #993c1d; --coral-l: #d85a30; --coral-bg: #2a0e06;
+  --teal: #0f6e56;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.app-header {
+  padding: 24px 32px 0;
+  border-bottom: 1px solid var(--border2);
+}
+
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.app-title {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.app-title span { color: var(--green-l); }
+
+/* ── TABS ── */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  margin-top: 4px;
+}
+
+.tab-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--green-l); border-bottom-color: var(--green-l); }
+
+/* ── CONTENT ── */
+.tab-content { display: none; padding: 28px 32px 64px; max-width: 920px; }
+.tab-content.active { display: block; }
+
+/* ── COLLAPSIBLE SECTIONS ── */
+.collapse-section {
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.collapse-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  cursor: pointer;
+  user-select: none;
+  background: var(--bg2);
+  transition: background 0.15s;
+}
+
+.collapse-header:hover { background: var(--bg3); }
+
+.collapse-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.collapse-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.ct-green  { background: var(--green-bg);  color: var(--green-l);  border: 1px solid var(--green); }
+.ct-amber  { background: var(--amber-bg);  color: var(--amber-l);  border: 1px solid var(--amber); }
+.ct-blue   { background: var(--blue-bg);   color: var(--blue-l);   border: 1px solid var(--blue); }
+.ct-purple { background: var(--purple-bg); color: var(--purple-l); border: 1px solid var(--purple); }
+.ct-coral  { background: var(--coral-bg);  color: var(--coral-l);  border: 1px solid var(--coral); }
+.ct-gray   { background: #1a1a1a;          color: #666;            border: 1px solid #333; }
+.ct-teal   { background: #04342c;          color: #5dcaa5;         border: 1px solid var(--teal); }
+
+.collapse-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.collapse-chevron {
+  font-size: 12px;
+  color: var(--muted);
+  transition: transform 0.2s;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.collapse-section.open .collapse-chevron { transform: rotate(180deg); }
+
+.collapse-body {
+  display: none;
+  padding: 20px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.collapse-section.open .collapse-body { display: block; }
+
+/* ── SHARED COMPONENTS ── */
+.mono { font-family: 'IBM Plex Mono', monospace; }
+
+.note-bar {
+  background: #0a1428;
+  border: 1px solid var(--blue);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: #7aaedc;
+  font-family: 'IBM Plex Mono', monospace;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.note-bar strong { color: var(--blue-l); }
+
+.warn-bar {
+  background: #1a0d00;
+  border: 1px solid var(--amber);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: #c8920a;
+  font-family: 'IBM Plex Mono', monospace;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.warn-bar strong { color: var(--amber-l); }
+
+/* ── IP / ROLE TABLES ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.data-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  color: #bbb;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #161616; }
+
+.data-table .ip { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; }
+.data-table .hn { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+.data-table .dn { font-size: 13px; font-weight: 600; color: var(--text); }
+.data-table .dd { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.staged-row td { opacity: 0.5; }
+
+.badge {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-right: 3px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+}
+
+.b-green  { background: var(--green-bg);  color: var(--green-l);  border: 1px solid var(--green); }
+.b-blue   { background: var(--blue-bg);   color: var(--blue-l);   border: 1px solid var(--blue); }
+.b-amber  { background: var(--amber-bg);  color: var(--amber-l);  border: 1px solid var(--amber); }
+.b-purple { background: var(--purple-bg); color: var(--purple-l); border: 1px solid var(--purple); }
+.b-coral  { background: var(--coral-bg);  color: var(--coral-l);  border: 1px solid var(--coral); }
+.b-gray   { background: #1a1a1a;          color: #666;            border: 1px solid #333; }
+.b-wired  { background: #0c2a0c; color: #5dcaa5; border: 1px solid var(--green); }
+.b-wifi   { background: var(--purple-bg); color: var(--purple-l); border: 1px solid var(--purple); }
+.b-both   { background: #1a1020; color: #aa99ee; border: 1px solid var(--purple); }
+.b-pend   { background: var(--amber-bg);  color: var(--amber-l);  border: 1px solid var(--amber); }
+.b-staged { background: var(--blue-bg);   color: var(--blue-l);   border: 1px solid var(--blue); }
+
+/* ── PHASE CARDS ── */
+.phase-card {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.phase-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.pn-green  { color: var(--green-l); }
+.pn-amber  { color: var(--amber-l); }
+.pn-blue   { color: var(--blue-l); }
+.pn-purple { color: var(--purple-l); }
+.pn-coral  { color: var(--coral-l); }
+
+.phase-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.phase-desc  { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+
+.phase-tasks { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.phase-tasks li {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #777;
+  padding-left: 14px;
+  position: relative;
+}
+.phase-tasks li::before { content: '›'; position: absolute; left: 0; color: var(--dim); }
+
+/* ── BRAINSTORM GRID ── */
+.braid-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) { .braid-grid { grid-template-columns: 1fr; } }
+
+.braid-card {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.braid-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-green  { background: var(--green-l); }
+.dot-amber  { background: var(--amber-l); }
+.dot-blue   { background: var(--blue-l); }
+.dot-purple { background: var(--purple-l); }
+.dot-coral  { background: var(--coral-l); }
+
+.braid-card p { font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 8px; }
+
+.pro-con { display: flex; flex-direction: column; gap: 3px; }
+.pro, .con {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: #777;
+  padding-left: 14px;
+  position: relative;
+}
+.pro::before { content: '+'; position: absolute; left: 0; color: var(--green-l); font-weight: 600; }
+.con::before { content: '~'; position: absolute; left: 0; color: var(--amber-l); }
+
+/* ── RANGE GRID ── */
+.range-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.range-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+.range-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.range-val   { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); }
+
+/* ── SVG DIAGRAM ── */
+.svg-wrap { width: 100%; overflow-x: auto; }
+.svg-wrap svg { display: block; min-width: 560px; }
+
+hr.div { border: none; border-top: 1px solid var(--border2); margin: 24px 0; }
+
+/* ── BLOCKER BAR ── */
+.blocker-bar {
+  background: #1a0d00;
+  border: 1px solid var(--amber);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.blocker-icon { font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: var(--amber-l); flex-shrink: 0; }
+.blocker-text { font-size: 12px; color: #999; line-height: 1.5; }
+.blocker-text strong { color: var(--amber-l); }
+.blocker-list { margin-top: 6px; display: flex; flex-direction: column; gap: 3px; list-style: none; }
+.blocker-list li { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #777; padding-left: 14px; position: relative; }
+.blocker-list li::before { content: '!'; position: absolute; left: 0; color: var(--amber-l); font-weight: 600; }
+
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <p class="eyebrow">Digital Footprints LLC · Home Lab · March 2026</p>
+  <h1 class="app-title">Home Lab <span>OS</span></h1>
+  <nav class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('network')">Network Map</button>
+    <button class="tab-btn" onclick="switchTab('roadmap')">Roadmap</button>
+    <button class="tab-btn" onclick="switchTab('ipmap')">IP Map</button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     TAB 1: NETWORK MAP
+════════════════════════════════════════════════════════ -->
+<div id="tab-network" class="tab-content active">
+
+  <!-- Device inventory -->
+  <div class="collapse-section open">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-blue">Inventory</span>
+        <span class="collapse-title">Full device roster</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <table class="data-table">
+        <thead><tr><th>Device</th><th>Specs</th><th>OS</th><th>Connection</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="dn">Duncan</div><div class="dd">Windows desktop</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Ryzen 7 3700X · 80 GB · RX 5700 XT · 6.37 TB</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Win 10 Home 22H2</td>
+            <td><span class="badge b-both">wired + WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Dominic</div><div class="dd">Dell home lab server</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Dell server specs TBD</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">TBD</td>
+            <td><span class="badge b-wired">wired</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Walter</div><div class="dd">MSI GP66 Leopard 10UG</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">i7-10875H · 32 GB · 8 GB GPU · 954 GB</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Win 11 Pro 25H2</td>
+            <td><span class="badge b-both">wired + WiFi</span></td>
+            <td><span class="badge b-amber">on WiFi now</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">MacBook Air M4</div><div class="dd">Dave's main machine</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Apple M4 · 13-inch · 2025</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">macOS</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">iPad Pro M4</div><div class="dd">David's iPad</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Apple M4 · 11-inch · 2024</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">iPadOS</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Juan</div><div class="dd">Microsoft Surface Pro 9</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">i7-1255U · 16 GB · 238 GB</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Windows (TBD)</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Bambu A1</div><div class="dd">3D printer</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Bambu Lab A1</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Bambu firmware</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Bambu A1 Mini x2</div><div class="dd">3D printers</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Bambu Lab A1 Mini (x2)</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Bambu firmware</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-green">active</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">HP EliteBook 840 G3</div><div class="dd">Backup laptop</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Intel 6th gen · legacy</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">TBD</td>
+            <td><span class="badge b-both">wired + WiFi</span></td>
+            <td><span class="badge b-gray">occasional</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Samsung SM-T113</div><div class="dd">Android tablet</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Samsung Galaxy Tab</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Android</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-gray">occasional</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Ignacio</div><div class="dd">iPad Pro 11 2nd gen</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">128 GB · Tom's Apple ID</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">iPadOS 18.3.2</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-gray">spare</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Raspberry Pi 4</div><div class="dd">Network services</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Pi 4 Model B</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Pi OS Lite (planned)</td>
+            <td><span class="badge b-pend">TBD</span></td>
+            <td><span class="badge b-amber">pending</span></td>
+          </tr>
+          <tr>
+            <td><div class="dn">Raspberry Pi 3</div><div class="dd">Display / misc</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Pi 3 Model B</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">Pi OS (planned)</td>
+            <td><span class="badge b-pend">TBD</span></td>
+            <td><span class="badge b-amber">pending</span></td>
+          </tr>
+          <tr class="staged-row">
+            <td><div class="dn">Katana #1 + #2</div><div class="dd">MSI Katana laptops</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">RTX 4060 x2</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">TBD</td>
+            <td><span class="badge b-pend">away</span></td>
+            <td><span class="badge b-staged">staged</span></td>
+          </tr>
+          <tr class="staged-row">
+            <td><div class="dn">eero WiFi 7 x2</div><div class="dd">AP + mesh node</div></td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">eero WiFi 7</td>
+            <td class="mono" style="font-size:11px;color:var(--muted)">eero OS</td>
+            <td><span class="badge b-staged">staged</span></td>
+            <td><span class="badge b-staged">staged</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Network diagram -->
+  <div class="collapse-section open">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-teal">Diagram</span>
+        <span class="collapse-title">Network topology</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <div class="svg-wrap">
+        <svg width="100%" viewBox="0 0 680 840" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr"       viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#888"    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+          <marker id="arr-wifi"  viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#7f77dd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+          <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#ba7517" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+          <marker id="arr-blue"  viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#3b8bd4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+          <marker id="arr-gray"  viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#555"    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <!-- Legend -->
+        <rect x="40" y="16" width="600" height="32" rx="6" fill="none" stroke="#2a2a2a" stroke-width="0.5"/>
+        <line x1="60" y1="32" x2="84" y2="32" stroke="#888" stroke-width="2"/>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#666" x="90" y="36">Wired</text>
+        <line x1="158" y1="32" x2="182" y2="32" stroke="#7f77dd" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#666" x="188" y="36">Wireless</text>
+        <rect x="278" y="24" width="9" height="9" rx="2" fill="none" stroke="#ba7517" stroke-width="1.5" stroke-dasharray="4 2"/>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#666" x="292" y="36">Pending</text>
+        <rect x="372" y="24" width="9" height="9" rx="2" fill="none" stroke="#3b8bd4" stroke-width="1.5" stroke-dasharray="4 2"/>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#666" x="386" y="36">Staged</text>
+        <rect x="456" y="24" width="9" height="9" rx="2" fill="none" stroke="#555" stroke-width="1.5" stroke-dasharray="4 2"/>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#666" x="470" y="36">Occasional</text>
+        <!-- Gateway -->
+        <rect x="240" y="62" width="200" height="48" rx="8" fill="#4a1b0c" stroke="#d85a30" stroke-width="0.5"/>
+        <text font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#f0f0f0" x="340" y="83" text-anchor="middle" dominant-baseline="central">FIOS Router</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#999" x="340" y="100" text-anchor="middle" dominant-baseline="central">Gateway / WAN</text>
+        <!-- Switch -->
+        <line x1="340" y1="110" x2="340" y2="150" stroke="#888" stroke-width="2" marker-end="url(#arr)"/>
+        <rect x="240" y="150" width="200" height="48" rx="8" fill="#04342c" stroke="#1d9e75" stroke-width="0.5"/>
+        <text font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#f0f0f0" x="340" y="171" text-anchor="middle" dominant-baseline="central">TP-Link TL-SG108E</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#999" x="340" y="188" text-anchor="middle" dominant-baseline="central">8-port managed switch</text>
+        <!-- Wired trunk -->
+        <line x1="240" y1="200" x2="196" y2="200" stroke="#888" stroke-width="2"/>
+        <line x1="196" y1="200" x2="196" y2="490" stroke="#888" stroke-width="2"/>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#555" x="118" y="248" text-anchor="middle">— Wired —</text>
+        <!-- Duncan -->
+        <rect x="36" y="258" width="164" height="52" rx="8" fill="#0c3a5e" stroke="#378add" stroke-width="0.5"/>
+        <text font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#f0f0f0" x="118" y="279" text-anchor="middle" dominant-baseline="central">Duncan</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#999" x="118" y="296" text-anchor="middle" dominant-baseline="central">Ryzen 7 / RX 5700 XT</text>
+        <line x1="36" y1="284" x2="196" y2="284" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Dominic -->
+        <rect x="36" y="328" width="164" height="52" rx="8" fill="#0c3a5e" stroke="#378add" stroke-width="0.5"/>
+        <text font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#f0f0f0" x="118" y="349" text-anchor="middle" dominant-baseline="central">Dominic</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#999" x="118" y="366" text-anchor="middle" dominant-baseline="central">Dell server / Home lab</text>
+        <line x1="36" y1="354" x2="196" y2="354" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Walter -->
+        <rect x="36" y="398" width="164" height="52" rx="8" fill="#0c3a5e" stroke="#378add" stroke-width="0.5"/>
+        <text font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#f0f0f0" x="118" y="419" text-anchor="middle" dominant-baseline="central">Walter (GP66)</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#999" x="118" y="436" text-anchor="middle" dominant-baseline="central">i7-10875H · docked</text>
+        <line x1="36" y1="424" x2="196" y2="424" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="200" y1="424" x2="484" y2="424" stroke="#7f77dd" stroke-width="1" stroke-dasharray="5 3"/>
+        <text font-family="IBM Plex Mono,monospace" font-size="10" fill="#7f77dd" x="342" y="417" text-anchor="middle">on WiFi now</text>
+        <!-- HP EliteBook -->
+        <rect x="36" y="468" width="164" height="48" rx="8" fill="#1a1a1a" stroke="#555" stroke-width="0.5" stroke-dasharray="4 2"/>
+        <text font-family="Syne,sans-serif" font-size="12" font-weight="600" fill="#bbb" x="118" y="489" text-anchor="middle" dominant-baseline="central">HP EliteBook 840 G3</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#666" x="118" y="505" text-anchor="middle" dominant-baseline="central">Backup · occasional</text>
+        <line x1="36" y1="492" x2="196" y2="492" stroke="#555" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#arr-gray)"/>
+        <!-- WiFi trunk -->
+        <line x1="440" y1="200" x2="484" y2="200" stroke="#888" stroke-width="2"/>
+        <line x1="484" y1="200" x2="484" y2="630" stroke="#7f77dd" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#555" x="562" y="248" text-anchor="middle">— Wireless —</text>
+        <!-- MacBook Air -->
+        <rect x="480" y="258" width="164" height="52" rx="8" fill="#2a1a5e" stroke="#7f77dd" stroke-width="0.5"/>
+        <text font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#f0f0f0" x="562" y="279" text-anchor="middle" dominant-baseline="central">MacBook Air M4</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#999" x="562" y="296" text-anchor="middle" dominant-baseline="central">Dave's main machine</text>
+        <line x1="484" y1="284" x2="480" y2="284" stroke="#7f77dd" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-wifi)"/>
+        <!-- iPad Pro M4 -->
+        <rect x="480" y="328" width="164" height="52" rx="8" fill="#2a1a5e" stroke="#7f77dd" stroke-width="0.5"/>
+        <text font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#f0f0f0" x="562" y="349" text-anchor="middle" dominant-baseline="central">iPad Pro M4</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#999" x="562" y="366" text-anchor="middle" dominant-baseline="central">David's iPad</text>
+        <line x1="484" y1="354" x2="480" y2="354" stroke="#7f77dd" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-wifi)"/>
+        <!-- Juan -->
+        <rect x="480" y="398" width="164" height="52" rx="8" fill="#2a1a5e" stroke="#7f77dd" stroke-width="0.5"/>
+        <text font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#f0f0f0" x="562" y="419" text-anchor="middle" dominant-baseline="central">Juan (Surface Pro 9)</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#999" x="562" y="436" text-anchor="middle" dominant-baseline="central">i7-1255U · WiFi only</text>
+        <line x1="484" y1="424" x2="480" y2="424" stroke="#7f77dd" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-wifi)"/>
+        <!-- Bambu -->
+        <rect x="480" y="468" width="164" height="52" rx="8" fill="#2a1a5e" stroke="#7f77dd" stroke-width="0.5"/>
+        <text font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#f0f0f0" x="562" y="489" text-anchor="middle" dominant-baseline="central">Bambu A1 + Mini x2</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#999" x="562" y="506" text-anchor="middle" dominant-baseline="central">3D printers</text>
+        <line x1="484" y1="494" x2="480" y2="494" stroke="#7f77dd" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arr-wifi)"/>
+        <!-- Samsung -->
+        <rect x="480" y="538" width="164" height="48" rx="8" fill="#1a1a1a" stroke="#555" stroke-width="0.5" stroke-dasharray="4 2"/>
+        <text font-family="Syne,sans-serif" font-size="12" font-weight="600" fill="#bbb" x="562" y="559" text-anchor="middle" dominant-baseline="central">Samsung SM-T113</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#666" x="562" y="575" text-anchor="middle" dominant-baseline="central">HA remote · occasional</text>
+        <line x1="484" y1="562" x2="480" y2="562" stroke="#555" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#arr-gray)"/>
+        <!-- Ignacio -->
+        <rect x="480" y="604" width="164" height="48" rx="8" fill="#1a1a1a" stroke="#555" stroke-width="0.5" stroke-dasharray="4 2"/>
+        <text font-family="Syne,sans-serif" font-size="12" font-weight="600" fill="#bbb" x="562" y="625" text-anchor="middle" dominant-baseline="central">Ignacio (iPad Pro 11)</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="11" fill="#666" x="562" y="641" text-anchor="middle" dominant-baseline="central">2nd gen · spare</text>
+        <line x1="484" y1="628" x2="480" y2="628" stroke="#555" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#arr-gray)"/>
+        <!-- Pending row -->
+        <rect x="44"  y="710" width="128" height="48" rx="8" fill="#1e1400" stroke="#ba7517" stroke-width="1" stroke-dasharray="5 3"/>
+        <text font-family="Syne,sans-serif" font-size="12" font-weight="600" fill="#e0a020" x="108" y="731" text-anchor="middle" dominant-baseline="central">Raspberry Pi 3</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="10" fill="#777" x="108" y="748" text-anchor="middle" dominant-baseline="central">display / misc TBD</text>
+        <rect x="190" y="710" width="128" height="48" rx="8" fill="#1e1400" stroke="#ba7517" stroke-width="1" stroke-dasharray="5 3"/>
+        <text font-family="Syne,sans-serif" font-size="12" font-weight="600" fill="#e0a020" x="254" y="731" text-anchor="middle" dominant-baseline="central">Raspberry Pi 4</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="10" fill="#777" x="254" y="748" text-anchor="middle" dominant-baseline="central">PiHole / HA TBD</text>
+        <rect x="336" y="710" width="128" height="48" rx="8" fill="#1e1400" stroke="#ba7517" stroke-width="1" stroke-dasharray="5 3"/>
+        <text font-family="Syne,sans-serif" font-size="12" font-weight="600" fill="#e0a020" x="400" y="731" text-anchor="middle" dominant-baseline="central">Katana x2</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="10" fill="#777" x="400" y="748" text-anchor="middle" dominant-baseline="central">RTX 4060 · away</text>
+        <rect x="492" y="710" width="144" height="48" rx="8" fill="#0a2040" stroke="#3b8bd4" stroke-width="1" stroke-dasharray="5 3"/>
+        <text font-family="Syne,sans-serif" font-size="12" font-weight="600" fill="#5ba8e0" x="564" y="731" text-anchor="middle" dominant-baseline="central">eero WiFi 7 x2</text>
+        <text font-family="IBM Plex Mono,monospace" font-size="10" fill="#777" x="564" y="748" text-anchor="middle" dominant-baseline="central">AP + node · staged</text>
+        <!-- Pending lines -->
+        <line x1="300" y1="200" x2="300" y2="710" stroke="#ba7517" stroke-width="1" stroke-dasharray="3 3" opacity="0.35"/>
+        <line x1="300" y1="710" x2="172" y2="710" stroke="#ba7517" stroke-width="1" stroke-dasharray="3 3" opacity="0.35" marker-end="url(#arr-amber)"/>
+        <line x1="108" y1="710" x2="44" y2="710" stroke="#ba7517" stroke-width="1" stroke-dasharray="3 3" opacity="0.35" marker-end="url(#arr-amber)"/>
+        <line x1="300" y1="710" x2="336" y2="710" stroke="#ba7517" stroke-width="1" stroke-dasharray="3 3" opacity="0.35" marker-end="url(#arr-amber)"/>
+        <line x1="420" y1="86" x2="564" y2="710" stroke="#3b8bd4" stroke-width="1" stroke-dasharray="4 3" opacity="0.3" marker-end="url(#arr-blue)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     TAB 2: ROADMAP
+════════════════════════════════════════════════════════ -->
+<div id="tab-roadmap" class="tab-content">
+
+  <!-- Blockers -->
+  <div class="collapse-section open">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-amber">Blockers</span>
+        <span class="collapse-title">Current blockers</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <div class="blocker-bar">
+        <div class="blocker-icon">!</div>
+        <div class="blocker-text">
+          <strong>Must resolve before Phase 1</strong>
+          <ul class="blocker-list">
+            <li>Ethernet cables not yet run from switch to Duncan, Dominic, Walter</li>
+            <li>DaveLLM LAN IPs not configured — blocks cluster deployment</li>
+            <li>Tailscale not installed on any device here yet</li>
+            <li>eero units staged but not deployed</li>
+            <li>Katana x2 still away — blocks full DaveLLM cluster</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Device roles -->
+  <div class="collapse-section open">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-blue">Roles</span>
+        <span class="collapse-title">Proposed device role assignments</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <table class="data-table">
+        <thead><tr><th>Device</th><th>Proposed roles</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="dn">Duncan</div></td>
+            <td><span class="badge b-purple">DaveLLM node</span><span class="badge b-blue">dev workstation</span></td>
+            <td style="font-size:12px;color:var(--muted)">RX 5700 XT usable for Ollama via ROCm on Linux. 80 GB RAM is a big asset.</td>
+          </tr>
+          <tr>
+            <td><div class="dn">Dominic</div></td>
+            <td><span class="badge b-green">Home Assistant</span><span class="badge b-green">NAS</span><span class="badge b-green">Docker</span><span class="badge b-green">Plex</span></td>
+            <td style="font-size:12px;color:var(--muted)">Always-on server. Natural home for HA, Plex, Nextcloud, PiHole fallback.</td>
+          </tr>
+          <tr>
+            <td><div class="dn">Walter</div></td>
+            <td><span class="badge b-purple">DaveLLM node</span><span class="badge b-blue">dev / testing</span></td>
+            <td style="font-size:12px;color:var(--muted)">Permanently docked. Battery issues make it a de facto desktop.</td>
+          </tr>
+          <tr>
+            <td><div class="dn">Pi 4</div></td>
+            <td><span class="badge b-green">PiHole + DNS</span><span class="badge b-amber">Tailscale relay</span></td>
+            <td style="font-size:12px;color:var(--muted)">Dedicated lightweight always-on node. Best fit for network-level DNS.</td>
+          </tr>
+          <tr>
+            <td><div class="dn">Pi 3</div></td>
+            <td><span class="badge b-green">HA display</span><span class="badge b-gray">monitor / misc</span></td>
+            <td style="font-size:12px;color:var(--muted)">Lower power. Good match for kiosk dashboard display role.</td>
+          </tr>
+          <tr class="staged-row">
+            <td><div class="dn">Katana x2</div></td>
+            <td><span class="badge b-purple">DaveLLM nodes</span></td>
+            <td style="font-size:12px;color:var(--muted)">RTX 4060 x2 are the cluster's GPU backbone. Worth waiting for before locking config.</td>
+          </tr>
+          <tr>
+            <td><div class="dn">MacBook Air M4</div></td>
+            <td><span class="badge b-blue">primary dev</span><span class="badge b-amber">Tailscale client</span></td>
+            <td style="font-size:12px;color:var(--muted)">Main daily driver. Tailscale for remote access on gigs.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Phase 1-2 -->
+  <div class="collapse-section open">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-green">Phase 1–2</span>
+        <span class="collapse-title">Physical foundation + network services</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <div class="phase-card">
+        <div class="phase-num pn-green">01</div>
+        <div>
+          <div class="phase-title">Physical foundation</div>
+          <div class="phase-desc">Run the cables, get wired devices hardwired. Everything else depends on this being stable.</div>
+          <ul class="phase-tasks">
+            <li>Run ethernet from switch to Duncan, Dominic, Walter</li>
+            <li>Assign static IPs / DHCP reservations by MAC on FIOS router</li>
+            <li>Verify switch port assignments, label them</li>
+            <li>Deploy eero units — decide bridge mode vs double NAT</li>
+            <li>Test WiFi coverage across the space</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num pn-green">02</div>
+        <div>
+          <div class="phase-title">Network services layer</div>
+          <div class="phase-desc">PiHole on Pi 4 for DNS and ad blocking. Clean hostname resolution across the LAN.</div>
+          <ul class="phase-tasks">
+            <li>Install Pi OS Lite on Pi 4, harden SSH</li>
+            <li>Deploy PiHole, set as primary DNS on FIOS router / eero</li>
+            <li>Add local DNS records for all named devices (duncan.local, dominic.local…)</li>
+            <li>Set DHCP reservations for Pi 3 and Pi 4</li>
+            <li>Configure Pi 3 for kiosk mode HA display (optional at this stage)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 3-4 -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-amber">Phase 3–4</span>
+        <span class="collapse-title">Remote access + Home Assistant</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <div class="phase-card">
+        <div class="phase-num pn-amber">03</div>
+        <div>
+          <div class="phase-title">Remote access via Tailscale</div>
+          <div class="phase-desc">Tailscale mesh across all key devices. Unlocks remote access from gigs and the shared dev server with your colleague.</div>
+          <ul class="phase-tasks">
+            <li>Install Tailscale on Duncan, Dominic, Walter, MacBook Air, Juan</li>
+            <li>Install Tailscale on Pi 4 — designate as subnet router (exposes full LAN)</li>
+            <li>Enable MagicDNS so hostnames resolve over Tailscale</li>
+            <li>Invite remote colleague to tailnet via ACL tag</li>
+            <li>Configure tag:devserver ACL — colleague reaches Dominic only</li>
+            <li>Test remote access to Dominic from phone on LTE</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num pn-amber">04</div>
+        <div>
+          <div class="phase-title">Home Assistant + smart home</div>
+          <div class="phase-desc">Deploy HA on Dominic as the permanent always-on host. Migrate or rebuild config from the old setup.</div>
+          <ul class="phase-tasks">
+            <li>Install HA Container on Dominic via Docker</li>
+            <li>Restore or rebuild dashboards and automations</li>
+            <li>Connect SM-T113 as wall-mounted dashboard via Fully Kiosk</li>
+            <li>Set up Pi 3 as secondary display if SM-T113 gets a permanent spot</li>
+            <li>Expose HA externally via Nabu Casa or Tailscale (no port forwarding)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 5-6 -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-blue">Phase 5–6</span>
+        <span class="collapse-title">DaveLLM cluster + self-hosted services</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <div class="phase-card">
+        <div class="phase-num pn-blue">05</div>
+        <div>
+          <div class="phase-title">DaveLLM cluster</div>
+          <div class="phase-desc">Stand up Ollama cluster once LAN IPs are locked and Katanas are back. Duncan + Walter can run as interim 2-node cluster now.</div>
+          <ul class="phase-tasks">
+            <li>Assign LAN IPs for Walter and Duncan as Phase 1 nodes</li>
+            <li>Install Ollama on Duncan and Walter, test local model serving</li>
+            <li>Configure DaveLLM Router on localhost:8000 to balance across nodes</li>
+            <li>Add Katana x2 as GPU nodes when back (RTX 4060 x2 as primary inference)</li>
+            <li>Enable ROCm on Duncan's RX 5700 XT for AMD GPU inference (optional)</li>
+            <li>Expose cluster internally via Tailscale for MacBook Air access on the road</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num pn-blue">06</div>
+        <div>
+          <div class="phase-title">Self-hosted services on Dominic</div>
+          <div class="phase-desc">Docker Compose stack on Dominic for Plex, Nextcloud, and anything else. NAS storage config.</div>
+          <ul class="phase-tasks">
+            <li>Set up Docker + Portainer on Dominic for container management</li>
+            <li>Configure storage volumes mapped to Dominic's drives</li>
+            <li>Deploy Plex Media Server with library on NAS storage</li>
+            <li>Deploy Nextcloud for file sync across devices</li>
+            <li>Set up Nginx Proxy Manager for internal reverse proxy and SSL</li>
+            <li>Back up critical containers to offsite (Backblaze B2 or similar)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 7 -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-purple">Phase 7</span>
+        <span class="collapse-title">Network segmentation</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <div class="phase-card">
+        <div class="phase-num pn-purple">07</div>
+        <div>
+          <div class="phase-title">VLAN segmentation</div>
+          <div class="phase-desc">Separate IoT devices from the main LAN. Requires a VLAN-aware gateway (pfSense/OPNsense on Dominic or a dedicated mini router).</div>
+          <ul class="phase-tasks">
+            <li>Deploy pfSense or OPNsense VM on Dominic as VLAN-aware gateway</li>
+            <li>Configure 802.1Q VLANs on TL-SG108E (servers, main, IoT, mgmt)</li>
+            <li>Create IoT VLAN for Bambu printers, SM-T113, smart home gear</li>
+            <li>Firewall: IoT can reach HA on Dominic but not main LAN devices</li>
+            <li>Move Bambu printers to IoT segment, verify Bambu Handy app still works</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brainstorm -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-purple">Brainstorm</span>
+        <span class="collapse-title">Configuration decisions</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <div class="braid-grid">
+        <div class="braid-card">
+          <div class="braid-title"><span class="dot dot-amber"></span>eero: bridge mode vs double NAT</div>
+          <p>Bridge mode turns off eero's router functions, letting FIOS handle DHCP and routing. Double NAT keeps both active but complicates port forwarding and some VPN setups.</p>
+          <div class="pro-con">
+            <div class="pro">Bridge mode is cleaner for Tailscale subnet routing</div>
+            <div class="pro">Single DHCP server avoids IP conflicts</div>
+            <div class="con">Some FIOS routers resist true bridge mode, may need DMZ workaround</div>
+            <div class="con">FIOS router WiFi should be disabled if eero takes over</div>
+          </div>
+        </div>
+        <div class="braid-card">
+          <div class="braid-title"><span class="dot dot-green"></span>HA host: Dominic Docker vs dedicated Pi</div>
+          <p>Running HA in Docker on Dominic gives more resources and keeps everything centralized. A dedicated Pi 4 is the "official" HA approach but splits your always-on footprint.</p>
+          <div class="pro-con">
+            <div class="pro">Dominic Docker: easier backups, more RAM headroom</div>
+            <div class="pro">Pi 4 dedicated: HA restarts don't affect other services</div>
+            <div class="con">Docker HA loses some add-ons vs HA OS install</div>
+            <div class="con">Pi 4 means two always-on devices drawing power</div>
+          </div>
+        </div>
+        <div class="braid-card">
+          <div class="braid-title"><span class="dot dot-blue"></span>Tailscale: shared tailnet vs ACL scoped</div>
+          <p>Inviting your colleague to your tailnet is simple but gives them visibility into all devices. A tagged ACL policy scopes their access to just the dev server.</p>
+          <div class="pro-con">
+            <div class="pro">ACL tags are the right call for a work colleague</div>
+            <div class="pro">tag:devserver — colleague can only reach Dominic:port</div>
+            <div class="con">Requires Tailscale ACL JSON editing (not hard but manual)</div>
+            <div class="con">Free plan: 3 users, 100 devices max</div>
+          </div>
+        </div>
+        <div class="braid-card">
+          <div class="braid-title"><span class="dot dot-purple"></span>DaveLLM: ROCm on Duncan vs CPU only</div>
+          <p>The RX 5700 XT supports ROCm on Linux for GPU inference, but ROCm on Windows is limited. Duncan running Linux unlocks the GPU for Ollama inference.</p>
+          <div class="pro-con">
+            <div class="pro">RX 5700 XT has 8 GB VRAM, handles 7B models well</div>
+            <div class="pro">Dual boot preserves Windows for AV / video work</div>
+            <div class="con">ROCm setup is more involved than CUDA</div>
+            <div class="con">Windows 10 EOL already passed — Linux flip makes long-term sense</div>
+          </div>
+        </div>
+        <div class="braid-card">
+          <div class="braid-title"><span class="dot dot-coral"></span>PiHole: Pi 4 dedicated vs Dominic Docker</div>
+          <p>PiHole on the Pi 4 means DNS stays up even if Dominic goes down for maintenance. On Dominic Docker consolidates everything but creates a DNS single point of failure.</p>
+          <div class="pro-con">
+            <div class="pro">Pi 4: DNS stays up during Dominic updates</div>
+            <div class="pro">Pi 4 uses ~3W, negligible running cost</div>
+            <div class="con">Dominic Docker is simpler to manage with Portainer</div>
+            <div class="con">Pi 4 more useful as Tailscale subnet router than DNS host</div>
+          </div>
+        </div>
+        <div class="braid-card">
+          <div class="braid-title"><span class="dot dot-green"></span>NAS: Dominic internal vs dedicated device</div>
+          <p>Dominic's internal drives can serve as NAS via Samba or Nextcloud. A dedicated NAS separates storage from compute but adds cost and another device.</p>
+          <div class="pro-con">
+            <div class="pro">Dominic internal is free and already on the network</div>
+            <div class="pro">Docker volumes map cleanly to Dominic's drive paths</div>
+            <div class="con">If Dominic goes down, storage goes with it</div>
+            <div class="con">No RAID redundancy unless Dominic has multiple drives</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     TAB 3: IP MAP
+════════════════════════════════════════════════════════ -->
+<div id="tab-ipmap" class="tab-content">
+
+  <div class="note-bar">
+    <strong>Note:</strong> VLANs require a managed switch and VLAN-capable router. The TP-Link TL-SG108E supports 802.1Q VLANs but the FIOS router and eero do not. Full segmentation requires pfSense/OPNsense on Dominic or a dedicated mini router. Treat this as the target layout — use flat 192.168.1.x until the gateway is upgraded.
+  </div>
+
+  <!-- Subnet overview -->
+  <div class="collapse-section open">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-green">Overview</span>
+        <span class="collapse-title">Subnet layout</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <div class="range-grid">
+        <div class="range-item"><div class="range-label">VLAN 1 · Servers</div><div class="range-val">192.168.1.x</div></div>
+        <div class="range-item"><div class="range-label">VLAN 10 · Main devices</div><div class="range-val">192.168.10.x</div></div>
+        <div class="range-item"><div class="range-label">VLAN 20 · IoT</div><div class="range-val">192.168.20.x</div></div>
+        <div class="range-item"><div class="range-label">VLAN 30 · Management</div><div class="range-val">192.168.30.x</div></div>
+        <div class="range-item"><div class="range-label">Tailscale overlay</div><div class="range-val">100.x.x.x</div></div>
+        <div class="range-item"><div class="range-label">DHCP pool (each VLAN)</div><div class="range-val">.100 – .199</div></div>
+        <div class="range-item"><div class="range-label">Static / reserved</div><div class="range-val">.10 – .49</div></div>
+        <div class="range-item"><div class="range-label">Infrastructure</div><div class="range-val">.2 – .9</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VLAN 1 -->
+  <div class="collapse-section open">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-green">VLAN 1</span>
+        <span class="collapse-title">Servers / Infrastructure · 192.168.1.x</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <table class="data-table">
+        <thead><tr><th>IP</th><th>Device</th><th>Hostname</th><th>Connection</th><th>Roles</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="ip">192.168.1.1</td>
+            <td><div class="dn">FIOS Router</div><div class="dd">Gateway / WAN</div></td>
+            <td class="hn">gateway.local</td>
+            <td><span class="badge b-wired">wired</span></td>
+            <td><span class="badge b-green">gateway</span><span class="badge b-green">DHCP</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.1.10</td>
+            <td><div class="dn">Dominic</div><div class="dd">Dell home lab server</div></td>
+            <td class="hn">dominic.local</td>
+            <td><span class="badge b-wired">wired</span></td>
+            <td><span class="badge b-green">HA</span><span class="badge b-green">NAS</span><span class="badge b-green">Docker</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.1.11</td>
+            <td><div class="dn">Duncan</div><div class="dd">Ryzen 7 / RX 5700 XT</div></td>
+            <td class="hn">duncan.local</td>
+            <td><span class="badge b-both">wired + WiFi</span></td>
+            <td><span class="badge b-purple">DaveLLM</span><span class="badge b-blue">dev</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.1.12</td>
+            <td><div class="dn">Walter</div><div class="dd">MSI GP66 · docked</div></td>
+            <td class="hn">walter.local</td>
+            <td><span class="badge b-both">wired + WiFi</span></td>
+            <td><span class="badge b-purple">DaveLLM</span><span class="badge b-blue">dev</span></td>
+          </tr>
+          <tr class="staged-row">
+            <td class="ip">192.168.1.13</td>
+            <td><div class="dn">Katana #1</div><div class="dd">RTX 4060 · away</div></td>
+            <td class="hn">katana1.local</td>
+            <td><span class="badge b-pend">pending</span></td>
+            <td><span class="badge b-purple">DaveLLM</span></td>
+          </tr>
+          <tr class="staged-row">
+            <td class="ip">192.168.1.14</td>
+            <td><div class="dn">Katana #2</div><div class="dd">RTX 4060 · away</div></td>
+            <td class="hn">katana2.local</td>
+            <td><span class="badge b-pend">pending</span></td>
+            <td><span class="badge b-purple">DaveLLM</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VLAN 30 -->
+  <div class="collapse-section open">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-purple">VLAN 30</span>
+        <span class="collapse-title">Management / Network · 192.168.30.x</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <table class="data-table">
+        <thead><tr><th>IP</th><th>Device</th><th>Hostname</th><th>Connection</th><th>Roles</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="ip">192.168.30.10</td>
+            <td><div class="dn">Raspberry Pi 4</div><div class="dd">Network services</div></td>
+            <td class="hn">pi4.local</td>
+            <td><span class="badge b-wired">wired</span></td>
+            <td><span class="badge b-green">PiHole</span><span class="badge b-green">DNS</span><span class="badge b-amber">Tailscale relay</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.30.11</td>
+            <td><div class="dn">Raspberry Pi 3</div><div class="dd">Display / misc</div></td>
+            <td class="hn">pi3.local</td>
+            <td><span class="badge b-pend">TBD</span></td>
+            <td><span class="badge b-green">HA display</span><span class="badge b-gray">monitor</span></td>
+          </tr>
+          <tr class="staged-row">
+            <td class="ip">192.168.30.20</td>
+            <td><div class="dn">eero #1</div><div class="dd">Primary AP · staged</div></td>
+            <td class="hn">eero-ap.local</td>
+            <td><span class="badge b-staged">staged</span></td>
+            <td><span class="badge b-blue">WiFi AP</span></td>
+          </tr>
+          <tr class="staged-row">
+            <td class="ip">192.168.30.21</td>
+            <td><div class="dn">eero #2</div><div class="dd">Mesh node · staged</div></td>
+            <td class="hn">eero-node.local</td>
+            <td><span class="badge b-staged">staged</span></td>
+            <td><span class="badge b-blue">WiFi node</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.30.30</td>
+            <td><div class="dn">TP-Link TL-SG108E</div><div class="dd">Managed switch</div></td>
+            <td class="hn">switch.local</td>
+            <td><span class="badge b-wired">wired</span></td>
+            <td><span class="badge b-gray">switch mgmt</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VLAN 10 -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-blue">VLAN 10</span>
+        <span class="collapse-title">Main devices · 192.168.10.x</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <table class="data-table">
+        <thead><tr><th>IP</th><th>Device</th><th>Hostname</th><th>Connection</th><th>Roles</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="ip">192.168.10.10</td>
+            <td><div class="dn">MacBook Air M4</div><div class="dd">Dave's main machine</div></td>
+            <td class="hn">daves-mba.local</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-blue">dev</span><span class="badge b-amber">Tailscale</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.10.11</td>
+            <td><div class="dn">iPad Pro M4</div><div class="dd">David's iPad</div></td>
+            <td class="hn">davids-ipad.local</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-gray">client</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.10.12</td>
+            <td><div class="dn">Juan</div><div class="dd">Surface Pro 9</div></td>
+            <td class="hn">juan.local</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-blue">dev</span><span class="badge b-gray">client</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.10.20</td>
+            <td><div class="dn">HP EliteBook 840 G3</div><div class="dd">Backup laptop</div></td>
+            <td class="hn">elitebook.local</td>
+            <td><span class="badge b-both">wired + WiFi</span></td>
+            <td><span class="badge b-gray">occasional</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.10.21</td>
+            <td><div class="dn">Ignacio</div><div class="dd">iPad Pro 11 2nd gen · spare</div></td>
+            <td class="hn">ignacio.local</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-gray">spare</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VLAN 20 -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-amber">VLAN 20</span>
+        <span class="collapse-title">IoT / Peripherals · 192.168.20.x</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <table class="data-table">
+        <thead><tr><th>IP</th><th>Device</th><th>Hostname</th><th>Connection</th><th>Roles</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="ip">192.168.20.10</td>
+            <td><div class="dn">Bambu A1</div><div class="dd">3D printer</div></td>
+            <td class="hn">bambu-a1.local</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-amber">IoT</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.20.11</td>
+            <td><div class="dn">Bambu A1 Mini #1</div><div class="dd">3D printer</div></td>
+            <td class="hn">bambu-mini-1.local</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-amber">IoT</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.20.12</td>
+            <td><div class="dn">Bambu A1 Mini #2</div><div class="dd">3D printer</div></td>
+            <td class="hn">bambu-mini-2.local</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-amber">IoT</span></td>
+          </tr>
+          <tr>
+            <td class="ip">192.168.20.20</td>
+            <td><div class="dn">Samsung SM-T113</div><div class="dd">HA dashboard tablet</div></td>
+            <td class="hn">ha-display.local</td>
+            <td><span class="badge b-wifi">WiFi</span></td>
+            <td><span class="badge b-green">HA display</span><span class="badge b-amber">IoT</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tailscale overlay -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <div class="collapse-header-left">
+        <span class="collapse-tag ct-blue">Overlay</span>
+        <span class="collapse-title">Tailscale mesh · 100.x.x.x</span>
+      </div>
+      <span class="collapse-chevron">▼</span>
+    </div>
+    <div class="collapse-body">
+      <table class="data-table">
+        <thead><tr><th>Tailscale IP</th><th>Device</th><th>MagicDNS name</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="ip">100.x.x.1</td>
+            <td><div class="dn">Pi 4</div><div class="dd">Subnet router</div></td>
+            <td class="hn">pi4.tailnet.ts.net</td>
+            <td style="font-size:12px;color:var(--muted)">Advertises 192.168.1.0/24 to tailnet. Key node.</td>
+          </tr>
+          <tr>
+            <td class="ip">100.x.x.2</td>
+            <td><div class="dn">Dominic</div><div class="dd">Dev server / HA</div></td>
+            <td class="hn">dominic.tailnet.ts.net</td>
+            <td style="font-size:12px;color:var(--muted)">Accessible by colleague via ACL tag.</td>
+          </tr>
+          <tr>
+            <td class="ip">100.x.x.3</td>
+            <td><div class="dn">Duncan</div></td>
+            <td class="hn">duncan.tailnet.ts.net</td>
+            <td style="font-size:12px;color:var(--muted)">DaveLLM access from road.</td>
+          </tr>
+          <tr>
+            <td class="ip">100.x.x.4</td>
+            <td><div class="dn">MacBook Air M4</div></td>
+            <td class="hn">daves-mba.tailnet.ts.net</td>
+            <td style="font-size:12px;color:var(--muted)">Primary roaming client. On gigs.</td>
+          </tr>
+          <tr>
+            <td class="ip">100.x.x.5</td>
+            <td><div class="dn">Walter</div></td>
+            <td class="hn">walter.tailnet.ts.net</td>
+            <td style="font-size:12px;color:var(--muted)">DaveLLM node, reachable remotely.</td>
+          </tr>
+          <tr class="staged-row">
+            <td class="ip">100.x.x.6</td>
+            <td><div class="dn">Colleague node</div><div class="dd">ACL scoped</div></td>
+            <td class="hn">colleague.tailnet.ts.net</td>
+            <td style="font-size:12px;color:var(--muted)">tag:devserver ACL — Dominic only.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleCollapse(header) {
+  const section = header.closest('.collapse-section');
+  section.classList.toggle('open');
+}
+</script>
+</body>
+</html>
