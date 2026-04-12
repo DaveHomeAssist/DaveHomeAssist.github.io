@@ -19,7 +19,10 @@
       "repo": "https://github.com/DaveHomeAssist/DaveHomeAssist.github.io",
       "localPath": "",
       "runCommand": "",
-      "tags": ["hub", "portfolio"]
+      "tags": [
+        "hub",
+        "portfolio"
+      ]
     },
     {
       "id": "trailkeeper",
@@ -34,7 +37,11 @@
       "repo": "https://github.com/DaveHomeAssist/trailkeeper",
       "localPath": "",
       "runCommand": "",
-      "tags": ["hiking", "tracking", "outdoor"]
+      "tags": [
+        "hiking",
+        "tracking",
+        "outdoor"
+      ]
     },
     {
       "id": "garden-os",
@@ -49,7 +56,11 @@
       "repo": "https://github.com/DaveHomeAssist/garden-os",
       "localPath": "",
       "runCommand": "",
-      "tags": ["garden", "planner", "outdoor"]
+      "tags": [
+        "garden",
+        "planner",
+        "outdoor"
+      ]
     },
     {
       "id": "garden-league-simulator",
@@ -64,7 +75,11 @@
       "repo": "https://github.com/DaveHomeAssist/garden-os",
       "localPath": "",
       "runCommand": "",
-      "tags": ["garden", "game", "simulator"],
+      "tags": [
+        "garden",
+        "game",
+        "simulator"
+      ],
       "parentProject": "garden-os"
     },
     {
@@ -80,7 +95,10 @@
       "repo": "https://github.com/DaveHomeAssist/garden-os",
       "localPath": "",
       "runCommand": "",
-      "tags": ["garden", "planner"],
+      "tags": [
+        "garden",
+        "planner"
+      ],
       "parentProject": "garden-os"
     },
     {
@@ -96,7 +114,11 @@
       "repo": "https://github.com/DaveHomeAssist/graph-explorer",
       "localPath": "",
       "runCommand": "",
-      "tags": ["visualization", "graph", "ecosystem"]
+      "tags": [
+        "visualization",
+        "graph",
+        "ecosystem"
+      ]
     },
     {
       "id": "notion-widgets",
@@ -111,7 +133,11 @@
       "repo": "https://github.com/DaveHomeAssist/NotionWidgets",
       "localPath": "",
       "runCommand": "",
-      "tags": ["notion", "widgets", "embeds"]
+      "tags": [
+        "notion",
+        "widgets",
+        "embeds"
+      ]
     },
     {
       "id": "gemini-api-cost-calculator",
@@ -126,7 +152,11 @@
       "repo": "https://github.com/DaveHomeAssist/gemini-api-cost-calculator",
       "localPath": "",
       "runCommand": "",
-      "tags": ["api", "calculator", "gemini"]
+      "tags": [
+        "api",
+        "calculator",
+        "gemini"
+      ]
     },
     {
       "id": "sdlc-tool-stack-map",
@@ -141,7 +171,11 @@
       "repo": "https://github.com/DaveHomeAssist/sdlc-tool-stack-map",
       "localPath": "",
       "runCommand": "",
-      "tags": ["sdlc", "devops", "tooling"]
+      "tags": [
+        "sdlc",
+        "devops",
+        "tooling"
+      ]
     },
     {
       "id": "web-templates",
@@ -156,22 +190,30 @@
       "repo": "https://github.com/DaveHomeAssist/web-templates",
       "localPath": "",
       "runCommand": "",
-      "tags": ["templates", "html", "css"]
+      "tags": [
+        "templates",
+        "html",
+        "css"
+      ]
     },
     {
-      "id": "homelab-os",
-      "name": "Homelab OS",
+      "id": "home-os",
+      "name": "Home OS",
       "description": "Home lab infrastructure management dashboard",
       "category": "infrastructure",
       "status": "active",
       "visibility": "public",
       "featured": false,
       "hosting": "github-pages",
-      "url": "https://davehomeassist.github.io/homelab-os",
-      "repo": "https://github.com/DaveHomeAssist/homelab-os",
+      "url": "https://davehomeassist.github.io/home-os",
+      "repo": "https://github.com/DaveHomeAssist/home-os",
       "localPath": "",
       "runCommand": "",
-      "tags": ["homelab", "infrastructure", "dashboard"]
+      "tags": [
+        "homelab",
+        "infrastructure",
+        "dashboard"
+      ]
     },
     {
       "id": "elysium-landing",
@@ -186,7 +228,10 @@
       "repo": "https://github.com/DaveHomeAssist/elysium-landing",
       "localPath": "",
       "runCommand": "",
-      "tags": ["landing-page", "creative"]
+      "tags": [
+        "landing-page",
+        "creative"
+      ]
     },
     {
       "id": "shieldbox",
@@ -196,12 +241,16 @@
       "status": "active",
       "visibility": "public",
       "featured": false,
-      "hosting": "github-pages",
-      "url": "",
-      "repo": "https://github.com/DaveHomeAssist/shieldbox-quote-request",
+      "hosting": "custom-domain",
+      "url": "http://shieldboxsecurity.com",
+      "repo": "https://github.com/DaveHomeAssist/shieldbox-security-event-quote-request-v4-gold-master.html",
       "localPath": "",
       "runCommand": "",
-      "tags": ["insurance", "quotes", "client"]
+      "tags": [
+        "insurance",
+        "quotes",
+        "client"
+      ]
     },
     {
       "id": "freelance",
@@ -211,12 +260,15 @@
       "status": "active",
       "visibility": "public",
       "featured": false,
-      "hosting": "netlify",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/freelance",
       "repo": "https://github.com/DaveHomeAssist/freelance",
       "localPath": "",
       "runCommand": "",
-      "tags": ["freelance", "business"]
+      "tags": [
+        "freelance",
+        "business"
+      ]
     },
     {
       "id": "freelance-landing",
@@ -226,12 +278,15 @@
       "status": "active",
       "visibility": "unlisted",
       "featured": false,
-      "hosting": "github-pages",
+      "hosting": "none",
       "url": "",
       "repo": "https://github.com/DaveHomeAssist/freelance-landing",
       "localPath": "",
       "runCommand": "",
-      "tags": ["freelance", "landing-page"]
+      "tags": [
+        "freelance",
+        "landing-page"
+      ]
     },
     {
       "id": "contractor",
@@ -241,12 +296,15 @@
       "status": "active",
       "visibility": "public",
       "featured": false,
-      "hosting": "netlify",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/contractor",
       "repo": "https://github.com/DaveHomeAssist/contractor",
       "localPath": "",
       "runCommand": "",
-      "tags": ["contractor", "scheduling"]
+      "tags": [
+        "contractor",
+        "scheduling"
+      ]
     },
     {
       "id": "act-two-catering",
@@ -256,12 +314,15 @@
       "status": "active",
       "visibility": "unlisted",
       "featured": false,
-      "hosting": "netlify",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/act-two-catering",
       "repo": "https://github.com/DaveHomeAssist/act-two-catering",
       "localPath": "",
       "runCommand": "",
-      "tags": ["catering", "client"]
+      "tags": [
+        "catering",
+        "client"
+      ]
     },
     {
       "id": "curl-plan",
@@ -276,7 +337,11 @@
       "repo": "https://github.com/DaveHomeAssist/curl-plan",
       "localPath": "",
       "runCommand": "",
-      "tags": ["curling", "strategy", "sports"]
+      "tags": [
+        "curling",
+        "strategy",
+        "sports"
+      ]
     },
     {
       "id": "mlb-ballparks-quest",
@@ -291,8 +356,14 @@
       "repo": "https://github.com/DaveHomeAssist/mlb-ballparks-quest",
       "localPath": "",
       "runCommand": "",
-      "tags": ["baseball", "travel", "quest"],
-      "dependencies": ["quest-platform"]
+      "tags": [
+        "baseball",
+        "travel",
+        "quest"
+      ],
+      "dependencies": [
+        "quest-platform"
+      ]
     },
     {
       "id": "festival-atlas",
@@ -307,8 +378,14 @@
       "repo": "https://github.com/DaveHomeAssist/festival-atlas",
       "localPath": "",
       "runCommand": "",
-      "tags": ["music", "festivals", "map"],
-      "dependencies": ["quest-platform"]
+      "tags": [
+        "music",
+        "festivals",
+        "map"
+      ],
+      "dependencies": [
+        "quest-platform"
+      ]
     },
     {
       "id": "quest-platform",
@@ -318,13 +395,20 @@
       "status": "active",
       "visibility": "unlisted",
       "featured": false,
-      "hosting": "github-pages",
+      "hosting": "none",
       "url": "",
       "repo": "https://github.com/DaveHomeAssist/quest-platform",
       "localPath": "",
       "runCommand": "",
-      "tags": ["library", "shared", "runtime"],
-      "dependents": ["mlb-ballparks-quest", "festival-atlas"]
+      "tags": [
+        "library",
+        "shared",
+        "runtime"
+      ],
+      "dependents": [
+        "mlb-ballparks-quest",
+        "festival-atlas"
+      ]
     },
     {
       "id": "metagrid",
@@ -334,13 +418,19 @@
       "status": "active",
       "visibility": "unlisted",
       "featured": false,
-      "hosting": "vercel",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/metagrid",
       "repo": "https://github.com/DaveHomeAssist/metagrid",
       "localPath": "",
       "runCommand": "",
-      "tags": ["library", "components", "animation"],
-      "dependents": ["notion-widgets"]
+      "tags": [
+        "library",
+        "components",
+        "animation"
+      ],
+      "dependents": [
+        "notion-widgets"
+      ]
     },
     {
       "id": "prompt-lab",
@@ -355,7 +445,11 @@
       "repo": "https://github.com/DaveHomeAssist/new-land-pages",
       "localPath": "",
       "runCommand": "",
-      "tags": ["ai", "prompts", "tooling"]
+      "tags": [
+        "ai",
+        "prompts",
+        "tooling"
+      ]
     },
     {
       "id": "deckforge",
@@ -370,7 +464,10 @@
       "repo": "https://github.com/DaveHomeAssist/deckforge",
       "localPath": "",
       "runCommand": "",
-      "tags": ["stream-deck", "automation"]
+      "tags": [
+        "stream-deck",
+        "automation"
+      ]
     },
     {
       "id": "sap-music",
@@ -380,12 +477,16 @@
       "status": "active",
       "visibility": "public",
       "featured": false,
-      "hosting": "vercel",
-      "url": "",
+      "hosting": "custom-domain",
+      "url": "https://standardacidprocedure.com",
       "repo": "https://github.com/DaveHomeAssist/sap-music",
       "localPath": "",
       "runCommand": "",
-      "tags": ["music", "streaming", "audio"]
+      "tags": [
+        "music",
+        "streaming",
+        "audio"
+      ]
     },
     {
       "id": "nesy",
@@ -400,7 +501,10 @@
       "repo": "https://github.com/DaveHomeAssist/nesy",
       "localPath": "",
       "runCommand": "",
-      "tags": ["ai", "neural-symbolic"]
+      "tags": [
+        "ai",
+        "neural-symbolic"
+      ]
     },
     {
       "id": "lansdowne-lighting-plot",
@@ -415,7 +519,11 @@
       "repo": "https://github.com/DaveHomeAssist/lansdowne-lighting-plot",
       "localPath": "",
       "runCommand": "",
-      "tags": ["lighting", "stage", "design"]
+      "tags": [
+        "lighting",
+        "stage",
+        "design"
+      ]
     },
     {
       "id": "davellm",
@@ -430,7 +538,11 @@
       "repo": "https://github.com/DaveHomeAssist/DaveLLM",
       "localPath": "",
       "runCommand": "",
-      "tags": ["llm", "local", "ai"]
+      "tags": [
+        "llm",
+        "local",
+        "ai"
+      ]
     },
     {
       "id": "readout",
@@ -445,7 +557,11 @@
       "repo": "https://github.com/DaveHomeAssist/ReadOut",
       "localPath": "",
       "runCommand": "",
-      "tags": ["desktop", "reading", "app"]
+      "tags": [
+        "desktop",
+        "reading",
+        "app"
+      ]
     },
     {
       "id": "curling-simulator",
@@ -455,12 +571,16 @@
       "status": "wip",
       "visibility": "private",
       "featured": false,
-      "hosting": "none",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/curling-simulator",
       "repo": "https://github.com/DaveHomeAssist/curling-simulator",
       "localPath": "",
       "runCommand": "",
-      "tags": ["curling", "simulator", "game"]
+      "tags": [
+        "curling",
+        "simulator",
+        "game"
+      ]
     },
     {
       "id": "daily-prophet",
@@ -470,12 +590,15 @@
       "status": "active",
       "visibility": "private",
       "featured": false,
-      "hosting": "local",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/daily-prophet",
       "repo": "https://github.com/DaveHomeAssist/daily-prophet",
       "localPath": "",
       "runCommand": "",
-      "tags": ["content", "daily"]
+      "tags": [
+        "content",
+        "daily"
+      ]
     },
     {
       "id": "ai-agent-personalities",
@@ -485,12 +608,16 @@
       "status": "active",
       "visibility": "private",
       "featured": false,
-      "hosting": "none",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/ai-agent-personalities",
       "repo": "https://github.com/DaveHomeAssist/ai-agent-personalities",
       "localPath": "",
       "runCommand": "",
-      "tags": ["ai", "agents", "documentation"]
+      "tags": [
+        "ai",
+        "agents",
+        "documentation"
+      ]
     },
     {
       "id": "av-resume",
@@ -505,7 +632,10 @@
       "repo": "https://github.com/DaveHomeAssist/av-resume",
       "localPath": "",
       "runCommand": "",
-      "tags": ["resume", "portfolio"]
+      "tags": [
+        "resume",
+        "portfolio"
+      ]
     },
     {
       "id": "theme-organizer-resource",
@@ -520,7 +650,11 @@
       "repo": "https://github.com/DaveHomeAssist/theme-organizer-resource",
       "localPath": "",
       "runCommand": "",
-      "tags": ["themes", "resources", "organizer"]
+      "tags": [
+        "themes",
+        "resources",
+        "organizer"
+      ]
     },
     {
       "id": "codedash-mar24",
@@ -530,12 +664,15 @@
       "status": "archived",
       "visibility": "private",
       "featured": false,
-      "hosting": "none",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/codedash-mar24",
       "repo": "https://github.com/DaveHomeAssist/codedash-mar24",
       "localPath": "",
       "runCommand": "",
-      "tags": ["hackathon", "archived"]
+      "tags": [
+        "hackathon",
+        "archived"
+      ]
     },
     {
       "id": "skills",
@@ -550,7 +687,11 @@
       "repo": "https://github.com/DaveHomeAssist/skills",
       "localPath": "",
       "runCommand": "",
-      "tags": ["documentation", "skills", "ai"]
+      "tags": [
+        "documentation",
+        "skills",
+        "ai"
+      ]
     },
     {
       "id": "veronica-lucas-wedding",
@@ -565,22 +706,232 @@
       "repo": "https://github.com/DaveHomeAssist/VeronicaLucasWedding",
       "localPath": "",
       "runCommand": "",
-      "tags": ["wedding", "client"]
+      "tags": [
+        "wedding",
+        "client"
+      ]
+    },
+    {
+      "id": "pixelforge",
+      "name": "PixelForge",
+      "description": "Lightweight browser-based drawing app with raster and vector layers",
+      "category": "creative",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/PixelForge",
+      "repo": "https://github.com/DaveHomeAssist/PixelForge",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "drawing",
+        "canvas",
+        "editor"
+      ]
+    },
+    {
+      "id": "bpm-delay-calculator",
+      "name": "BPM Delay Calculator",
+      "description": "Tempo-synced delay and reverb time calculator for music production",
+      "category": "creative",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/bpm-delay-calculator",
+      "repo": "https://github.com/DaveHomeAssist/bpm-delay-calculator",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "music",
+        "calculator",
+        "audio"
+      ]
+    },
+    {
+      "id": "garden-cage-build-guide",
+      "name": "Garden Cage Build Guide",
+      "description": "Step-by-step garden cage construction guide",
+      "category": "outdoor",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/garden-cage-build-guide",
+      "repo": "https://github.com/DaveHomeAssist/garden-cage-build-guide",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "garden",
+        "diy",
+        "guide"
+      ]
+    },
+    {
+      "id": "garden-planner",
+      "name": "Garden Planner",
+      "description": "Garden layout and planting planner",
+      "category": "outdoor",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/garden-planner",
+      "repo": "https://github.com/DaveHomeAssist/garden-planner",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "garden",
+        "planner"
+      ]
+    },
+    {
+      "id": "mixmash",
+      "name": "MixMash",
+      "description": "Music mixing and mashup tool",
+      "category": "creative",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/mixmash",
+      "repo": "https://github.com/DaveHomeAssist/mixmash",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "music",
+        "mixing",
+        "audio"
+      ]
+    },
+    {
+      "id": "park-rave-005",
+      "name": "Park Rave 005",
+      "description": "Park rave event page",
+      "category": "creative",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/park-rave-005",
+      "repo": "https://github.com/DaveHomeAssist/park-rave-005",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "events",
+        "music"
+      ]
+    },
+    {
+      "id": "phillies-wire",
+      "name": "Phillies Wire",
+      "description": "Philadelphia Phillies news and content aggregator",
+      "category": "outdoor",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/phillies-wire",
+      "repo": "https://github.com/DaveHomeAssist/phillies-wire",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "baseball",
+        "phillies",
+        "sports"
+      ]
+    },
+    {
+      "id": "system-by-dave",
+      "name": "System by Dave",
+      "description": "Personal system and workflow documentation site",
+      "category": "infrastructure",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "custom-domain",
+      "url": "https://systembydave.com",
+      "repo": "https://github.com/DaveHomeAssist/system-by-dave",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "system",
+        "workflow",
+        "documentation"
+      ]
+    },
+    {
+      "id": "repo-favicons",
+      "name": "Repo Favicons",
+      "description": "Shared favicon and icon assets for all repos",
+      "category": "infrastructure",
+      "status": "active",
+      "visibility": "unlisted",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/repo-favicons",
+      "repo": "https://github.com/DaveHomeAssist/repo-favicons",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "assets",
+        "icons",
+        "shared"
+      ]
     }
   ],
   "categories": {
-    "outdoor": { "label": "Outdoor & Sports", "icon": "🌲", "color": "#2d6a4f" },
-    "dev-tools": { "label": "Dev Tools", "icon": "⚙️", "color": "#4361ee" },
-    "creative": { "label": "Creative", "icon": "🎨", "color": "#e76f51" },
-    "client-work": { "label": "Client Work", "icon": "💼", "color": "#6c757d" },
-    "infrastructure": { "label": "Infrastructure", "icon": "🔧", "color": "#7209b7" }
+    "outdoor": {
+      "label": "Outdoor & Sports",
+      "icon": "🌲",
+      "color": "#2d6a4f"
+    },
+    "dev-tools": {
+      "label": "Dev Tools",
+      "icon": "⚙️",
+      "color": "#4361ee"
+    },
+    "creative": {
+      "label": "Creative",
+      "icon": "🎨",
+      "color": "#e76f51"
+    },
+    "client-work": {
+      "label": "Client Work",
+      "icon": "💼",
+      "color": "#6c757d"
+    },
+    "infrastructure": {
+      "label": "Infrastructure",
+      "icon": "🔧",
+      "color": "#7209b7"
+    }
   },
   "hostingPlatforms": {
-    "github-pages": { "label": "GitHub Pages", "color": "#24292e" },
-    "vercel": { "label": "Vercel", "color": "#000000" },
-    "netlify": { "label": "Netlify", "color": "#00ad9f" },
-    "local": { "label": "Local", "color": "#e63946" },
-    "custom-domain": { "label": "Custom Domain", "color": "#8338ec" },
-    "none": { "label": "Not Deployed", "color": "#adb5bd" }
+    "github-pages": {
+      "label": "GitHub Pages",
+      "color": "#24292e"
+    },
+    "vercel": {
+      "label": "Vercel",
+      "color": "#000000"
+    },
+    "netlify": {
+      "label": "Netlify",
+      "color": "#00ad9f"
+    },
+    "local": {
+      "label": "Local",
+      "color": "#e63946"
+    },
+    "custom-domain": {
+      "label": "Custom Domain",
+      "color": "#8338ec"
+    },
+    "none": {
+      "label": "Not Deployed",
+      "color": "#adb5bd"
+    }
   }
 }
