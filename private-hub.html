@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mission Control — Dave's Project Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -481,13 +483,97 @@
     font-size: 11px;
   }
 
+  /* ── Focus visible ── */
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+  }
+
+  /* ── Screen reader only ── */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ── Filter group labels ── */
+  .filter-group-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    padding: 0 2px;
+    align-self: center;
+  }
+
+  /* ── Result count ── */
+  .result-count {
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--text-muted);
+    padding: 0 8px;
+    align-self: center;
+    white-space: nowrap;
+  }
+
+  /* ── Clear all button ── */
+  .clear-btn {
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-family: var(--mono);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    display: none;
+  }
+
+  .clear-btn.visible { display: inline-flex; }
+  .clear-btn:hover { border-color: var(--accent-red); color: var(--accent-red); }
+
+  /* ── Empty state reset ── */
+  .empty-reset {
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid var(--accent-blue);
+    border-radius: var(--radius);
+    color: var(--accent-blue);
+    font-size: 13px;
+    font-family: var(--mono);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .empty-reset:hover { background: rgba(59,130,246,0.25); }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+    .project-card:hover { transform: none; }
+  }
+
   @media (max-width: 768px) {
     .header, .controls, .projects-container, .stats-strip, .deps-section { padding-left: 16px; padding-right: 16px; }
     .project-grid { grid-template-columns: 1fr; }
     .project-row { grid-template-columns: 4px 1fr auto; }
-    .row-hosting, .row-category, .row-status, .row-hub { display: none; }
+    .row-hosting, .row-category, .row-hub { display: none; }
     .stats-strip { flex-wrap: wrap; }
     .stat { flex: 0 0 calc(50% - 2px); }
+    .keyboard-hint { display: none; }
   }
 </style>
 </head>
@@ -498,28 +584,34 @@
       <div class="header-logo">D</div>
       <h1>Mission Control<span>project-manifest.json</span></h1>
     </div>
-    <div style="font-size:12px;font-family:var(--mono);color:var(--text-muted);" id="lastUpdated"></div>
+    <div class="result-count" id="lastUpdated"></div>
   </header>
 
   <div class="stats-strip" id="stats"></div>
 
   <div class="controls">
     <div class="search-box">
-      <input type="text" id="search" placeholder="Search projects, tags, categories..." autofocus>
+      <label for="search" class="sr-only">Search projects</label>
+      <input type="text" id="search" placeholder="Search projects, tags, categories..." aria-label="Search projects">
     </div>
-    <div class="filter-group" id="categoryFilters"></div>
-    <div class="filter-group" id="statusFilters"></div>
-    <div class="filter-group" id="hubFilters"></div>
-    <div class="view-toggle">
-      <button class="view-btn active" data-view="grid" title="Grid view">▦</button>
-      <button class="view-btn" data-view="list" title="List view">☰</button>
+    <span class="filter-group-label">Category</span>
+    <div class="filter-group" id="categoryFilters" role="group" aria-label="Category filters"></div>
+    <span class="filter-group-label">Status</span>
+    <div class="filter-group" id="statusFilters" role="group" aria-label="Status filters"></div>
+    <span class="filter-group-label">Hub</span>
+    <div class="filter-group" id="hubFilters" role="group" aria-label="Public hub filters"></div>
+    <button class="clear-btn" id="clearFilters" aria-label="Clear all filters">Clear All</button>
+    <span class="result-count" id="resultCount"></span>
+    <div class="view-toggle" role="group" aria-label="View mode">
+      <button class="view-btn active" data-view="grid" aria-label="Grid view" aria-pressed="true">▦</button>
+      <button class="view-btn" data-view="list" aria-label="List view" aria-pressed="false">☰</button>
     </div>
   </div>
 
   <div class="projects-container">
     <div class="project-grid" id="projectGrid"></div>
     <div class="project-list" id="projectList" style="display:none;"></div>
-    <div class="empty-state" id="emptyState" style="display:none;">No projects match your filters.</div>
+    <div class="empty-state" id="emptyState" style="display:none;">No projects match your filters.<br><button class="empty-reset" onclick="clearAllFilters()">Clear All Filters</button></div>
   </div>
 
   <div class="deps-section" id="depsSection">
@@ -527,10 +619,10 @@
     <div class="deps-grid" id="depsGrid"></div>
   </div>
 
-  <div class="keyboard-hint">
+  <div class="keyboard-hint" aria-hidden="true">
     <span><kbd>/</kbd> Search</span>
-    <span><kbd>1-5</kbd> Filter</span>
     <span><kbd>V</kbd> Toggle view</span>
+    <span><kbd>Esc</kbd> Clear search</span>
   </div>
 </div>
 
@@ -1314,19 +1406,19 @@ function renderStats() {
 function renderFilters() {
   const cats = Object.entries(manifestData.categories);
   const catHTML = cats.map(([key, c]) =>
-    `<button class="filter-btn" data-category="${key}">${c.icon} ${c.label}</button>`
+    `<button class="filter-btn" data-category="${key}" aria-pressed="false">${c.icon} ${c.label}</button>`
   ).join('');
   document.getElementById('categoryFilters').innerHTML = catHTML;
 
   const statuses = ['active', 'wip', 'archived'];
   const statusHTML = statuses.map(s =>
-    `<button class="filter-btn" data-status="${s}">${s.toUpperCase()}</button>`
+    `<button class="filter-btn" data-status="${s}" aria-pressed="false">${s.toUpperCase()}</button>`
   ).join('');
   document.getElementById('statusFilters').innerHTML = statusHTML;
 
   document.getElementById('hubFilters').innerHTML =
-    `<button class="filter-btn" data-hub="on-public">On Public Hub</button>` +
-    `<button class="filter-btn" data-hub="not-on-public">Not on Public Hub</button>`;
+    `<button class="filter-btn" data-hub="on-public" aria-pressed="false">On Public Hub</button>` +
+    `<button class="filter-btn" data-hub="not-on-public" aria-pressed="false">Not on Public Hub</button>`;
 }
 
 // ── Filter logic ──
@@ -1350,11 +1442,24 @@ function getFiltered() {
 }
 
 // ── Render ──
+function hasActiveFilters() {
+  return state.category || state.status || state.publicHub || state.search;
+}
+
+function updateFilterChrome(count) {
+  const total = manifestData.projects.length;
+  const el = document.getElementById('resultCount');
+  el.textContent = hasActiveFilters() ? `${count} / ${total}` : `${total} projects`;
+  const clearBtn = document.getElementById('clearFilters');
+  clearBtn.classList.toggle('visible', !!hasActiveFilters());
+}
+
 function renderProjects() {
   const projects = getFiltered();
   const grid = document.getElementById('projectGrid');
   const list = document.getElementById('projectList');
   const empty = document.getElementById('emptyState');
+  updateFilterChrome(projects.length);
 
   if (projects.length === 0) {
     grid.style.display = 'none';
@@ -1427,10 +1532,10 @@ function buildActions(p, compact = false) {
   const btns = [];
 
   if (p.url) {
-    btns.push(`<a href="${p.url}" target="_blank" class="action-btn primary">→ Open</a>`);
+    btns.push(`<a href="${p.url}" target="_blank" rel="noopener noreferrer" class="action-btn primary">→ Open</a>`);
   }
   if (p.repo) {
-    btns.push(`<a href="${p.repo}" target="_blank" class="action-btn">⟨/⟩ Repo</a>`);
+    btns.push(`<a href="${p.repo}" target="_blank" rel="noopener noreferrer" class="action-btn">⟨/⟩ Repo</a>`);
   }
   if (p.runCommand) {
     btns.push(`<button class="action-btn" onclick="copyCmd('${p.runCommand}')">▶ Run</button>`);
@@ -1442,13 +1547,22 @@ function buildActions(p, compact = false) {
   return btns.join('');
 }
 
+function showToast(message, color) {
+  const toast = document.createElement('div');
+  toast.textContent = message;
+  toast.className = 'copy-toast';
+  toast.style.cssText = `position:fixed;bottom:60px;right:16px;background:${color || 'var(--accent-blue)'};color:#fff;padding:8px 16px;border-radius:6px;font-size:12px;font-family:var(--mono);z-index:999;`;
+  toast.setAttribute('role', 'status');
+  toast.setAttribute('aria-live', 'polite');
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000);
+}
+
 function copyCmd(cmd) {
   navigator.clipboard.writeText(cmd).then(() => {
-    const toast = document.createElement('div');
-    toast.textContent = `Copied: ${cmd}`;
-    toast.style.cssText = 'position:fixed;bottom:60px;right:16px;background:var(--accent-blue);color:#fff;padding:8px 16px;border-radius:6px;font-size:12px;font-family:var(--mono);z-index:999;';
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 2000);
+    showToast(`Copied: ${cmd}`);
+  }).catch(() => {
+    showToast('Copy failed — check clipboard permissions', 'var(--accent-red)');
   });
 }
 
@@ -1469,6 +1583,19 @@ function renderDeps() {
 }
 
 // ── Events ──
+function clearAllFilters() {
+  state.search = '';
+  state.category = null;
+  state.status = null;
+  state.publicHub = null;
+  document.getElementById('search').value = '';
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-pressed', 'false');
+  });
+  renderProjects();
+}
+
 function bindEvents() {
   // Search
   const searchInput = document.getElementById('search');
@@ -1477,15 +1604,21 @@ function bindEvents() {
     renderProjects();
   });
 
+  function syncFilterBtns(container, attr, activeValue) {
+    container.querySelectorAll('.filter-btn').forEach(b => {
+      const isActive = b.dataset[attr] === activeValue;
+      b.classList.toggle('active', isActive);
+      b.setAttribute('aria-pressed', isActive);
+    });
+  }
+
   // Category filters
   document.getElementById('categoryFilters').addEventListener('click', e => {
     const btn = e.target.closest('.filter-btn');
     if (!btn) return;
     const cat = btn.dataset.category;
     state.category = state.category === cat ? null : cat;
-    document.querySelectorAll('#categoryFilters .filter-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset.category === state.category)
-    );
+    syncFilterBtns(document.getElementById('categoryFilters'), 'category', state.category);
     renderProjects();
   });
 
@@ -1495,9 +1628,7 @@ function bindEvents() {
     if (!btn) return;
     const st = btn.dataset.status;
     state.status = state.status === st ? null : st;
-    document.querySelectorAll('#statusFilters .filter-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset.status === state.status)
-    );
+    syncFilterBtns(document.getElementById('statusFilters'), 'status', state.status);
     renderProjects();
   });
 
@@ -1507,17 +1638,21 @@ function bindEvents() {
     if (!btn) return;
     const hub = btn.dataset.hub;
     state.publicHub = state.publicHub === hub ? null : hub;
-    document.querySelectorAll('#hubFilters .filter-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset.hub === state.publicHub)
-    );
+    syncFilterBtns(document.getElementById('hubFilters'), 'hub', state.publicHub);
     renderProjects();
   });
+
+  // Clear all filters
+  document.getElementById('clearFilters').addEventListener('click', clearAllFilters);
 
   // View toggle
   document.querySelectorAll('.view-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       state.view = btn.dataset.view;
-      document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.view-btn').forEach(b => {
+        b.classList.toggle('active', b === btn);
+        b.setAttribute('aria-pressed', b === btn);
+      });
       renderProjects();
     });
   });
