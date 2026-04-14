@@ -1619,15 +1619,67 @@ const FALLBACK_MANIFEST = {
 
 let manifestData = FALLBACK_MANIFEST;
 
+let manifestError = null;
+
+function validateManifest(data) {
+  const errors = [];
+  const warnings = [];
+  if (!data || typeof data !== 'object') {
+    errors.push('Manifest is not an object');
+    return { ok: false, errors, warnings };
+  }
+  if (!data.meta || typeof data.meta !== 'object') {
+    errors.push('Missing meta object');
+  } else if (!data.meta.owner) {
+    errors.push('Missing meta.owner');
+  }
+  if (!Array.isArray(data.projects)) {
+    errors.push('projects is not an array');
+  } else {
+    data.projects.forEach((p, i) => {
+      if (!p || typeof p !== 'object') {
+        errors.push(`projects[${i}] is not an object`);
+        return;
+      }
+      if (!p.id) errors.push(`projects[${i}] missing id`);
+      if (!p.name) errors.push(`projects[${i}] missing name`);
+      if (!p.status) warnings.push(`projects[${i}] (${p.id || '?'}) missing status`);
+      if (!p.category) warnings.push(`projects[${i}] (${p.id || '?'}) missing category`);
+      if (!p.description) warnings.push(`projects[${i}] (${p.id || '?'}) missing description`);
+      if (!Array.isArray(p.tags)) warnings.push(`projects[${i}] (${p.id || '?'}) tags is not an array`);
+    });
+  }
+  if (!data.categories || typeof data.categories !== 'object') {
+    warnings.push('Missing categories map');
+  }
+  if (!data.hostingPlatforms || typeof data.hostingPlatforms !== 'object') {
+    warnings.push('Missing hostingPlatforms map');
+  }
+  return { ok: errors.length === 0, errors, warnings };
+}
+
 async function loadManifest() {
   try {
     const response = await fetch('./project-manifest.json', { cache: 'no-store' });
     if (!response.ok) {
       throw new Error(`Manifest request failed with ${response.status}`);
     }
-    manifestData = await response.json();
+    const data = await response.json();
+    const result = validateManifest(data);
+    if (!result.ok) {
+      console.error('Manifest validation failed:', result.errors);
+      manifestError = 'Manifest invalid — using fallback';
+      manifestData = FALLBACK_MANIFEST;
+      return;
+    }
+    if (result.warnings.length) {
+      console.warn('Manifest validation warnings:', result.warnings);
+    }
+    manifestData = data;
   } catch (error) {
     console.warn('Using embedded project manifest fallback.', error);
+    manifestError = 'Manifest failed to load — using fallback';
+    manifestData = FALLBACK_MANIFEST;
   }
 }
 
@@ -1745,6 +1797,23 @@ async function init() {
 }
 
 // ── Stats ──
+function makeStat(value, label, valueColor) {
+  const dl = document.createElement('dl');
+  dl.className = 'stat';
+  const wrap = document.createElement('div');
+  const dd = document.createElement('dd');
+  dd.className = 'stat-value';
+  if (valueColor) dd.style.color = valueColor;
+  dd.textContent = String(value);
+  const dt = document.createElement('dt');
+  dt.className = 'stat-label';
+  dt.textContent = label;
+  wrap.appendChild(dd);
+  wrap.appendChild(dt);
+  dl.appendChild(wrap);
+  return dl;
+}
+
 function renderStats() {
   const projects = manifestData.projects;
   const active = projects.filter(p => p.status === 'active').length;
@@ -1752,32 +1821,47 @@ function renderStats() {
   const onPublic = projects.filter(p => isOnPublicHub(p)).length;
   const platforms = new Set(projects.map(p => p.hosting).filter(h => h !== 'none')).size;
 
-  document.getElementById('stats').innerHTML = `
-    <dl class="stat"><div><dd class="stat-value">${projects.length}</dd><dt class="stat-label">Total Projects</dt></div></dl>
-    <dl class="stat"><div><dd class="stat-value" style="color:var(--accent-green)">${active}</dd><dt class="stat-label">Active</dt></div></dl>
-    <dl class="stat"><div><dd class="stat-value">${hosted}</dd><dt class="stat-label">Deployed</dt></div></dl>
-    <dl class="stat"><div><dd class="stat-value">${onPublic}</dd><dt class="stat-label">Public Hub</dt></div></dl>
-    <dl class="stat"><div><dd class="stat-value">${platforms}</dd><dt class="stat-label">Platforms</dt></div></dl>
-  `;
+  const stats = document.getElementById('stats');
+  const frag = document.createDocumentFragment();
+  frag.appendChild(makeStat(projects.length, 'Total Projects'));
+  frag.appendChild(makeStat(active, 'Active', 'var(--accent-green)'));
+  frag.appendChild(makeStat(hosted, 'Deployed'));
+  frag.appendChild(makeStat(onPublic, 'Public Hub'));
+  frag.appendChild(makeStat(platforms, 'Platforms'));
+  stats.replaceChildren(frag);
 }
 
 // ── Filters ──
+function makeFilterBtn(attrName, attrValue, label) {
+  const btn = document.createElement('button');
+  btn.className = 'filter-btn';
+  btn.dataset[attrName] = attrValue;
+  btn.setAttribute('aria-pressed', 'false');
+  btn.textContent = label;
+  return btn;
+}
+
 function renderFilters() {
-  const cats = Object.entries(manifestData.categories);
-  const catHTML = cats.map(([key, c]) =>
-    `<button class="filter-btn" data-category="${key}" aria-pressed="false">${c.icon} ${c.label}</button>`
-  ).join('');
-  document.getElementById('categoryFilters').innerHTML = catHTML;
+  const catContainer = document.getElementById('categoryFilters');
+  const catFrag = document.createDocumentFragment();
+  Object.entries(manifestData.categories || {}).forEach(([key, c]) => {
+    const label = `${c.icon ? c.icon + ' ' : ''}${c.label || key}`;
+    catFrag.appendChild(makeFilterBtn('category', key, label));
+  });
+  catContainer.replaceChildren(catFrag);
 
-  const statuses = ['active', 'wip', 'archived'];
-  const statusHTML = statuses.map(s =>
-    `<button class="filter-btn" data-status="${s}" aria-pressed="false">${s.toUpperCase()}</button>`
-  ).join('');
-  document.getElementById('statusFilters').innerHTML = statusHTML;
+  const statusContainer = document.getElementById('statusFilters');
+  const statusFrag = document.createDocumentFragment();
+  ['active', 'wip', 'archived'].forEach(s => {
+    statusFrag.appendChild(makeFilterBtn('status', s, s.toUpperCase()));
+  });
+  statusContainer.replaceChildren(statusFrag);
 
-  document.getElementById('hubFilters').innerHTML =
-    `<button class="filter-btn" data-hub="on-public" aria-pressed="false">On Public Hub</button>` +
-    `<button class="filter-btn" data-hub="not-on-public" aria-pressed="false">Not on Public Hub</button>`;
+  const hubContainer = document.getElementById('hubFilters');
+  const hubFrag = document.createDocumentFragment();
+  hubFrag.appendChild(makeFilterBtn('hub', 'on-public', 'On Public Hub'));
+  hubFrag.appendChild(makeFilterBtn('hub', 'not-on-public', 'Not on Public Hub'));
+  hubContainer.replaceChildren(hubFrag);
 }
 
 // ── Filter logic ──
@@ -1891,13 +1975,32 @@ function renderActiveChips() {
   }
   if (chips.length === 0) {
     container.classList.remove('visible');
-    container.innerHTML = '';
+    container.replaceChildren();
     return;
   }
   container.classList.add('visible');
-  container.innerHTML = '<span class="active-chips-label">Active</span>' + chips.map(c =>
-    `<span class="filter-chip"><span class="chip-label">${escapeHtml(c.label)}</span>${escapeHtml(c.value)}<button type="button" data-remove="${c.remove}" aria-label="Remove ${escapeHtml(c.label)} filter">×</button></span>`
-  ).join('');
+  const frag = document.createDocumentFragment();
+  const header = document.createElement('span');
+  header.className = 'active-chips-label';
+  header.textContent = 'Active';
+  frag.appendChild(header);
+  chips.forEach(c => {
+    const span = document.createElement('span');
+    span.className = 'filter-chip';
+    const lbl = document.createElement('span');
+    lbl.className = 'chip-label';
+    lbl.textContent = c.label;
+    span.appendChild(lbl);
+    span.appendChild(document.createTextNode(String(c.value)));
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.remove = c.remove;
+    btn.setAttribute('aria-label', `Remove ${c.label} filter`);
+    btn.textContent = '×';
+    span.appendChild(btn);
+    frag.appendChild(span);
+  });
+  container.replaceChildren(frag);
 }
 
 function removeFilter(key) {
@@ -1941,24 +2044,68 @@ function openDrawer(projectId) {
     return d ? d.name : id;
   });
 
-  const sections = [];
-  sections.push(`<div class="drawer-section"><h3>Description</h3><p>${escapeHtml(p.description || '—')}</p></div>`);
-  sections.push(`<div class="drawer-section"><h3>Status</h3><p>${escapeHtml(p.status)}${p.featured ? ' · ★ featured' : ''}</p></div>`);
-  sections.push(`<div class="drawer-section"><h3>Category</h3><p>${escapeHtml((cat.icon ? cat.icon + ' ' : '') + (cat.label || p.category || '—'))}</p></div>`);
-  sections.push(`<div class="drawer-section"><h3>Hosting</h3><p>${escapeHtml(host.label || p.hosting || '—')}</p></div>`);
-  sections.push(`<div class="drawer-section"><h3>Visibility</h3><p>${escapeHtml(p.visibility || '—')} ${isOnPublicHub(p) ? '(on public hub)' : '(private only)'}</p></div>`);
-  if (parent) sections.push(`<div class="drawer-section"><h3>Parent project</h3><p>${escapeHtml(parent.name)}</p></div>`);
-  if (deps.length) sections.push(`<div class="drawer-section"><h3>Dependencies</h3><p>${deps.map(escapeHtml).join(', ')}</p></div>`);
-  if (dependents.length) sections.push(`<div class="drawer-section"><h3>Dependents</h3><p>${dependents.map(escapeHtml).join(', ')}</p></div>`);
-  if (p.tags && p.tags.length) sections.push(`<div class="drawer-section"><h3>Tags</h3><div class="drawer-tags">${p.tags.map(t => `<span class="meta-chip">#${escapeHtml(t)}</span>`).join('')}</div></div>`);
-  if (p.localPath) sections.push(`<div class="drawer-section"><h3>Local path</h3><p><code>${escapeHtml(p.localPath)}</code></p></div>`);
-  if (p.runCommand) sections.push(`<div class="drawer-section"><h3>Run command</h3><p><code>${escapeHtml(p.runCommand)}</code></p></div>`);
-  content.innerHTML = sections.join('');
+  const makeSection = (heading, bodyNode) => {
+    const sec = document.createElement('div');
+    sec.className = 'drawer-section';
+    const h = document.createElement('h3');
+    h.textContent = heading;
+    sec.appendChild(h);
+    sec.appendChild(bodyNode);
+    return sec;
+  };
+  const makeP = (text) => { const el = document.createElement('p'); el.textContent = text; return el; };
+  const makePCode = (text) => {
+    const el = document.createElement('p');
+    const code = document.createElement('code');
+    code.textContent = text;
+    el.appendChild(code);
+    return el;
+  };
 
-  const actionBtns = [];
-  if (p.url) actionBtns.push(`<a href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer" class="action-btn primary">→ Open</a>`);
-  if (p.repo) actionBtns.push(`<a href="${escapeHtml(p.repo)}" target="_blank" rel="noopener noreferrer" class="action-btn">⟨/⟩ Repo</a>`);
-  actions.innerHTML = actionBtns.join('');
+  const contentFrag = document.createDocumentFragment();
+  contentFrag.appendChild(makeSection('Description', makeP(p.description || '—')));
+  contentFrag.appendChild(makeSection('Status', makeP(`${p.status || '—'}${p.featured ? ' · ★ featured' : ''}`)));
+  contentFrag.appendChild(makeSection('Category', makeP((cat.icon ? cat.icon + ' ' : '') + (cat.label || p.category || '—'))));
+  contentFrag.appendChild(makeSection('Hosting', makeP(host.label || p.hosting || '—')));
+  contentFrag.appendChild(makeSection('Visibility', makeP(`${p.visibility || '—'} ${isOnPublicHub(p) ? '(on public hub)' : '(private only)'}`)));
+  if (parent) contentFrag.appendChild(makeSection('Parent project', makeP(parent.name)));
+  if (deps.length) contentFrag.appendChild(makeSection('Dependencies', makeP(deps.join(', '))));
+  if (dependents.length) contentFrag.appendChild(makeSection('Dependents', makeP(dependents.join(', '))));
+  if (p.tags && p.tags.length) {
+    const tagsWrap = document.createElement('div');
+    tagsWrap.className = 'drawer-tags';
+    p.tags.forEach(t => {
+      const chip = document.createElement('span');
+      chip.className = 'meta-chip';
+      chip.textContent = `#${t}`;
+      tagsWrap.appendChild(chip);
+    });
+    contentFrag.appendChild(makeSection('Tags', tagsWrap));
+  }
+  if (p.localPath) contentFrag.appendChild(makeSection('Local path', makePCode(p.localPath)));
+  if (p.runCommand) contentFrag.appendChild(makeSection('Run command', makePCode(p.runCommand)));
+  content.replaceChildren(contentFrag);
+
+  const actionsFrag = document.createDocumentFragment();
+  if (p.url) {
+    const a = document.createElement('a');
+    a.href = p.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.className = 'action-btn primary';
+    a.textContent = '→ Open';
+    actionsFrag.appendChild(a);
+  }
+  if (p.repo) {
+    const a = document.createElement('a');
+    a.href = p.repo;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.className = 'action-btn';
+    a.textContent = '⟨/⟩ Repo';
+    actionsFrag.appendChild(a);
+  }
+  actions.replaceChildren(actionsFrag);
 
   drawer.hidden = false;
   backdrop.hidden = false;
@@ -2014,6 +2161,17 @@ function renderProjects() {
   const empty = document.getElementById('emptyState');
   updateFilterChrome(projects.length);
 
+  if (manifestError) {
+    const note = empty.querySelector('[data-manifest-error]') || (() => {
+      const n = document.createElement('div');
+      n.setAttribute('data-manifest-error', '');
+      n.style.cssText = 'margin-top:8px;color:var(--accent-red);font-size:12px;';
+      empty.appendChild(n);
+      return n;
+    })();
+    note.textContent = manifestError;
+  }
+
   if (projects.length === 0) {
     grid.style.display = 'none';
     list.style.display = 'none';
@@ -2026,78 +2184,166 @@ function renderProjects() {
   if (state.view === 'grid') {
     grid.style.display = 'grid';
     list.style.display = 'none';
-    grid.innerHTML = projects.map(renderCard).join('');
+    const frag = document.createDocumentFragment();
+    projects.forEach(p => frag.appendChild(renderCard(p)));
+    grid.replaceChildren(frag);
   } else {
     grid.style.display = 'none';
     list.style.display = 'flex';
-    list.innerHTML = projects.map(renderRow).join('');
+    const frag = document.createDocumentFragment();
+    projects.forEach(p => frag.appendChild(renderRow(p)));
+    list.replaceChildren(frag);
   }
+}
+
+function makeMetaChip(text, extraClass) {
+  const s = document.createElement('span');
+  s.className = 'meta-chip' + (extraClass ? ' ' + extraClass : '');
+  s.textContent = text;
+  return s;
 }
 
 function renderCard(p) {
   const cat = manifestData.categories[p.category] || {};
   const host = manifestData.hostingPlatforms[p.hosting] || {};
-  const actions = buildActions(p);
 
-  return `
-    <article class="project-card" data-status="${p.status}" data-project-id="${p.id}">
-      <div class="card-top">
-        <div class="card-name">
-          ${p.featured ? '<span class="featured-star">★</span>' : ''}
-          ${p.name}
-        </div>
-        <span class="card-status ${p.status}">${p.status}</span>
-      </div>
-      <div class="card-desc">${p.description}</div>
-      <div class="card-meta">
-        <span class="meta-chip category">${cat.icon || ''} ${cat.label || p.category}</span>
-        <span class="meta-chip hosting">${host.label || p.hosting}</span>
-        <span class="meta-chip ${isOnPublicHub(p) ? 'hub-public' : 'hub-private'}">${isOnPublicHub(p) ? 'Public Hub' : 'Private Only'}</span>
-        ${p.tags.slice(0, 3).map(t => `<span class="meta-chip">#${t}</span>`).join('')}
-      </div>
-      <div class="card-actions">${actions}</div>
-    </article>
-  `;
+  const article = document.createElement('article');
+  article.className = 'project-card';
+  article.dataset.status = p.status || '';
+  article.dataset.projectId = p.id;
+
+  const top = document.createElement('div');
+  top.className = 'card-top';
+  const nameWrap = document.createElement('div');
+  nameWrap.className = 'card-name';
+  if (p.featured) {
+    const star = document.createElement('span');
+    star.className = 'featured-star';
+    star.textContent = '★';
+    nameWrap.appendChild(star);
+    nameWrap.appendChild(document.createTextNode(' '));
+  }
+  nameWrap.appendChild(document.createTextNode(p.name || ''));
+  top.appendChild(nameWrap);
+  const status = document.createElement('span');
+  status.className = `card-status ${p.status || ''}`;
+  status.textContent = p.status || '';
+  top.appendChild(status);
+  article.appendChild(top);
+
+  const desc = document.createElement('div');
+  desc.className = 'card-desc';
+  desc.textContent = p.description || '';
+  article.appendChild(desc);
+
+  const meta = document.createElement('div');
+  meta.className = 'card-meta';
+  meta.appendChild(makeMetaChip(`${cat.icon || ''} ${cat.label || p.category || ''}`.trim(), 'category'));
+  meta.appendChild(makeMetaChip(host.label || p.hosting || '', 'hosting'));
+  meta.appendChild(makeMetaChip(isOnPublicHub(p) ? 'Public Hub' : 'Private Only', isOnPublicHub(p) ? 'hub-public' : 'hub-private'));
+  (p.tags || []).slice(0, 3).forEach(t => meta.appendChild(makeMetaChip(`#${t}`)));
+  article.appendChild(meta);
+
+  const actionsWrap = document.createElement('div');
+  actionsWrap.className = 'card-actions';
+  buildActions(p, false).forEach(el => actionsWrap.appendChild(el));
+  article.appendChild(actionsWrap);
+
+  return article;
 }
 
 function renderRow(p) {
   const cat = manifestData.categories[p.category] || {};
   const host = manifestData.hostingPlatforms[p.hosting] || {};
-  const actions = buildActions(p, true);
 
-  return `
-    <article class="project-row" data-project-id="${p.id}">
-      <div class="row-indicator ${p.status}"></div>
-      <div class="row-name">
-        ${p.featured ? '★ ' : ''}${p.name}
-        ${p.parentProject ? `<span class="sub">↳ ${p.parentProject}</span>` : ''}
-      </div>
-      <div class="row-hosting">${host.label || p.hosting}</div>
-      <div class="row-category">${cat.icon || ''} ${cat.label || ''}</div>
-      <div class="row-hub"><span class="meta-chip ${isOnPublicHub(p) ? 'hub-public' : 'hub-private'}">${isOnPublicHub(p) ? 'Public' : 'Private'}</span></div>
-      <div class="row-status">${p.status}</div>
-      <div class="row-actions">${actions}</div>
-    </article>
-  `;
+  const article = document.createElement('article');
+  article.className = 'project-row';
+  article.dataset.projectId = p.id;
+
+  const indicator = document.createElement('div');
+  indicator.className = `row-indicator ${p.status || ''}`;
+  article.appendChild(indicator);
+
+  const name = document.createElement('div');
+  name.className = 'row-name';
+  name.appendChild(document.createTextNode(`${p.featured ? '★ ' : ''}${p.name || ''}`));
+  if (p.parentProject) {
+    const sub = document.createElement('span');
+    sub.className = 'sub';
+    sub.textContent = ` ↳ ${p.parentProject}`;
+    name.appendChild(sub);
+  }
+  article.appendChild(name);
+
+  const hosting = document.createElement('div');
+  hosting.className = 'row-hosting';
+  hosting.textContent = host.label || p.hosting || '';
+  article.appendChild(hosting);
+
+  const category = document.createElement('div');
+  category.className = 'row-category';
+  category.textContent = `${cat.icon || ''} ${cat.label || ''}`.trim();
+  article.appendChild(category);
+
+  const hub = document.createElement('div');
+  hub.className = 'row-hub';
+  hub.appendChild(makeMetaChip(isOnPublicHub(p) ? 'Public' : 'Private', isOnPublicHub(p) ? 'hub-public' : 'hub-private'));
+  article.appendChild(hub);
+
+  const statusCell = document.createElement('div');
+  statusCell.className = 'row-status';
+  statusCell.textContent = p.status || '';
+  article.appendChild(statusCell);
+
+  const actionsWrap = document.createElement('div');
+  actionsWrap.className = 'row-actions';
+  buildActions(p, true).forEach(el => actionsWrap.appendChild(el));
+  article.appendChild(actionsWrap);
+
+  return article;
 }
 
 function buildActions(p, compact = false) {
-  const btns = [];
+  const els = [];
 
   if (p.url) {
-    btns.push(`<a href="${p.url}" target="_blank" rel="noopener noreferrer" class="action-btn primary">→ Open</a>`);
+    const a = document.createElement('a');
+    a.href = p.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.className = 'action-btn primary';
+    a.textContent = '→ Open';
+    els.push(a);
   }
   if (p.repo) {
-    btns.push(`<a href="${p.repo}" target="_blank" rel="noopener noreferrer" class="action-btn">⟨/⟩ Repo</a>`);
+    const a = document.createElement('a');
+    a.href = p.repo;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.className = 'action-btn';
+    a.textContent = '⟨/⟩ Repo';
+    els.push(a);
   }
   if (p.runCommand) {
-    btns.push(`<button class="action-btn" onclick="copyCmd('${p.runCommand}')">▶ Run</button>`);
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'action-btn';
+    b.dataset.action = 'copy';
+    b.dataset.copy = p.runCommand;
+    b.textContent = '▶ Run';
+    els.push(b);
   }
   if (p.localPath && !compact) {
-    btns.push(`<button class="action-btn" onclick="copyCmd('code ${p.localPath}')">📂 Open Local</button>`);
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'action-btn';
+    b.dataset.action = 'copy';
+    b.dataset.copy = `code ${p.localPath}`;
+    b.textContent = '📂 Open Local';
+    els.push(b);
   }
 
-  return btns.join('');
+  return els;
 }
 
 function showToast(message, color) {
@@ -2127,17 +2373,37 @@ function copyCmd(cmd) {
 // ── Dependencies ──
 function renderDeps() {
   const deps = manifestData.projects.filter(p => p.dependents && p.dependents.length > 0);
+  const depsGrid = document.getElementById('depsGrid');
   if (deps.length === 0) { document.getElementById('depsSection').style.display = 'none'; return; }
 
-  document.getElementById('depsGrid').innerHTML = deps.map(p =>
-    `<li class="dep-card" data-project-id="${p.id}" data-dependents="${(p.dependents || []).join(',')}" tabindex="0" role="button" aria-label="Filter to ${p.name} and its dependents">
-      <div class="dep-arrow">${p.name} →</div>
-      <div class="dep-names">${p.dependents.map(d => {
-        const proj = manifestData.projects.find(x => x.id === d);
-        return `<strong>${proj ? proj.name : d}</strong>`;
-      }).join(', ')}</div>
-    </li>`
-  ).join('');
+  const frag = document.createDocumentFragment();
+  deps.forEach(p => {
+    const li = document.createElement('li');
+    li.className = 'dep-card';
+    li.dataset.projectId = p.id;
+    li.dataset.dependents = (p.dependents || []).join(',');
+    li.tabIndex = 0;
+    li.setAttribute('role', 'button');
+    li.setAttribute('aria-label', `Filter to ${p.name} and its dependents`);
+
+    const arrow = document.createElement('div');
+    arrow.className = 'dep-arrow';
+    arrow.textContent = `${p.name} →`;
+    li.appendChild(arrow);
+
+    const names = document.createElement('div');
+    names.className = 'dep-names';
+    (p.dependents || []).forEach((d, i) => {
+      if (i > 0) names.appendChild(document.createTextNode(', '));
+      const strong = document.createElement('strong');
+      const proj = manifestData.projects.find(x => x.id === d);
+      strong.textContent = proj ? proj.name : d;
+      names.appendChild(strong);
+    });
+    li.appendChild(names);
+    frag.appendChild(li);
+  });
+  depsGrid.replaceChildren(frag);
 }
 
 function highlightProjects(ids) {
@@ -2168,11 +2434,17 @@ function clearAllFilters() {
 }
 
 function bindEvents() {
-  // Search
+  // Search (debounced 150ms)
   const searchInput = document.getElementById('search');
+  let searchDebounceTimer = null;
   searchInput.addEventListener('input', e => {
-    state.search = e.target.value;
-    onStateChange();
+    const value = e.target.value;
+    state.search = value;
+    if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+      searchDebounceTimer = null;
+      onStateChange();
+    }, 150);
   });
 
   function syncFilterBtns(container, attr, activeValue) {
@@ -2289,9 +2561,17 @@ function bindEvents() {
     });
   }
 
-  // Card click → open drawer (delegated)
-  const openFromEvent = (e) => {
-    // Don't trigger when clicking actions inside the card
+  // Delegated click handler for project grid/list:
+  // handles copy action buttons + card click → open drawer
+  const handleProjectClick = (e) => {
+    const copyBtn = e.target.closest('button[data-action="copy"]');
+    if (copyBtn) {
+      e.stopPropagation();
+      const cmd = copyBtn.dataset.copy;
+      if (cmd) copyCmd(cmd);
+      return;
+    }
+    // Don't trigger drawer when clicking other actions (links, buttons)
     if (e.target.closest('a, button')) return;
     const el = e.target.closest('[data-project-id]');
     if (!el) return;
@@ -2299,8 +2579,8 @@ function bindEvents() {
   };
   const gridEl = document.getElementById('projectGrid');
   const listEl = document.getElementById('projectList');
-  if (gridEl) gridEl.addEventListener('click', openFromEvent);
-  if (listEl) listEl.addEventListener('click', openFromEvent);
+  if (gridEl) gridEl.addEventListener('click', handleProjectClick);
+  if (listEl) listEl.addEventListener('click', handleProjectClick);
 
   // Drawer close / backdrop
   document.getElementById('drawerClose').addEventListener('click', closeDrawer);
