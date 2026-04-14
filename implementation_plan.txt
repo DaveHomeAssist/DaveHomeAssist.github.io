@@ -1,0 +1,267 @@
+================================================================================
+  PRIVATE-HUB.HTML — IMPLEMENTATION PLAN
+  Source: UI Quality Audit (2026-04-12, score 70/100)
+  Target: Production-ready internal mission control hub
+================================================================================
+
+ASSUMPTIONS
+- Single developer (Dave) is primary owner; Claude Code assists on implementation
+- No framework migration — stays as single-file vanilla HTML/CSS/JS
+- project-manifest.json remains the canonical data source
+- Target browsers: latest Chrome, Firefox, Safari, Edge (no IE)
+- No backend or auth layer planned for this phase
+
+
+================================================================================
+PHASE 1 — CRITICAL FIXES (Quick Wins)                         [COMPLETED]
+================================================================================
+Status: Shipped 2026-04-12 in commit 95a6f2c
+
+Milestone                                              Status
+------------------------------------------------------+--------
+Remove fake 1-5 keyboard shortcut from hint            DONE
+Add rel="noopener noreferrer" to external links        DONE
+Add aria-label to search input, remove autofocus       DONE
+Add :focus-visible to all interactive controls         DONE
+Add aria-pressed to filter and view buttons            DONE
+Add clipboard .catch() + error toast                   DONE
+Add "Clear All" button + empty state reset             DONE
+Hide keyboard hint on mobile                           DONE
+Keep text status visible on mobile list rows           DONE
+Add @media (prefers-reduced-motion: reduce)            DONE
+Add filter group labels (Category / Status / Hub)      DONE
+Add result count display                               DONE
+Add font preconnect hints                              DONE
+
+Resources: Claude Code
+Timeline:  Completed same-session
+Owner:     Dave / Claude Code
+
+
+================================================================================
+PHASE 2 — SEMANTIC STRUCTURE & ACCESSIBILITY           [COMPLETED]
+================================================================================
+Goal: Raise accessibility score from 48 → 75+
+
+2A. Semantic HTML Refactor
+    - Convert project cards from <div> to <article>
+    - Convert project grid/list to <ul>/<li>
+    - Convert stats strip to <dl>/<dt>/<dd>
+    - Wrap filter groups in <fieldset>/<legend> (replace current span labels)
+    - Add <main>, <nav>, <aside> landmarks where appropriate
+
+    Milestone: All interactive elements navigable via screen reader headings/landmarks
+    Owner: Dave
+    Resources: axe-core browser extension for validation
+
+2B. View Toggle Improvements
+    - Add visible text labels on narrow layouts ("Grid" / "List")
+    - Verify aria-pressed toggles correctly (already wired in Phase 1)
+
+2C. Toast / Live Region
+    - Add a persistent aria-live="polite" container in the DOM
+    - Route all toast messages through it (clipboard, filter changes)
+    - Ensure toast timeout gives enough reading time (min 3s)
+
+    Milestone: Zero critical axe-core violations
+    Owner: Dave
+    Est. timeline: 2-3 hours across 1-2 sessions
+
+
+================================================================================
+PHASE 3 — UX POLISH & INTERACTION QUALITY              [COMPLETED]
+================================================================================
+Goal: Raise UX clarity from 72 → 85+
+
+3A. Sort Controls
+    - Add compact sort dropdown beside view toggle
+    - Options: Name A-Z, Featured First, Status, Hosting, Category
+    - Persist sort preference in localStorage alongside view mode
+    - Wire into getFiltered() → getFilteredAndSorted()
+
+    Milestone: Users can sort the full catalog by any major dimension
+    Owner: Dave
+
+3B. State Persistence
+    - Save view, category, status, hub filter, sort to localStorage
+    - Restore on page load after manifest loads
+    - Clear stored state when "Clear All" is clicked
+
+    Milestone: Returning users see their last filter/view configuration
+    Owner: Dave
+
+3C. URL State Sync
+    - Sync search/filter/view/sort to query params
+      e.g. ?view=list&category=dev-tools&search=prompt&sort=name
+    - Read params on init to restore state (overrides localStorage)
+    - Update URL on every state change via replaceState (no history spam)
+
+    Milestone: Filter states are shareable via URL
+    Owner: Dave
+
+3D. Interactive Dependency Map
+    - On hover/click of a dependency card, highlight related project cards
+    - Add anchor links from dependency items to their project cards
+    - Optional: click dependency to filter to that relationship
+
+    Milestone: Dependency map is connected to the project grid
+    Owner: Dave
+
+    Est. timeline: 4-6 hours across 2-3 sessions
+
+
+================================================================================
+PHASE 4 — RENDERING & SECURITY HARDENING               [COMPLETED]
+================================================================================
+Goal: Replace innerHTML-driven rendering with safer patterns
+
+4A. DOM Rendering Migration
+    - Replace renderCard() string templates with createElement/textContent
+    - Replace renderRow() string templates with createElement/textContent
+    - Replace renderDeps() string templates with createElement/textContent
+    - Use DocumentFragment for batch DOM insertion
+    - Remove all inline onclick handlers; use delegated event listeners
+      on .project-grid and .project-list containers
+
+    Milestone: Zero innerHTML assignments with user/manifest data
+    Owner: Dave
+
+4B. Manifest Validation
+    - Add lightweight schema validation at load time
+    - Check required fields: meta.owner, projects[].id, projects[].name
+    - On validation failure: show user-facing error state, fall back to embedded
+    - Log validation warnings for optional missing fields
+
+    Milestone: Malformed manifest shows clear error instead of silent breakage
+    Owner: Dave
+
+4C. Search Debounce
+    - Debounce search input by 150-200ms
+    - Prevents full DOM rebuild on every keystroke
+    - Simple setTimeout/clearTimeout pattern (no library needed)
+
+    Milestone: Search input doesn't trigger render on every character
+    Owner: Dave
+
+    Est. timeline: 4-6 hours across 2-3 sessions
+
+
+================================================================================
+PHASE 5 — RESPONSIVE DESIGN REFINEMENT                 [COMPLETED]
+================================================================================
+Goal: Raise responsiveness from 69 → 85+
+
+5A. Additional Breakpoints
+    - Add tablet breakpoint (~1024px): 2-column grid, controls wrap better
+    - Add ultrawide cap (~1400px): max-width container or centered layout
+    - Tune filter button wrapping at each tier
+
+5B. Mobile List View
+    - Compact card layout for mobile list view (status text + hub badge visible)
+    - Swipeable filter chips instead of wrapping button rows
+
+5C. Sticky Header Performance
+    - Provide non-blur fallback for backdrop-filter on low-end devices
+    - Use @supports (backdrop-filter: blur(12px)) to conditionally apply
+    - Test on Safari iOS, Chrome Android
+
+5D. Wide Screen Enhancement
+    - On screens > 1400px, introduce featured section or masonry rhythm
+    - Prevent cards from stretching too wide (cap card max-width at ~440px)
+
+    Milestone: Page feels intentionally designed at mobile, tablet, laptop, ultrawide
+    Owner: Dave
+    Est. timeline: 3-4 hours across 1-2 sessions
+
+
+================================================================================
+PHASE 6 — EXPERIENCE UPGRADES (Creature Comforts)      [COMPLETED]
+================================================================================
+Goal: Raise experience polish from 76 → 90+
+
+6A. Active Filter Chips
+    - Show removable chips above the grid for each active filter/search
+    - Click chip to remove that individual filter
+    - Complements the existing "Clear All" button
+
+6B. Detail Drawer / Expand Panel
+    - Click a card to expand inline or open a side drawer
+    - Show: visibility, parent project, dependencies, local path, run command
+    - Uses manifest fields that are currently carried but not surfaced
+
+6C. Contrast & Typography Pass
+    - Audit --text-muted usage; raise contrast on functional text
+    - Reserve faintest token for purely decorative chrome only
+    - Ensure all text meets WCAG AA contrast ratio (4.5:1 for normal text)
+
+6D. Fuzzy / Weighted Search
+    - Weight search matches: name (3x) > tags (2x) > description (1x)
+    - Featured projects rank higher in results
+    - Optional: highlight matching text in results
+
+    Milestone: Hub feels like a polished internal tool, not a prototype
+    Owner: Dave
+    Est. timeline: 5-8 hours across 2-3 sessions
+
+
+================================================================================
+PHASE 7 — PERFORMANCE & ARCHITECTURE                   PARTIAL
+================================================================================
+7D fonts shipped. 7A/7B/7C deferred until catalog growth justifies.
+
+7A. Dependency Lookup Optimization
+    - Build id→project Map once during init()
+    - Replace repeated .find() calls in renderDeps()
+
+7B. Incremental / Virtualized Rendering
+    - Only if catalog exceeds ~80-100 cards
+    - Virtual scroll for list view; paginated grid view
+    - Not needed at current 46-project scale
+
+7C. Inline Manifest Reduction
+    - Reduce embedded fallback to minimal emergency data (just names + URLs)
+    - Or remove fallback entirely and show a proper loading/error state
+
+7D. Self-Hosted Fonts
+    - Download DM Sans + JetBrains Mono as local WOFF2
+    - Remove Google Fonts dependency for faster cold loads
+    - Provide system font fallback stack that matches sizing
+
+    Milestone: Page loads and renders under 1s on 3G throttle
+    Owner: Dave
+    Est. timeline: 2-3 hours, 1 session
+
+
+================================================================================
+SCORE TARGETS BY PHASE
+================================================================================
+
+                    Current   After P2   After P3   After P5   After P6
+Visual Design         84        84         86         88         90
+Responsiveness        69        69         72         85         87
+UX Clarity            72        74         85         86         90
+Accessibility         48        75         78         80         84
+Performance           74        74         76         78         82
+Engineering Quality   66        70         78         84         86
+Experience Polish     76        78         82         84         90
+────────────────────────────────────────────────────────────────────────
+Overall               70        75         80         84         87
+
+
+================================================================================
+PRIORITY SUMMARY
+================================================================================
+
+Phase   Description                     Status       Effort    Impact
+------+---------------------------------+------------+---------+--------
+  1     Critical fixes / quick wins      COMPLETED    —         High
+  2     Semantic HTML & accessibility    NOT STARTED  Small     High
+  3     UX polish & interaction          NOT STARTED  Medium    High
+  4     Rendering & security hardening   NOT STARTED  Medium    Medium
+  5     Responsive design refinement     NOT STARTED  Small     Medium
+  6     Experience upgrades              NOT STARTED  Medium    Medium
+  7     Performance & architecture       NOT STARTED  Small     Low
+
+Phases 2 and 3 are the highest-leverage next moves.
+Phase 4 matters most if manifest data ever comes from untrusted sources.
+Phase 7 is deferred until catalog scale justifies it.
