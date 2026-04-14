@@ -562,6 +562,43 @@
 
   .empty-reset:hover { background: rgba(59,130,246,0.25); }
 
+  /* ── Sort select ── */
+  .sort-select {
+    padding: 8px 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-family: var(--sans);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sort-select:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+  .sort-select:focus { border-color: var(--accent-blue); outline: none; }
+
+  /* ── Highlighted card (dep hover) ── */
+  .project-card.highlighted,
+  .project-row.highlighted {
+    border-color: var(--accent-purple) !important;
+    box-shadow: 0 0 0 1px var(--accent-purple);
+  }
+
+  /* ── Dep card interactive ── */
+  .dep-card {
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .dep-card:hover {
+    border-color: var(--accent-purple);
+    background: var(--bg-card-hover);
+  }
+  .dep-card:focus-visible {
+    outline: 2px solid var(--accent-purple);
+    outline-offset: 2px;
+  }
+
   /* ── Reduced motion ── */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -608,6 +645,15 @@
     <div class="filter-group" id="hubFilters" role="group" aria-label="Public hub filters"></div>
     <button class="clear-btn" id="clearFilters" aria-label="Clear all filters">Clear All</button>
     <span class="result-count" id="resultCount"></span>
+    <label for="sortSelect" class="sr-only">Sort projects</label>
+    <select id="sortSelect" class="sort-select" aria-label="Sort projects">
+      <option value="featured">Featured first</option>
+      <option value="name-asc">Name A-Z</option>
+      <option value="name-desc">Name Z-A</option>
+      <option value="status">Status</option>
+      <option value="hosting">Hosting</option>
+      <option value="category">Category</option>
+    </select>
     <div class="view-toggle" role="group" aria-label="View mode">
       <button class="view-btn active" data-view="grid" aria-label="Grid view" aria-pressed="true">▦</button>
       <button class="view-btn" data-view="list" aria-label="List view" aria-pressed="false">☰</button>
@@ -1375,13 +1421,99 @@ async function loadManifest() {
   }
 }
 
-let state = {
+const STORAGE_KEY = 'private-hub-state';
+const DEFAULT_STATE = {
   search: '',
   category: null,
   status: null,
   publicHub: null,
-  view: 'grid'
+  view: 'grid',
+  sort: 'featured'
 };
+
+let state = { ...DEFAULT_STATE };
+
+function persistState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) { /* private mode / quota */ }
+}
+
+function loadPersistedState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) { return null; }
+}
+
+function clearPersistedState() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+}
+
+function readUrlState() {
+  const params = new URLSearchParams(window.location.search);
+  const out = {};
+  if (params.has('search')) out.search = params.get('search') || '';
+  if (params.has('category')) out.category = params.get('category') || null;
+  if (params.has('status')) out.status = params.get('status') || null;
+  if (params.has('hub')) out.publicHub = params.get('hub') || null;
+  if (params.has('view')) out.view = params.get('view') || 'grid';
+  if (params.has('sort')) out.sort = params.get('sort') || 'featured';
+  return Object.keys(out).length ? out : null;
+}
+
+function syncUrlState() {
+  const params = new URLSearchParams();
+  if (state.search) params.set('search', state.search);
+  if (state.category) params.set('category', state.category);
+  if (state.status) params.set('status', state.status);
+  if (state.publicHub) params.set('hub', state.publicHub);
+  if (state.view && state.view !== DEFAULT_STATE.view) params.set('view', state.view);
+  if (state.sort && state.sort !== DEFAULT_STATE.sort) params.set('sort', state.sort);
+  const qs = params.toString();
+  const newUrl = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
+  try {
+    history.replaceState(null, '', newUrl);
+  } catch (e) {}
+}
+
+function onStateChange() {
+  persistState();
+  syncUrlState();
+  renderProjects();
+}
+
+function applyStateToUI() {
+  // Search input
+  const searchInput = document.getElementById('search');
+  if (searchInput) searchInput.value = state.search || '';
+
+  // Sort select
+  const sortSel = document.getElementById('sortSelect');
+  if (sortSel) sortSel.value = state.sort || 'featured';
+
+  // Filter buttons
+  const syncGroup = (containerId, attr, value) => {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.querySelectorAll('.filter-btn').forEach(b => {
+      const isActive = b.dataset[attr] === value;
+      b.classList.toggle('active', isActive);
+      b.setAttribute('aria-pressed', isActive);
+    });
+  };
+  syncGroup('categoryFilters', 'category', state.category);
+  syncGroup('statusFilters', 'status', state.status);
+  syncGroup('hubFilters', 'hub', state.publicHub);
+
+  // View buttons
+  document.querySelectorAll('.view-btn').forEach(b => {
+    const isActive = b.dataset.view === state.view;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-pressed', isActive);
+  });
+}
 
 // ── Init ──
 async function init() {
@@ -1390,6 +1522,14 @@ async function init() {
   renderStats();
   renderFilters();
   renderDeps();
+
+  // Restore: localStorage first, URL overrides
+  const persisted = loadPersistedState();
+  if (persisted) state = { ...DEFAULT_STATE, ...persisted };
+  const urlState = readUrlState();
+  if (urlState) state = { ...state, ...urlState };
+
+  applyStateToUI();
   renderProjects();
   bindEvents();
 }
@@ -1450,6 +1590,33 @@ function getFiltered() {
   });
 }
 
+function getFilteredAndSorted() {
+  const list = getFiltered().slice();
+  const cmp = (a, b) => String(a || '').localeCompare(String(b || ''));
+  switch (state.sort) {
+    case 'name-asc':
+      list.sort((a, b) => cmp(a.name, b.name));
+      break;
+    case 'name-desc':
+      list.sort((a, b) => cmp(b.name, a.name));
+      break;
+    case 'status':
+      list.sort((a, b) => cmp(a.status, b.status) || cmp(a.name, b.name));
+      break;
+    case 'hosting':
+      list.sort((a, b) => cmp(a.hosting, b.hosting) || cmp(a.name, b.name));
+      break;
+    case 'category':
+      list.sort((a, b) => cmp(a.category, b.category) || cmp(a.name, b.name));
+      break;
+    case 'featured':
+    default:
+      list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || cmp(a.name, b.name));
+      break;
+  }
+  return list;
+}
+
 // ── Render ──
 function hasActiveFilters() {
   return state.category || state.status || state.publicHub || state.search;
@@ -1464,7 +1631,7 @@ function updateFilterChrome(count) {
 }
 
 function renderProjects() {
-  const projects = getFiltered();
+  const projects = getFilteredAndSorted();
   const grid = document.getElementById('projectGrid');
   const list = document.getElementById('projectList');
   const empty = document.getElementById('emptyState');
@@ -1496,7 +1663,7 @@ function renderCard(p) {
   const actions = buildActions(p);
 
   return `
-    <article class="project-card" data-status="${p.status}">
+    <article class="project-card" data-status="${p.status}" data-project-id="${p.id}">
       <div class="card-top">
         <div class="card-name">
           ${p.featured ? '<span class="featured-star">★</span>' : ''}
@@ -1522,7 +1689,7 @@ function renderRow(p) {
   const actions = buildActions(p, true);
 
   return `
-    <article class="project-row">
+    <article class="project-row" data-project-id="${p.id}">
       <div class="row-indicator ${p.status}"></div>
       <div class="row-name">
         ${p.featured ? '★ ' : ''}${p.name}
@@ -1586,7 +1753,7 @@ function renderDeps() {
   if (deps.length === 0) { document.getElementById('depsSection').style.display = 'none'; return; }
 
   document.getElementById('depsGrid').innerHTML = deps.map(p =>
-    `<li class="dep-card">
+    `<li class="dep-card" data-project-id="${p.id}" data-dependents="${(p.dependents || []).join(',')}" tabindex="0" role="button" aria-label="Filter to ${p.name} and its dependents">
       <div class="dep-arrow">${p.name} →</div>
       <div class="dep-names">${p.dependents.map(d => {
         const proj = manifestData.projects.find(x => x.id === d);
@@ -1594,6 +1761,17 @@ function renderDeps() {
       }).join(', ')}</div>
     </li>`
   ).join('');
+}
+
+function highlightProjects(ids) {
+  const set = new Set(ids);
+  document.querySelectorAll('.project-card[data-project-id], .project-row[data-project-id]').forEach(el => {
+    el.classList.toggle('highlighted', set.has(el.dataset.projectId));
+  });
+}
+
+function clearHighlights() {
+  document.querySelectorAll('.highlighted').forEach(el => el.classList.remove('highlighted'));
 }
 
 // ── Events ──
@@ -1607,6 +1785,8 @@ function clearAllFilters() {
     b.classList.remove('active');
     b.setAttribute('aria-pressed', 'false');
   });
+  clearPersistedState();
+  syncUrlState();
   renderProjects();
 }
 
@@ -1615,7 +1795,7 @@ function bindEvents() {
   const searchInput = document.getElementById('search');
   searchInput.addEventListener('input', e => {
     state.search = e.target.value;
-    renderProjects();
+    onStateChange();
   });
 
   function syncFilterBtns(container, attr, activeValue) {
@@ -1633,7 +1813,7 @@ function bindEvents() {
     const cat = btn.dataset.category;
     state.category = state.category === cat ? null : cat;
     syncFilterBtns(document.getElementById('categoryFilters'), 'category', state.category);
-    renderProjects();
+    onStateChange();
   });
 
   // Status filters
@@ -1643,7 +1823,7 @@ function bindEvents() {
     const st = btn.dataset.status;
     state.status = state.status === st ? null : st;
     syncFilterBtns(document.getElementById('statusFilters'), 'status', state.status);
-    renderProjects();
+    onStateChange();
   });
 
   // Hub filters
@@ -1653,11 +1833,20 @@ function bindEvents() {
     const hub = btn.dataset.hub;
     state.publicHub = state.publicHub === hub ? null : hub;
     syncFilterBtns(document.getElementById('hubFilters'), 'hub', state.publicHub);
-    renderProjects();
+    onStateChange();
   });
 
   // Clear all filters
   document.getElementById('clearFilters').addEventListener('click', clearAllFilters);
+
+  // Sort select
+  const sortSel = document.getElementById('sortSelect');
+  if (sortSel) {
+    sortSel.addEventListener('change', e => {
+      state.sort = e.target.value;
+      onStateChange();
+    });
+  }
 
   // View toggle
   document.querySelectorAll('.view-btn').forEach(btn => {
@@ -1667,21 +1856,69 @@ function bindEvents() {
         b.classList.toggle('active', b === btn);
         b.setAttribute('aria-pressed', b === btn);
       });
-      renderProjects();
+      onStateChange();
     });
   });
 
+  // Dependency map interactivity
+  const depsGrid = document.getElementById('depsGrid');
+  if (depsGrid) {
+    const highlightFromCard = (card) => {
+      const ids = [card.dataset.projectId, ...(card.dataset.dependents || '').split(',').filter(Boolean)];
+      highlightProjects(ids);
+    };
+    depsGrid.addEventListener('mouseover', e => {
+      const card = e.target.closest('.dep-card');
+      if (card) highlightFromCard(card);
+    });
+    depsGrid.addEventListener('mouseout', e => {
+      const card = e.target.closest('.dep-card');
+      if (card) clearHighlights();
+    });
+    depsGrid.addEventListener('focusin', e => {
+      const card = e.target.closest('.dep-card');
+      if (card) highlightFromCard(card);
+    });
+    depsGrid.addEventListener('focusout', e => {
+      const card = e.target.closest('.dep-card');
+      if (card) clearHighlights();
+    });
+    const activate = (card) => {
+      const proj = manifestData.projects.find(x => x.id === card.dataset.projectId);
+      if (!proj) return;
+      state.search = proj.name;
+      const searchEl = document.getElementById('search');
+      if (searchEl) searchEl.value = proj.name;
+      onStateChange();
+    };
+    depsGrid.addEventListener('click', e => {
+      const card = e.target.closest('.dep-card');
+      if (card) activate(card);
+    });
+    depsGrid.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const card = e.target.closest('.dep-card');
+      if (card) { e.preventDefault(); activate(card); }
+    });
+  }
+
   // Keyboard shortcuts
   document.addEventListener('keydown', e => {
-    if (e.target.tagName === 'INPUT') {
-      if (e.key === 'Escape') { searchInput.blur(); searchInput.value = ''; state.search = ''; renderProjects(); }
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+      if (e.key === 'Escape' && e.target.tagName === 'INPUT') {
+        searchInput.blur(); searchInput.value = ''; state.search = ''; onStateChange();
+      }
       return;
     }
     if (e.key === '/') { e.preventDefault(); searchInput.focus(); }
     if (e.key === 'v' || e.key === 'V') {
       state.view = state.view === 'grid' ? 'list' : 'grid';
-      document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b.dataset.view === state.view));
-      renderProjects();
+      document.querySelectorAll('.view-btn').forEach(b => {
+        const isActive = b.dataset.view === state.view;
+        b.classList.toggle('active', isActive);
+        b.setAttribute('aria-pressed', isActive);
+      });
+      onStateChange();
     }
   });
 }
