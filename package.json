@@ -1,0 +1,8 @@
+{
+  "name": "davehomeassist-github-io",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync-manifest": "node scripts/sync-manifest.mjs"
+  }
+}

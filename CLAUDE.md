@@ -18,6 +18,10 @@ GitHub Pages org site for DaveHomeAssist. Contains multiple landing page iterati
 - Elysium Landing lives as a subdirectory within this repo
 - Assets and icons are shared across versions
 
+## Manifest Sync
+
+`project-manifest.json` is the single source of truth for the project list. Both `private-hub.html` and `index.html` embed a `FALLBACK_MANIFEST` block so the hubs still render if the fetch fails. After editing `project-manifest.json`, run `npm run sync-manifest` to propagate changes to both hubs' embedded fallbacks. Never edit the `FALLBACK_MANIFEST` blocks directly.
+
 ## Documentation Maintenance
 
 - **Issues**: Track in the issue tracker table below
