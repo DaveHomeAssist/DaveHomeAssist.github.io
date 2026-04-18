@@ -831,6 +831,12 @@
   }
 
   .footer a { color: var(--text-secondary); text-decoration: none; }
+  .footer-links {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    justify-content: flex-end;
+  }
   .footer a:hover,
   .footer a:focus-visible {
     color: var(--accent);
@@ -1037,7 +1043,10 @@
 
   <footer class="footer">
     <span>Built from <code>project-manifest.json</code></span>
-    <a href="https://github.com/DaveHomeAssist" target="_blank" rel="noopener noreferrer" aria-label="View DaveHomeAssist on GitHub (opens in a new tab)">View on GitHub</a>
+    <span class="footer-links">
+      <a href="archives/index-v1.html">v1 archive</a>
+      <a href="https://github.com/DaveHomeAssist" target="_blank" rel="noopener noreferrer" aria-label="View DaveHomeAssist on GitHub (opens in a new tab)">View on GitHub</a>
+    </span>
   </footer>
 </div>
 
