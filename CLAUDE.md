@@ -32,7 +32,7 @@ GitHub Pages org site for DaveHomeAssist. Contains multiple landing page iterati
 | ID | Severity | Status | Title | Notes |
 |----|----------|--------|-------|-------|
 | 001 | P1 | open | Elysium Landing contact CTA links to placeholder email | mailto:hello@example.com is non-functional |
-| 002 | P1 | open | Video engineer LinkedIn URL points to generic linkedin.com | Missing actual profile path |
+| 002 | P1 | resolved | Video engineer LinkedIn URL points to generic linkedin.com | Fixed: href updated to https://www.linkedin.com/in/daverobertson93/ |
 | 003 | P2 | open | Elysium nav links hidden on screens under 480px with no fallback | display:none removes all navigation on small phones |
 | 004 | P2 | open | Elysium back link uses inline onmouseover/onmouseout | Not keyboard accessible; should use CSS :hover and :focus-visible |
 | 005 | P2 | open | Video engineer page has no back link to main portfolio | Users cannot navigate back to the hub |
