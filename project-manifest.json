@@ -2,7 +2,7 @@
   "meta": {
     "owner": "DaveHomeAssist",
     "github": "https://github.com/DaveHomeAssist",
-    "lastUpdated": "2026-04-12",
+    "lastUpdated": "2026-04-28",
     "hub": "https://davehomeassist.github.io"
   },
   "projects": [
@@ -350,7 +350,7 @@
       "category": "outdoor",
       "status": "active",
       "visibility": "public",
-      "featured": false,
+      "featured": true,
       "hosting": "github-pages",
       "url": "https://davehomeassist.github.io/mlb-ballparks-quest/",
       "repo": "https://github.com/DaveHomeAssist/mlb-ballparks-quest",
@@ -771,20 +771,22 @@
     {
       "id": "garden-planner",
       "name": "Garden Planner",
-      "description": "Garden layout and planting planner",
+      "description": "Current Garden OS planner with beds, plant profiles, crop timelines, and planning workflows",
       "category": "outdoor",
       "status": "active",
       "visibility": "public",
       "featured": false,
       "hosting": "github-pages",
-      "url": "https://davehomeassist.github.io/garden-planner",
-      "repo": "https://github.com/DaveHomeAssist/garden-planner",
+      "url": "https://davehomeassist.github.io/garden-os/garden-planner-v5.html",
+      "repo": "https://github.com/DaveHomeAssist/garden-os",
       "localPath": "",
       "runCommand": "",
       "tags": [
         "garden",
-        "planner"
-      ]
+        "planner",
+        "garden-os"
+      ],
+      "parentProject": "garden-os"
     },
     {
       "id": "mixmash",
@@ -878,6 +880,82 @@
         "assets",
         "icons",
         "shared"
+      ]
+    },
+    {
+      "id": "agentdeck",
+      "name": "AgentDeck",
+      "description": "Local-first registry, inspector, and evaluation bench for AI agents, skills, prompt packages, fixtures, and backend adapters.",
+      "category": "dev-tools",
+      "status": "active",
+      "visibility": "private",
+      "featured": false,
+      "hosting": "none",
+      "url": "https://github.com/DaveHomeAssist/AgentDeck",
+      "repo": "https://github.com/DaveHomeAssist/AgentDeck",
+      "localPath": "../agentdeck",
+      "runCommand": "cd app && npm run dev",
+      "tags": [
+        "agents",
+        "evals",
+        "local-first"
+      ]
+    },
+    {
+      "id": "recipe-tracker",
+      "name": "Recipe Tracker",
+      "description": "Offline-capable family recipe journal with search, tags, editing, import/export backups, and PWA install support.",
+      "category": "creative",
+      "status": "active",
+      "visibility": "public",
+      "featured": true,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/recipe-tracker/",
+      "repo": "https://github.com/DaveHomeAssist/recipe-tracker",
+      "localPath": "../recipe-tracker",
+      "runCommand": "python scripts/static_server.py",
+      "tags": [
+        "recipes",
+        "pwa",
+        "family"
+      ]
+    },
+    {
+      "id": "content-automation",
+      "name": "Content Automation",
+      "description": "Local content engine for discovery, trend scoring, script generation, critique, repurposing, and review-gated publishing.",
+      "category": "dev-tools",
+      "status": "active",
+      "visibility": "private",
+      "featured": false,
+      "hosting": "none",
+      "url": "https://github.com/DaveHomeAssist/content-automation",
+      "repo": "https://github.com/DaveHomeAssist/content-automation",
+      "localPath": "../content-automation",
+      "runCommand": "npm test",
+      "tags": [
+        "automation",
+        "content",
+        "workflow"
+      ]
+    },
+    {
+      "id": "code-dashboard",
+      "name": "Code Dashboard",
+      "description": "Notion-backed dashboard automation for tracking code projects and workspace status from local scripts.",
+      "category": "infrastructure",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "none",
+      "url": "https://github.com/DaveHomeAssist/code-dashboard",
+      "repo": "https://github.com/DaveHomeAssist/code-dashboard",
+      "localPath": "../code-dashboard",
+      "runCommand": "node notionDashboardUpdate.js",
+      "tags": [
+        "notion",
+        "dashboard",
+        "automation"
       ]
     }
   ],

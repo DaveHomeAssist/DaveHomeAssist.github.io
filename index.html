@@ -5,30 +5,69 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dave Robertson — Projects</title>
 <meta name="description" content="Portfolio of tools, apps, and experiments by Dave Robertson.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/dm-sans-400.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('fonts/dm-sans-500.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('fonts/dm-sans-700.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/jetbrains-mono-400.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('fonts/jetbrains-mono-700.woff2') format('woff2');
+  }
+
   :root {
-    --bg: #faf9f6;
-    --bg-card: #ffffff;
-    --bg-hover: #f5f3ef;
-    --bg-muted: #f1ece5;
-    --border: #e8e4dd;
-    --border-hover: #d4cfc6;
-    --text: #1a1a1a;
-    --text-secondary: #6b6560;
-    --text-muted: #6b645d;
-    --accent: #a13d22;
-    --accent-soft: rgba(161,61,34,0.10);
-    --focus-ring: rgba(161,61,34,0.22);
+    --bg: #eef0e8;
+    --bg-card: rgba(255, 253, 246, 0.9);
+    --bg-hover: #f7f3e8;
+    --bg-muted: #e4e9df;
+    --border: rgba(24,32,31,0.12);
+    --border-hover: rgba(24,32,31,0.28);
+    --text: #18201f;
+    --text-secondary: #4e5e5b;
+    --text-muted: #75817d;
+    --accent: #c94f2d;
+    --accent-2: #1f7a78;
+    --accent-3: #d8a21f;
+    --accent-soft: rgba(201,79,45,0.12);
+    --focus-ring: rgba(31,122,120,0.24);
     --green: #2d6a4f;
     --blue: #2c5282;
-    --serif: 'Instrument Serif', Georgia, serif;
-    --sans: 'Outfit', -apple-system, sans-serif;
-    --radius: 12px;
-    --max-w: 1100px;
-    --shadow-hover: 0 12px 40px rgba(0,0,0,0.06);
+    --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    --radius: 14px;
+    --max-w: 1260px;
+    --shadow-hover: 0 18px 50px rgba(31,45,43,0.12);
   }
 
   html { scroll-behavior: smooth; }
@@ -37,7 +76,10 @@
 
   body {
     font-family: var(--sans);
-    background: var(--bg);
+    background:
+      radial-gradient(circle at 16% 0%, rgba(216,162,31,0.24), transparent 30%),
+      radial-gradient(circle at 84% 8%, rgba(31,122,120,0.18), transparent 28%),
+      linear-gradient(180deg, #f5f1e6 0%, var(--bg) 44%, #e7ece5 100%);
     color: var(--text);
     min-height: 100vh;
     line-height: 1.5;
@@ -65,7 +107,11 @@
     content: '';
     position: fixed;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    background-image:
+      linear-gradient(rgba(24,32,31,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(24,32,31,0.035) 1px, transparent 1px),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.026'/%3E%3C/svg%3E");
+    background-size: 64px 64px, 64px 64px, 256px 256px;
     pointer-events: none;
     z-index: 0;
   }
@@ -76,24 +122,110 @@
   .hero {
     max-width: var(--max-w);
     margin: 0 auto;
-    padding: 80px 32px 48px;
+    padding: 44px 32px 34px;
+  }
+
+  .hero-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .brand-mark {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: var(--text);
+    color: #fffdf6;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+  }
+
+  .brand-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .brand-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+    gap: 28px;
+    align-items: stretch;
+  }
+
+  .hero-copy {
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px 0;
+  }
+
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 8px 11px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: rgba(255,253,246,0.58);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .hero-kicker::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    box-shadow: 0 0 0 4px rgba(31,122,120,0.14);
   }
 
   .hero-name {
-    font-family: var(--serif);
-    font-size: clamp(42px, 6vw, 64px);
-    font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-bottom: 16px;
+    max-width: 760px;
+    font-size: clamp(52px, 8vw, 108px);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.065em;
+    margin-bottom: 20px;
   }
 
   .hero-sub {
-    font-size: 17px;
+    font-size: clamp(17px, 1.6vw, 21px);
     color: var(--text-secondary);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.6;
-    max-width: 560px;
+    max-width: 650px;
   }
 
   .hero-links {
@@ -104,21 +236,143 @@
   }
 
   .hero-link {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: rgba(255,253,246,0.66);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
     text-decoration: none;
-    padding: 6px 0;
-    border-bottom: 1px solid transparent;
     transition: all 0.2s;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .hero-link:hover,
   .hero-link:focus-visible {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
+    color: var(--text);
+    border-color: var(--border-hover);
+    background: #fffdf6;
+    transform: translateY(-1px);
     outline: none;
+  }
+
+  .hero-panel {
+    position: relative;
+    overflow: hidden;
+    min-height: 520px;
+    border: 1px solid rgba(24,32,31,0.16);
+    border-radius: 28px;
+    background:
+      linear-gradient(145deg, rgba(24,32,31,0.96), rgba(35,62,58,0.95)),
+      #18201f;
+    box-shadow: 0 28px 70px rgba(24,32,31,0.22);
+    color: #fffdf6;
+  }
+
+  .hero-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgba(255,253,246,0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,253,246,0.05) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.98), rgba(0,0,0,0.32));
+  }
+
+  .system-map {
+    position: absolute;
+    inset: 28px 28px auto;
+    height: 58%;
+  }
+
+  .system-node {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 92px;
+    min-height: 92px;
+    padding: 10px;
+    border-radius: 24px;
+    border: 1px solid rgba(255,253,246,0.16);
+    background: rgba(255,253,246,0.08);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 26px rgba(0,0,0,0.18);
+    font-family: var(--mono);
+    font-size: 10px;
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .system-node:nth-child(1) { left: 2%; top: 10%; background: rgba(201,79,45,0.16); }
+  .system-node:nth-child(2) { left: 34%; top: 0; background: rgba(31,122,120,0.2); }
+  .system-node:nth-child(3) { right: 4%; top: 18%; background: rgba(216,162,31,0.18); }
+  .system-node:nth-child(4) { left: 18%; bottom: 6%; background: rgba(255,253,246,0.1); }
+  .system-node:nth-child(5) { right: 24%; bottom: 0; background: rgba(31,122,120,0.14); }
+
+  .system-lines {
+    position: absolute;
+    inset: 0;
+    opacity: 0.58;
+  }
+
+  .system-lines path {
+    fill: none;
+    stroke: rgba(255,253,246,0.34);
+    stroke-width: 1.4;
+    stroke-dasharray: 4 7;
+  }
+
+  .panel-caption {
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+    display: grid;
+    gap: 14px;
+  }
+
+  .panel-title {
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+  }
+
+  .panel-meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .panel-stat {
+    border: 1px solid rgba(255,253,246,0.12);
+    border-radius: 12px;
+    padding: 12px;
+    background: rgba(255,253,246,0.08);
+  }
+
+  .panel-stat-value {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: #f4c757;
+  }
+
+  .panel-stat-label {
+    margin-top: 2px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,253,246,0.62);
   }
 
   .content { display: block; }
@@ -127,23 +381,24 @@
   .section {
     max-width: var(--max-w);
     margin: 0 auto;
-    padding: 0 32px 64px;
+    padding: 0 32px 72px;
   }
 
   .section-header {
     margin-bottom: 24px;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 18px;
   }
 
   .section-label {
-    font-family: var(--serif);
-    font-size: clamp(24px, 3vw, 30px);
-    font-weight: 400;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
+    font-size: clamp(28px, 3.2vw, 40px);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
     color: var(--text);
-    margin-bottom: 8px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
   }
 
   .section-intro {
@@ -153,12 +408,51 @@
     max-width: 640px;
   }
 
+  .section-kicker {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: rgba(255,253,246,0.58);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .status-pill::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent-2);
+  }
+
   .directory-tools {
     display: flex;
     flex-wrap: wrap;
     align-items: end;
     gap: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: rgba(255,253,246,0.62);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .search-field {
@@ -171,7 +465,8 @@
   .search-label {
     font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    font-family: var(--mono);
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-secondary);
   }
@@ -181,7 +476,7 @@
     padding: 14px 16px;
     border: 1px solid var(--border);
     border-radius: 14px;
-    background: var(--bg-card);
+    background: rgba(255,253,246,0.94);
     color: var(--text);
     font: inherit;
   }
@@ -211,6 +506,7 @@
     background: var(--bg-card);
     color: var(--text-secondary);
     font: inherit;
+    font-family: var(--mono);
     font-size: 13px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -251,15 +547,15 @@
 
   .featured-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 16px;
   }
 
   .featured-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 28px;
+    border-radius: 22px;
+    padding: 22px;
     text-decoration: none;
     color: inherit;
     transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease, transform 0.25s ease;
@@ -267,6 +563,20 @@
     flex-direction: column;
     position: relative;
     overflow: hidden;
+    min-height: 270px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .featured-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 18% 12%, var(--card-color, rgba(31,122,120,0.2)), transparent 36%),
+      linear-gradient(180deg, rgba(255,255,255,0.36), transparent 58%);
+    opacity: 0.54;
+    pointer-events: none;
   }
 
   .featured-card:hover,
@@ -284,7 +594,7 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: var(--accent);
+    background: var(--card-accent, var(--accent));
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.3s ease;
@@ -294,20 +604,22 @@
   .featured-card:focus-visible::after { transform: scaleX(1); }
 
   .fc-category {
+    position: relative;
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--accent);
+    color: var(--card-accent, var(--accent));
     margin-bottom: 12px;
   }
 
   .fc-name {
-    font-family: var(--serif);
-    font-size: 26px;
-    font-weight: 400;
-    line-height: 1.2;
-    margin-bottom: 8px;
+    position: relative;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin-bottom: 10px;
   }
 
   .fc-desc {
@@ -316,6 +628,7 @@
     line-height: 1.6;
     flex: 1;
     margin-bottom: 16px;
+    position: relative;
   }
 
   .fc-footer {
@@ -326,6 +639,7 @@
     flex-wrap: wrap;
     font-size: 12px;
     color: var(--text-muted);
+    position: relative;
   }
 
   .fc-tags {
@@ -347,72 +661,127 @@
     transition: transform 0.2s;
   }
 
+  .project-icon {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 18px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: rgba(24,32,31,0.08);
+    border: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .project-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .active-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .active-card {
+    display: grid;
+    gap: 12px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: rgba(24,32,31,0.88);
+    color: #fffdf6;
+    text-decoration: none;
+    min-height: 172px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .active-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--card-color, rgba(31,122,120,0.3)), transparent 62%);
+    opacity: 0.42;
+  }
+
+  .active-card > * {
+    position: relative;
+  }
+
+  .active-card:hover,
+  .active-card:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(255,253,246,0.34);
+    outline: none;
+  }
+
+  .active-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,253,246,0.62);
+  }
+
+  .active-name {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .active-desc {
+    color: rgba(255,253,246,0.72);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
   .featured-card:hover .fc-arrow,
   .featured-card:focus-visible .fc-arrow { transform: translateX(4px); }
 
   /* ── Directory ── */
   .directory-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
   }
 
-  .dir-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    text-decoration: none;
-    color: inherit;
-    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-    display: block;
+  .directory-feature-card {
+    min-height: 250px;
   }
 
-  .dir-card:hover,
-  .dir-card:focus-visible {
-    border-color: var(--border-hover);
-    background: var(--bg-hover);
-    box-shadow: 0 10px 24px rgba(0,0,0,0.04);
-    transform: translateY(-2px);
-    outline: none;
+  .directory-feature-card .project-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 14px;
+    border-radius: 14px;
+    font-size: 16px;
   }
 
-  .dir-name {
-    font-weight: 600;
-    font-size: 15px;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .directory-feature-card .fc-name {
+    font-size: 24px;
   }
 
-  .dir-name .arrow { color: var(--text-muted); font-size: 14px; transition: transform 0.2s; }
-  .dir-card:hover .dir-name .arrow,
-  .dir-card:focus-visible .dir-name .arrow { transform: translateX(3px); color: var(--accent); }
-
-  .dir-desc {
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 10px;
-  }
-
-  .dir-meta {
-    font-size: 11px;
-    color: var(--text-muted);
-    display: flex;
+  .directory-feature-card .fc-tags {
     flex-wrap: wrap;
-    gap: 8px 12px;
   }
 
   /* ── Category sections ── */
-  .cat-section { margin-bottom: 40px; }
+  .cat-section { margin-bottom: 44px; }
   .cat-section:last-child { margin-bottom: 0; }
 
   .cat-label {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 600;
-    color: var(--text-secondary);
+    color: var(--text);
     margin-bottom: 14px;
     display: flex;
     align-items: center;
@@ -482,21 +851,52 @@
 
   @media (max-width: 1024px) {
     .hero { padding: 72px 28px 44px; }
+    .hero-shell { grid-template-columns: 1fr; }
+    .hero-copy { min-height: auto; padding: 20px 0 0; }
+    .hero-panel { min-height: 430px; }
+    .active-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .section, .footer { padding-left: 28px; padding-right: 28px; }
   }
 
   @media (max-width: 768px) {
     .hero { padding: 60px 24px 36px; }
+    .hero-nav { align-items: flex-start; flex-direction: column; margin-bottom: 30px; }
+    .hero-links { gap: 8px; }
     .section, .footer, .noscript-note { padding-left: 24px; padding-right: 24px; }
     .section { padding-bottom: 56px; }
+    .section-header { align-items: flex-start; flex-direction: column; }
     .featured-card { padding: 24px; }
-    .dir-card { padding: 18px; }
     .directory-tools { gap: 12px; }
     .filter-group { flex-basis: 100%; }
   }
 
   @media (max-width: 640px) {
     .hero { padding: 48px 20px 32px; }
+    .hero-name { font-size: clamp(46px, 16vw, 68px); }
+    .hero-panel {
+      min-height: 0;
+      display: grid;
+      gap: 18px;
+      padding: 18px;
+      border-radius: 22px;
+    }
+    .system-map {
+      position: relative;
+      inset: auto;
+      height: 230px;
+    }
+    .system-node { width: 72px; min-height: 72px; border-radius: 18px; font-size: 8px; }
+    .panel-caption {
+      position: relative;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      order: -1;
+    }
+    .panel-title { font-size: 32px; }
+    .panel-meta { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .panel-stat { padding: 10px; }
+    .active-grid { grid-template-columns: 1fr; }
     .section, .footer, .noscript-note { padding-left: 20px; padding-right: 20px; }
     .featured-grid { grid-template-columns: 1fr; }
     .directory-grid { grid-template-columns: 1fr; }
@@ -519,12 +919,8 @@
 
     .featured-card:hover,
     .featured-card:focus-visible,
-    .dir-card:hover,
-    .dir-card:focus-visible,
     .featured-card:hover .fc-arrow,
-    .featured-card:focus-visible .fc-arrow,
-    .dir-card:hover .dir-name .arrow,
-    .dir-card:focus-visible .dir-name .arrow {
+    .featured-card:focus-visible .fc-arrow {
       transform: none;
     }
   }
@@ -534,27 +930,94 @@
 <a class="skip-link" href="#directoryHeading">Skip to projects</a>
 <div class="page">
   <header class="hero">
-    <h1 class="hero-name">Dave Robertson</h1>
-    <p class="hero-sub">Building tools for the outdoors, the stage, the screen, and everything in between. A collection of projects, experiments, and things that got out of hand.</p>
-    <nav class="hero-links" aria-label="Primary links">
-      <a href="https://github.com/DaveHomeAssist" class="hero-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)">GitHub</a>
-      <a href="https://promptlab.tools" class="hero-link" target="_blank" rel="noopener noreferrer" aria-label="Prompt Lab (opens in a new tab)">Prompt Lab</a>
-    </nav>
+    <div class="hero-nav">
+      <a class="brand-lockup" href="./" aria-label="DaveHomeAssist project hub home">
+        <span class="brand-mark">DHA</span>
+        <span>
+          <span class="brand-title">DaveHomeAssist</span>
+          <span class="brand-sub">Project foundry</span>
+        </span>
+      </a>
+      <nav class="hero-links" aria-label="Primary links">
+        <a href="https://github.com/DaveHomeAssist" class="hero-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)">GitHub</a>
+        <a href="https://promptlab.tools" class="hero-link" target="_blank" rel="noopener noreferrer" aria-label="Prompt Lab (opens in a new tab)">Prompt Lab</a>
+        <a href="#directoryHeading" class="hero-link">Directory</a>
+      </nav>
+    </div>
+
+    <div class="hero-shell">
+      <div class="hero-copy">
+        <div class="hero-kicker">Local-first tools, field notes, and experiments</div>
+        <h1 class="hero-name">Useful things that got out of hand.</h1>
+        <p class="hero-sub">A living catalog of apps, research benches, creative systems, trip planners, garden tools, and workflow machines by Dave Robertson.</p>
+      </div>
+
+      <aside class="hero-panel" aria-label="Project system snapshot">
+        <div class="system-map" aria-hidden="true">
+          <svg class="system-lines" viewBox="0 0 520 320" preserveAspectRatio="none">
+            <path d="M70 74 C160 18 246 35 326 82 S438 142 474 82"></path>
+            <path d="M92 230 C166 178 236 164 330 230 S432 254 468 198"></path>
+            <path d="M250 50 C228 122 218 188 160 250"></path>
+            <path d="M292 56 C330 132 356 180 350 258"></path>
+          </svg>
+          <span class="system-node">AgentDeck</span>
+          <span class="system-node">Garden OS</span>
+          <span class="system-node">Ballparks</span>
+          <span class="system-node">Recipes</span>
+          <span class="system-node">Prompt Lab</span>
+        </div>
+        <div class="panel-caption">
+          <div class="panel-title">One hub for the workbench.</div>
+          <div class="panel-meta">
+            <div class="panel-stat">
+              <div class="panel-stat-value" id="statPublicProjects">0</div>
+              <div class="panel-stat-label">Public</div>
+            </div>
+            <div class="panel-stat">
+              <div class="panel-stat-value" id="statFeaturedProjects">0</div>
+              <div class="panel-stat-label">Featured</div>
+            </div>
+            <div class="panel-stat">
+              <div class="panel-stat-value" id="statActiveProjects">0</div>
+              <div class="panel-stat-label">Active</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
   </header>
 
   <main class="content" id="mainContent">
     <section class="section" id="featured" aria-labelledby="featuredHeading">
       <div class="section-header">
-        <h2 class="section-label" id="featuredHeading">Featured</h2>
-        <p class="section-intro">A quick path into the strongest public builds without digging through the full directory.</p>
+        <div>
+          <div class="section-kicker">Start here</div>
+          <h2 class="section-label" id="featuredHeading">Featured builds</h2>
+          <p class="section-intro">A quick path into the strongest public builds without digging through the full directory.</p>
+        </div>
+        <span class="status-pill" id="featuredCountLabel">Featured</span>
       </div>
       <div class="featured-grid" id="featuredGrid"></div>
     </section>
 
+    <section class="section" id="activeBuilds" aria-labelledby="activeBuildsHeading">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Recently alive</div>
+          <h2 class="section-label" id="activeBuildsHeading">Current workbench</h2>
+          <p class="section-intro">Project surfaces that are actively being shaped, tested, or used locally.</p>
+        </div>
+      </div>
+      <div class="active-grid" id="activeGrid"></div>
+    </section>
+
     <section class="section" id="directory" aria-labelledby="directoryHeading">
       <div class="section-header">
-        <h2 class="section-label" id="directoryHeading">All Projects</h2>
-        <p class="section-intro">Browse the public catalog by category, or jump straight to a project with search.</p>
+        <div>
+          <div class="section-kicker">Everything public</div>
+          <h2 class="section-label" id="directoryHeading">Project directory</h2>
+          <p class="section-intro">Browse the public catalog by category, or jump straight to a project with search.</p>
+        </div>
       </div>
       <div class="directory-tools">
         <label class="search-field" for="projectSearch">
@@ -583,7 +1046,7 @@ const FALLBACK_MANIFEST = {
   "meta": {
     "owner": "DaveHomeAssist",
     "github": "https://github.com/DaveHomeAssist",
-    "lastUpdated": "2026-04-12",
+    "lastUpdated": "2026-04-28",
     "hub": "https://davehomeassist.github.io"
   },
   "projects": [
@@ -931,7 +1394,7 @@ const FALLBACK_MANIFEST = {
       "category": "outdoor",
       "status": "active",
       "visibility": "public",
-      "featured": false,
+      "featured": true,
       "hosting": "github-pages",
       "url": "https://davehomeassist.github.io/mlb-ballparks-quest/",
       "repo": "https://github.com/DaveHomeAssist/mlb-ballparks-quest",
@@ -1352,20 +1815,22 @@ const FALLBACK_MANIFEST = {
     {
       "id": "garden-planner",
       "name": "Garden Planner",
-      "description": "Garden layout and planting planner",
+      "description": "Current Garden OS planner with beds, plant profiles, crop timelines, and planning workflows",
       "category": "outdoor",
       "status": "active",
       "visibility": "public",
       "featured": false,
       "hosting": "github-pages",
-      "url": "https://davehomeassist.github.io/garden-planner",
-      "repo": "https://github.com/DaveHomeAssist/garden-planner",
+      "url": "https://davehomeassist.github.io/garden-os/garden-planner-v5.html",
+      "repo": "https://github.com/DaveHomeAssist/garden-os",
       "localPath": "",
       "runCommand": "",
       "tags": [
         "garden",
-        "planner"
-      ]
+        "planner",
+        "garden-os"
+      ],
+      "parentProject": "garden-os"
     },
     {
       "id": "mixmash",
@@ -1460,6 +1925,82 @@ const FALLBACK_MANIFEST = {
         "icons",
         "shared"
       ]
+    },
+    {
+      "id": "agentdeck",
+      "name": "AgentDeck",
+      "description": "Local-first registry, inspector, and evaluation bench for AI agents, skills, prompt packages, fixtures, and backend adapters.",
+      "category": "dev-tools",
+      "status": "active",
+      "visibility": "private",
+      "featured": false,
+      "hosting": "none",
+      "url": "https://github.com/DaveHomeAssist/AgentDeck",
+      "repo": "https://github.com/DaveHomeAssist/AgentDeck",
+      "localPath": "../agentdeck",
+      "runCommand": "cd app && npm run dev",
+      "tags": [
+        "agents",
+        "evals",
+        "local-first"
+      ]
+    },
+    {
+      "id": "recipe-tracker",
+      "name": "Recipe Tracker",
+      "description": "Offline-capable family recipe journal with search, tags, editing, import/export backups, and PWA install support.",
+      "category": "creative",
+      "status": "active",
+      "visibility": "public",
+      "featured": true,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/recipe-tracker/",
+      "repo": "https://github.com/DaveHomeAssist/recipe-tracker",
+      "localPath": "../recipe-tracker",
+      "runCommand": "python scripts/static_server.py",
+      "tags": [
+        "recipes",
+        "pwa",
+        "family"
+      ]
+    },
+    {
+      "id": "content-automation",
+      "name": "Content Automation",
+      "description": "Local content engine for discovery, trend scoring, script generation, critique, repurposing, and review-gated publishing.",
+      "category": "dev-tools",
+      "status": "active",
+      "visibility": "private",
+      "featured": false,
+      "hosting": "none",
+      "url": "https://github.com/DaveHomeAssist/content-automation",
+      "repo": "https://github.com/DaveHomeAssist/content-automation",
+      "localPath": "../content-automation",
+      "runCommand": "npm test",
+      "tags": [
+        "automation",
+        "content",
+        "workflow"
+      ]
+    },
+    {
+      "id": "code-dashboard",
+      "name": "Code Dashboard",
+      "description": "Notion-backed dashboard automation for tracking code projects and workspace status from local scripts.",
+      "category": "infrastructure",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "none",
+      "url": "https://github.com/DaveHomeAssist/code-dashboard",
+      "repo": "https://github.com/DaveHomeAssist/code-dashboard",
+      "localPath": "../code-dashboard",
+      "runCommand": "node notionDashboardUpdate.js",
+      "tags": [
+        "notion",
+        "dashboard",
+        "automation"
+      ]
     }
   ],
   "categories": {
@@ -1525,10 +2066,27 @@ const state = {
 };
 
 const featuredGrid = document.getElementById('featuredGrid');
+const activeGrid = document.getElementById('activeGrid');
 const directoryContent = document.getElementById('directoryContent');
 const categoryFilters = document.getElementById('categoryFilters');
 const resultsSummary = document.getElementById('resultsSummary');
 const projectSearch = document.getElementById('projectSearch');
+const statPublicProjects = document.getElementById('statPublicProjects');
+const statFeaturedProjects = document.getElementById('statFeaturedProjects');
+const statActiveProjects = document.getElementById('statActiveProjects');
+const featuredCountLabel = document.getElementById('featuredCountLabel');
+
+const PROJECT_ICONS = {
+  trailkeeper: 'icons/trailkeeper.png',
+  'garden-os': 'icons/garden-os.png',
+  'garden-planner': 'icons/garden-planner.png',
+  'garden-cage-build-guide': 'icons/garden-cage-build-guide.png',
+  'notion-widgets': 'icons/notion-widgets.png',
+  'prompt-lab': 'icons/prompt-lab.png',
+  'sdlc-tool-stack-map': 'icons/sdlc-stack-map.png',
+  'gemini-api-cost-calculator': 'icons/cost-calculator.png',
+  'web-templates': 'icons/web-templates.png'
+};
 
 async function loadManifest() {
   try {
@@ -1582,6 +2140,32 @@ function getDirectoryProjects() {
 
 function getProjectHref(project) {
   return project.url || project.repo || '#';
+}
+
+function getProjectIcon(project) {
+  if (PROJECT_ICONS[project.id]) {
+    return `<img src="${escapeHtml(PROJECT_ICONS[project.id])}" alt="" loading="lazy">`;
+  }
+
+  return escapeHtml((project.name || '?')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part[0])
+    .join('')
+    .toUpperCase());
+}
+
+function getCategoryStyle(project) {
+  const category = manifestData.categories[project.category] || {};
+  const color = category.color || '#1f7a78';
+  return `--card-accent:${escapeHtml(color)}; --card-color:${escapeHtml(color)}33;`;
+}
+
+function getActiveWorkbenchProjects() {
+  const priority = ['mlb-ballparks-quest', 'recipe-tracker', 'code-dashboard', 'garden-os'];
+  const byId = new Map(manifestData.projects.map(project => [project.id, project]));
+  return priority.map(id => byId.get(id)).filter(project => project && project.visibility === 'public');
 }
 
 function isExternalHref(href) {
@@ -1664,6 +2248,17 @@ function buildSummaryText(filteredCount, totalCount) {
   return `${parts.join(' ')}. Press / to focus search.`;
 }
 
+function renderStats() {
+  const publicProjects = manifestData.projects.filter(project => project.visibility === 'public');
+  const featured = getFeaturedProjects();
+  const active = publicProjects.filter(project => project.status === 'active');
+
+  statPublicProjects.textContent = String(publicProjects.length);
+  statFeaturedProjects.textContent = String(featured.length);
+  statActiveProjects.textContent = String(active.length);
+  featuredCountLabel.textContent = `${featured.length} featured`;
+}
+
 function renderCategoryFilters() {
   const counts = getDirectoryProjects().reduce((accumulator, project) => {
     accumulator[project.category] = (accumulator[project.category] || 0) + 1;
@@ -1707,7 +2302,8 @@ function renderFeatured() {
     const linkAttributes = buildLinkAttributes(href, 'featured-card', `Open ${project.name}`);
 
     return `
-      <a ${linkAttributes}>
+      <a ${linkAttributes} style="${getCategoryStyle(project)}">
+        <div class="project-icon" aria-hidden="true">${getProjectIcon(project)}</div>
         <div class="fc-category">${escapeHtml(category.icon || '')} ${escapeHtml(category.label || project.category)}</div>
         <div class="fc-name">${escapeHtml(project.name)}</div>
         <div class="fc-desc">${escapeHtml(project.description)}</div>
@@ -1717,6 +2313,24 @@ function renderFeatured() {
           </div>
           <span class="fc-arrow" aria-hidden="true">&rarr;</span>
         </div>
+      </a>
+    `;
+  }).join('');
+}
+
+function renderActiveBuilds() {
+  const projects = getActiveWorkbenchProjects();
+
+  activeGrid.innerHTML = projects.map(project => {
+    const category = manifestData.categories[project.category] || {};
+    const href = getProjectHref(project);
+    const linkAttributes = buildLinkAttributes(href, 'active-card', `Open ${project.name}`);
+
+    return `
+      <a ${linkAttributes} style="${getCategoryStyle(project)}">
+        <div class="active-label">${escapeHtml(category.label || project.category)} / ${escapeHtml(project.hosting === 'none' ? 'Repo first' : project.hosting)}</div>
+        <div class="active-name">${escapeHtml(project.name)}</div>
+        <div class="active-desc">${escapeHtml(project.description)}</div>
       </a>
     `;
   }).join('');
@@ -1760,15 +2374,20 @@ function renderDirectory() {
           ${projects.map(project => {
             const host = manifestData.hostingPlatforms[project.hosting] || {};
             const href = getProjectHref(project);
-            const linkAttributes = buildLinkAttributes(href, 'dir-card', `Open ${project.name}`);
+            const linkAttributes = buildLinkAttributes(href, 'featured-card directory-feature-card', `Open ${project.name}`);
 
             return `
-              <a ${linkAttributes}>
-                <div class="dir-name">${escapeHtml(project.name)} <span class="arrow" aria-hidden="true">&rarr;</span></div>
-                <div class="dir-desc">${escapeHtml(project.description)}</div>
-                <div class="dir-meta">
-                  <span>${escapeHtml(host.label || project.hosting)}</span>
-                  <span>${escapeHtml((project.tags || [])[0] || '')}</span>
+              <a ${linkAttributes} style="${getCategoryStyle(project)}">
+                <div class="project-icon" aria-hidden="true">${getProjectIcon(project)}</div>
+                <div class="fc-category">${escapeHtml(category.icon || '')} ${escapeHtml(category.label || project.category)}</div>
+                <div class="fc-name">${escapeHtml(project.name)}</div>
+                <div class="fc-desc">${escapeHtml(project.description)}</div>
+                <div class="fc-footer">
+                  <div class="fc-tags">
+                    <span class="fc-tag">${escapeHtml(host.label || project.hosting)}</span>
+                    ${(project.tags || []).slice(0, 2).map(tag => `<span class="fc-tag">${escapeHtml(tag)}</span>`).join('')}
+                  </div>
+                  <span class="fc-arrow" aria-hidden="true">&rarr;</span>
                 </div>
               </a>
             `;
@@ -1780,7 +2399,9 @@ function renderDirectory() {
 }
 
 function renderAll() {
+  renderStats();
   renderFeatured();
+  renderActiveBuilds();
   renderCategoryFilters();
   renderDirectory();
 }
