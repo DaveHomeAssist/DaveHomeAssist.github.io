@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Command Center icon</title>
+  <desc id="desc">Project icon for Command Center.</desc>
+  <defs>
+    <linearGradient id="g-command-center-061eed-candidate" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#99f6e4"/>
+      <stop offset="0.52" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#082f2c"/>
+    </linearGradient>
+    <radialGradient id="r-command-center-061eed-candidate" cx="30%" cy="20%" r="75%">
+      <stop offset="0" stop-color="#fffdf6" stop-opacity="0.58"/>
+      <stop offset="0.48" stop-color="#fffdf6" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.28"/>
+    </radialGradient>
+    <filter id="shadow-command-center-061eed-candidate" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="22" stdDeviation="22" flood-color="#000000" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" rx="188" fill="url(#g-command-center-061eed-candidate)"/>
+  <rect width="1024" height="1024" rx="188" fill="url(#r-command-center-061eed-candidate)"/>
+  <g opacity="0.18" stroke="#fffdf6" stroke-width="2">
+    <path d="M128 258h768M128 512h768M128 766h768M258 128v768M512 128v768M766 128v768"/>
+  </g>
+  <g filter="url(#shadow-command-center-061eed-candidate)"><circle cx="512" cy="512" r="254" stroke="#fffdf6" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="512" cy="512" r="136" stroke="#fffdf6" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.65"/><path stroke="#fffdf6" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M512 512l184-158M512 258v508M258 512h508"/><circle cx="650" cy="392" r="34" fill="#fffdf6" opacity="0.92"/></g>
+  <g>
+    <rect x="118" y="786" width="308" height="96" rx="32" fill="#fffdf6" opacity="0.92"/>
+    <text x="272" y="850" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="800" letter-spacing="3" fill="#082f2c">CC</text>
+  </g>
+</svg>

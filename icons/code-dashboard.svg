@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Code Dashboard icon</title>
+  <desc id="desc">Project icon for Code Dashboard.</desc>
+  <defs>
+    <linearGradient id="g-code-dashboard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#99f6e4"/>
+      <stop offset="0.52" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#082f2c"/>
+    </linearGradient>
+    <radialGradient id="r-code-dashboard" cx="30%" cy="20%" r="75%">
+      <stop offset="0" stop-color="#fffdf6" stop-opacity="0.58"/>
+      <stop offset="0.48" stop-color="#fffdf6" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.28"/>
+    </radialGradient>
+    <filter id="shadow-code-dashboard" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="22" stdDeviation="22" flood-color="#000000" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" rx="188" fill="url(#g-code-dashboard)"/>
+  <rect width="1024" height="1024" rx="188" fill="url(#r-code-dashboard)"/>
+  <g opacity="0.18" stroke="#fffdf6" stroke-width="2">
+    <path d="M128 258h768M128 512h768M128 766h768M258 128v768M512 128v768M766 128v768"/>
+  </g>
+  <g filter="url(#shadow-code-dashboard)"><rect x="252" y="292" width="520" height="412" rx="58" stroke="#fffdf6" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path stroke="#fffdf6" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M252 426h520M410 426v278"/><path stroke="#fffdf6" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M332 616l72-72 74 50 120-142"/></g>
+  <g>
+    <rect x="118" y="786" width="308" height="96" rx="32" fill="#fffdf6" opacity="0.92"/>
+    <text x="272" y="850" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="800" letter-spacing="3" fill="#082f2c">CD</text>
+  </g>
+</svg>
