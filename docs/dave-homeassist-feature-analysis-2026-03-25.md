@@ -2,7 +2,9 @@
 
 **Date:** 2026-03-25
 **Project:** dave-homeassist
-**Stack:** Static HTML/CSS, GitHub Pages, no JavaScript framework, no build step
+**Stack:** Current hub surfaces are static HTML/CSS on GitHub Pages. That is
+descriptive, not a rule against framework code or build tooling when the product
+needs it.
 
 ---
 
