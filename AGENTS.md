@@ -12,9 +12,8 @@ GitHub Pages org site for DaveHomeAssist. Contains multiple landing page iterati
 
 - Static HTML + CSS (multiple version files)
 - GitHub Pages hosting from repo root
-- Current hub pages are static assets today. That is not a rule against
-  framework code, build tooling, or package management when a future hub surface
-  needs app-quality behavior.
+- Current hub pages are static assets today; future hub surfaces can use
+  app-grade architecture when the product calls for it.
 
 ## Key Decisions
 

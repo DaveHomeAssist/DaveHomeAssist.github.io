@@ -2,9 +2,8 @@
 
 **Date:** 2026-03-25
 **Project:** dave-homeassist
-**Stack:** Current hub surfaces are static HTML/CSS on GitHub Pages. That is
-descriptive, not a rule against framework code or build tooling when the product
-needs it.
+**Stack:** Current hub surfaces are static HTML/CSS on GitHub Pages. Future hub
+surfaces can use app-grade architecture when the product calls for it.
 
 ---
 
