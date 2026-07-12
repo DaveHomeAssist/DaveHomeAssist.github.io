@@ -2,7 +2,7 @@
 
 These are development notes and planning artifacts for the `DaveHomeAssist.github.io` portfolio hub. They live under `docs/` rather than the repo root so they don't crowd the public-facing surface.
 
-They are still accessible at `https://davehomeassist.github.io/docs/` if linked directly. Nothing here is secret — move any confidential material to a private repo instead.
+Individual files are still served at `https://davehomeassist.github.io/docs/<filename>` if linked directly (the bare `/docs/` URL has no index page and returns 404). Nothing here is secret — move any confidential material to a private repo instead.
 
 ## Files
 

@@ -201,7 +201,7 @@
       "name": "Home OS",
       "description": "Home lab infrastructure management dashboard",
       "category": "home-personal-ops",
-      "status": "active",
+      "status": "archived",
       "visibility": "public",
       "featured": false,
       "hosting": "github-pages",
