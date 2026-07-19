@@ -6,7 +6,8 @@
 
 ASSUMPTIONS
 - Single developer (Dave) is primary owner; Claude Code assists on implementation
-- No framework migration — stays as single-file vanilla HTML/CSS/JS
+- Architecture should follow product need; avoid migration only when it does
+  not improve the internal mission control hub
 - project-manifest.json remains the canonical data source
 - Target browsers: latest Chrome, Firefox, Safari, Edge (no IE)
 - No backend or auth layer planned for this phase

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Inherits root rules from `/Users/daverobertson/Desktop/Code/AGENTS.md`.
+Inherits root rules from `/Users/daverobertson/Code/AGENTS.md`.
 
 ## Project Overview
 
@@ -10,7 +10,8 @@ GitHub Pages org site for DaveHomeAssist. Contains the project hub (index.html),
 
 - Static HTML + CSS (multiple version files)
 - GitHub Pages hosting from repo root
-- No build step, no framework
+- Current hub pages are static assets today; future hub surfaces can use
+  app-grade architecture when the product calls for it.
 
 ## Key Decisions
 
