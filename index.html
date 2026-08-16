@@ -2704,7 +2704,6 @@ const PROJECT_ICONS = {
   'system-by-dave': 'icons/system-by-dave.svg',
   'recipe-tracker': 'icons/recipe-tracker.svg',
   'code-dashboard': 'icons/code-dashboard.svg',
-  'stereo-field-compressor-candidate': 'icons/stereo-field-compressor-candidate.svg',
   'plotforge-candidate': 'icons/plotforge-candidate.svg',
   'new-land-pages-candidate': 'icons/new-land-pages-candidate.svg',
   'command-center-061eed-candidate': 'icons/command-center-061eed-candidate.svg',
@@ -3079,7 +3078,42 @@ function bindControls() {
   document.addEventListener('keydown', handleGlobalShortcuts);
 }
 
+// Legacy anchors: the hub used #section-<name> ids until the 2026-04 category
+// rebuild (e.g. #section-development). Map them onto the category filter so old
+// links still land somewhere useful instead of silently at the top of the page.
+const LEGACY_SECTION_MAP = {
+  'section-development': 'research-developer-utility',
+  'section-showcase': 'research-developer-utility',
+  'section-garden': 'garden-outdoor'
+};
+
+function resolveLegacyHash() {
+  const match = /^#section-([a-z-]+)$/i.exec(window.location.hash || '');
+  if (!match) return false;
+
+  const category = LEGACY_SECTION_MAP[`section-${match[1].toLowerCase()}`] || null;
+  const params = new URLSearchParams(window.location.search);
+
+  if (category) {
+    params.set('category', category);
+    const query = params.toString();
+    window.history.replaceState({}, '', `${window.location.pathname}${query ? `?${query}` : ''}#category-${category}`);
+  } else {
+    window.history.replaceState({}, '', `${window.location.pathname}${window.location.search}#directory`);
+  }
+
+  return true;
+}
+
+function scrollToHashTarget() {
+  const id = (window.location.hash || '').slice(1);
+  if (!id) return;
+  const target = document.getElementById(id);
+  if (target) target.scrollIntoView({ block: 'start' });
+}
+
 async function init() {
+  const hadLegacyHash = resolveLegacyHash();
   readStateFromUrl();
   bindControls();
   syncControls();
@@ -3089,6 +3123,8 @@ async function init() {
   sanitizeState();
   syncControls();
   renderAll();
+
+  if (hadLegacyHash) scrollToHashTarget();
 }
 
 init();
