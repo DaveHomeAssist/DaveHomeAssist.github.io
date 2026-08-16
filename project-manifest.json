@@ -1376,6 +1376,117 @@
         "local-first",
         "pwa"
       ]
+    },
+    {
+      "id": "streamdeck-icon-server-candidate",
+      "name": "Stream Deck Icon Server",
+      "description": "Local icon server for Stream Deck profiles (private; no description on GitHub yet)",
+      "category": "av-show-tools",
+      "status": "candidate",
+      "visibility": "private",
+      "featured": false,
+      "hosting": "none",
+      "url": "",
+      "repo": "",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "html",
+        "stream-deck"
+      ]
+    },
+    {
+      "id": "arena-ops-candidate",
+      "name": "Arena Ops",
+      "description": "Native macOS readiness dashboard for Resolume Arena",
+      "category": "av-show-tools",
+      "status": "candidate",
+      "visibility": "private",
+      "featured": false,
+      "hosting": "none",
+      "url": "",
+      "repo": "",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "swift",
+        "resolume"
+      ]
+    },
+    {
+      "id": "world-cup-app-candidate",
+      "name": "World Cup App",
+      "description": "Interactive FIFA World Cup 2026 bracket predictor - standalone System by Dave app.",
+      "category": "games-interactive-play",
+      "status": "candidate",
+      "visibility": "private",
+      "featured": false,
+      "hosting": "none",
+      "url": "",
+      "repo": "",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "typescript"
+      ]
+    },
+    {
+      "id": "tradetron-candidate",
+      "name": "Tradetron",
+      "description": "Self-contained crypto trading bot: pure Python strategy engine plus Tkinter desktop dashboard",
+      "category": "research-developer-utility",
+      "status": "candidate",
+      "visibility": "private",
+      "featured": false,
+      "hosting": "none",
+      "url": "",
+      "repo": "",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "python"
+      ]
+    },
+    {
+      "id": "marsscape-candidate",
+      "name": "Marsscape",
+      "description": "Tick-based Mars colony skiller: gather, craft, build, survive on the RuneScape XP curve",
+      "category": "games-interactive-play",
+      "status": "candidate",
+      "visibility": "private",
+      "featured": false,
+      "hosting": "none",
+      "url": "",
+      "repo": "",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "html"
+      ]
+    },
+    {
+      "id": "sbd-core-candidate",
+      "name": "SBD Core",
+      "description": "System by Dave shared core library: zero-dependency local-first primitives extracted from the portfolio",
+      "category": "ai-agent-systems",
+      "status": "candidate",
+      "visibility": "private",
+      "featured": false,
+      "hosting": "none",
+      "url": "",
+      "repo": "",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "javascript",
+        "library"
+      ]
     }
   ],
   "categories": {
