@@ -5,13 +5,13 @@ project registry that several tools consume.
 
 ## project-manifest.json is an API
 
-`project-manifest.json` is the canonical registry of every project in the
-account. It is consumed by:
+`project-manifest.json` is the canonical public registry of projects backed
+by public DaveHomeAssist repositories. Private inventory is never published
+through this repository. The public registry is consumed by:
 
 - **This hub** (`index.html`) to render the portfolio
 - **graph-explorer** to visualize the ecosystem
-- **command-center-061eed** (mirror of the private `ops-hub`) to monitor live
-  surfaces and git sync state
+- **command-center-061eed** to monitor public live surfaces and git sync state
 
 Treat changes to it as API changes: keep `id` values stable, update
 `meta.lastUpdated` on any edit, and never delete an entry for a repo that
@@ -24,7 +24,7 @@ still exists on GitHub (mark it `archived` instead).
 | `id` | Stable slug; never reuse or rename |
 | `status` | `active`, `wip`, `archived`, or `candidate` (added by sweep, pending curation) |
 | `featured` | Mirrors the `featured-product` GitHub topic; exactly the set pinned on the profile |
-| `visibility` | `public` or `unlisted` (published but not surfaced in hub navigation) |
+| `visibility` | Catalog visibility: `public`, `unlisted`, or `isolated`; private values are forbidden in public output |
 | `hosting` / `url` | Where the live surface runs, if any |
 | `repo` | GitHub URL; update on renames even though GitHub redirects |
 
