@@ -981,7 +981,7 @@
             <path d="M250 50 C228 122 218 188 160 250"></path>
             <path d="M292 56 C330 132 356 180 350 258"></path>
           </svg>
-          <span class="system-node">AgentDeck</span>
+          <span class="system-node">PixelForge</span>
           <span class="system-node">Garden OS</span>
           <span class="system-node">Ballparks</span>
           <span class="system-node">Recipes</span>
@@ -1069,7 +1069,7 @@ const FALLBACK_MANIFEST = {
   "meta": {
     "owner": "DaveHomeAssist",
     "github": "https://github.com/DaveHomeAssist",
-    "lastUpdated": "2026-08-16",
+    "lastUpdated": "2026-08-23",
     "hub": "https://davehomeassist.github.io"
   },
   "projects": [
@@ -1820,7 +1820,7 @@ const FALLBACK_MANIFEST = {
     {
       "id": "stereo-field-compressor",
       "name": "Stereo Field Compressor",
-      "description": "Sidechain driven spatial compression plugin (public prototype, archived; canonical source is the private StereoFieldCompressor repo)",
+      "description": "Sidechain-driven spatial compression plugin (public prototype, archived; canonical source pending duplicate-resolution review)",
       "category": "audio-music-tools",
       "status": "archived",
       "visibility": "public",
@@ -1971,25 +1971,6 @@ const FALLBACK_MANIFEST = {
       ]
     },
     {
-      "id": "agentdeck",
-      "name": "AgentDeck",
-      "description": "Local-first registry, inspector, and evaluation bench for AI agents, skills, prompt packages, fixtures, and backend adapters.",
-      "category": "ai-agent-systems",
-      "status": "active",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "agents",
-        "evals",
-        "local-first"
-      ]
-    },
-    {
       "id": "recipe-tracker",
       "name": "Recipe Tracker",
       "description": "Offline-capable family recipe journal with search, tags, editing, import/export backups, and PWA install support.",
@@ -2009,25 +1990,6 @@ const FALLBACK_MANIFEST = {
       ]
     },
     {
-      "id": "content-automation",
-      "name": "Content Automation",
-      "description": "Local content engine for discovery, trend scoring, script generation, critique, repurposing, and review-gated publishing.",
-      "category": "ai-agent-systems",
-      "status": "active",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "automation",
-        "content",
-        "workflow"
-      ]
-    },
-    {
       "id": "code-dashboard",
       "name": "Code Dashboard",
       "description": "Notion-backed dashboard automation for tracking code projects and workspace status from local scripts.",
@@ -2044,78 +2006,6 @@ const FALLBACK_MANIFEST = {
         "notion",
         "dashboard",
         "automation"
-      ]
-    },
-    {
-      "id": "llm-log-candidate",
-      "name": "LLM Log",
-      "description": "Private snapshot dashboard of DB | Discussion Log",
-      "category": "ai-agent-systems",
-      "status": "archived",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "html"
-      ]
-    },
-    {
-      "id": "bpmdelay-calc-candidate",
-      "name": "BPM Delay Calc",
-      "description": "JUCE BPM delay calculator plugin with Windows GitHub Actions build artifacts",
-      "category": "audio-music-tools",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "c++"
-      ]
-    },
-    {
-      "id": "stereo-field-compressor-private-candidate",
-      "name": "Stereo Field Compressor",
-      "description": "JUCE VST3/Standalone spatial compressor — mid/side, cone-weighted gain reduction",
-      "category": "audio-music-tools",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "c++"
-      ]
-    },
-    {
-      "id": "cueforge-candidate",
-      "name": "CueForge",
-      "description": "Live cue control software: audio, video, lighting (DMX), MIDI, and OSC in a single timeline",
-      "category": "av-show-tools",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "typescript"
       ]
     },
     {
@@ -2157,7 +2047,7 @@ const FALLBACK_MANIFEST = {
     {
       "id": "command-center-061eed-candidate",
       "name": "Command Center",
-      "description": "Single-page ops dashboard: one-screen view of project status, git sync state, and domain health (mirror of ops-hub)",
+      "description": "Public operations dashboard for project status, git sync state, and domain health",
       "category": "command-center-ops",
       "status": "candidate",
       "visibility": "public",
@@ -2165,95 +2055,6 @@ const FALLBACK_MANIFEST = {
       "hosting": "github-pages",
       "url": "https://davehomeassist.github.io/command-center-061eed/",
       "repo": "https://github.com/DaveHomeAssist/command-center-061eed",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "html"
-      ]
-    },
-    {
-      "id": "ops-hub-candidate",
-      "name": "Ops Hub",
-      "description": "Local generator workspace for the Ops Hub switchboard; canonical source behind the command center",
-      "category": "command-center-ops",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "html"
-      ]
-    },
-    {
-      "id": "secrets-inventory-candidate",
-      "name": "Secrets Inventory",
-      "description": "Cross-project API credentials and env-var inventory. Tracker, not a vault.",
-      "category": "command-center-ops",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate"
-      ]
-    },
-    {
-      "id": "chip-signals-webapp-candidate",
-      "name": "Chip Signals Webapp",
-      "description": "Web interface for the daily chip-signals report: 2-minute briefing plus valuation and catalyst data",
-      "category": "content-signals",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "typescript"
-      ]
-    },
-    {
-      "id": "frontier-signals-candidate",
-      "name": "Frontier Signals",
-      "description": "Astro source for frontiersignals.io, editorial site of record for AI infrastructure research",
-      "category": "content-signals",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "astro"
-      ]
-    },
-    {
-      "id": "frontier-signals-pipeline-candidate",
-      "name": "Frontier Signals Pipeline",
-      "description": "Quantum news scraper + dashboard. Daily Task Scheduler 7:30 AM ET.",
-      "category": "content-signals",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
       "localPath": "",
       "runCommand": "",
       "tags": [
@@ -2331,24 +2132,6 @@ const FALLBACK_MANIFEST = {
       "runCommand": "",
       "tags": [
         "catalog-candidate"
-      ]
-    },
-    {
-      "id": "aoe2-clone-candidate",
-      "name": "AOE2 Clone",
-      "description": "Deterministic C++ RTS in the Age of Empires II lineage. Headless sim core plus optional SDL3 app. Lockstep multiplayer over TCP.",
-      "category": "games-interactive-play",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "typescript"
       ]
     },
     {
@@ -2442,117 +2225,6 @@ const FALLBACK_MANIFEST = {
         "markdown",
         "local-first",
         "pwa"
-      ]
-    },
-    {
-      "id": "streamdeck-icon-server-candidate",
-      "name": "Stream Deck Icon Server",
-      "description": "Local icon server for Stream Deck profiles (private; no description on GitHub yet)",
-      "category": "av-show-tools",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "html",
-        "stream-deck"
-      ]
-    },
-    {
-      "id": "arena-ops-candidate",
-      "name": "Arena Ops",
-      "description": "Native macOS readiness dashboard for Resolume Arena",
-      "category": "av-show-tools",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "swift",
-        "resolume"
-      ]
-    },
-    {
-      "id": "world-cup-app-candidate",
-      "name": "World Cup App",
-      "description": "Interactive FIFA World Cup 2026 bracket predictor - standalone System by Dave app.",
-      "category": "games-interactive-play",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "typescript"
-      ]
-    },
-    {
-      "id": "tradetron-candidate",
-      "name": "Tradetron",
-      "description": "Self-contained crypto trading bot: pure Python strategy engine plus Tkinter desktop dashboard",
-      "category": "research-developer-utility",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "python"
-      ]
-    },
-    {
-      "id": "marsscape-candidate",
-      "name": "Marsscape",
-      "description": "Tick-based Mars colony skiller: gather, craft, build, survive on the RuneScape XP curve",
-      "category": "games-interactive-play",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "html"
-      ]
-    },
-    {
-      "id": "sbd-core-candidate",
-      "name": "SBD Core",
-      "description": "System by Dave shared core library: zero-dependency local-first primitives extracted from the portfolio",
-      "category": "ai-agent-systems",
-      "status": "candidate",
-      "visibility": "private",
-      "featured": false,
-      "hosting": "none",
-      "url": "",
-      "repo": "",
-      "localPath": "",
-      "runCommand": "",
-      "tags": [
-        "catalog-candidate",
-        "javascript",
-        "library"
       ]
     }
   ],
