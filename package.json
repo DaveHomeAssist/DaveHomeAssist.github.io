@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "validate-manifest": "node scripts/validate-public-manifest.mjs",
-    "sync-manifest": "npm run validate-manifest && node scripts/sync-manifest.mjs"
+    "check-manifest": "npm run validate-manifest && node scripts/sync-manifest.mjs --check",
+    "sync-manifest": "npm run validate-manifest && node scripts/sync-manifest.mjs",
+    "test": "npm run check-manifest"
   }
 }
