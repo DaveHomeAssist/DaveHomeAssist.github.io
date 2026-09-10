@@ -18,3 +18,10 @@ jobs:
           test -f video-engineer.html
           grep -qi '<title>' index.html
           ! grep -R -n -E '^(<<<<<<<|=======|>>>>>>>)' index.html script-writing-machine.html video-engineer.html
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate public registry and embedded fallbacks
+        run: npm run check-manifest

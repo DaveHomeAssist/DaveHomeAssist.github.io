@@ -21,7 +21,7 @@ GitHub Pages org site for DaveHomeAssist. Contains the project hub (index.html),
 
 ## Manifest Sync
 
-`project-manifest.json` is the single source of truth for the project list. Both `private-hub.html` and `index.html` embed a `FALLBACK_MANIFEST` block so the hubs still render if the fetch fails. After editing `project-manifest.json`, run `npm run sync-manifest` to propagate changes to both hubs' embedded fallbacks. Never edit the `FALLBACK_MANIFEST` blocks directly.
+`project-manifest.json` is the single source of truth for the project list. `index.html`, `public-hub.html` and `private-hub.html` each embed a `FALLBACK_MANIFEST` block so the hubs still render if the fetch fails. After editing `project-manifest.json`, run `npm run sync-manifest` to propagate changes to every embedded fallback (the target list lives in `scripts/sync-manifest.mjs`; add any new hub page there). Never edit the `FALLBACK_MANIFEST` blocks directly. `node scripts/sync-manifest.mjs --check` reports drift without writing.
 
 ## Documentation Maintenance
 
@@ -36,7 +36,9 @@ GitHub Pages org site for DaveHomeAssist. Contains the project hub (index.html),
 | 002 | P1 | resolved | Video engineer LinkedIn URL points to generic linkedin.com | Fixed: href updated to https://www.linkedin.com/in/daverobertson93/ |
 | 003 | P2 | obsolete | Elysium nav links hidden on screens under 480px with no fallback | Elysium pages removed from repo; issue no longer applies |
 | 004 | P2 | obsolete | Elysium back link uses inline onmouseover/onmouseout | Elysium pages removed from repo; issue no longer applies |
-| 005 | P2 | open | Video engineer page has no back link to main portfolio | Users cannot navigate back to the hub |
+| 005 | P2 | resolved | Video engineer page has no back link to main portfolio | Fixed 2026-07-11 in 93ca6c6: "Back to Portfolio" link added to video-engineer.html |
+| 009 | P0 | resolved | private-hub.html threw ReferenceError on load (loadManifest removed in e21df48) | Fixed 2026-09-10: loader, validateManifest and manifestError restored |
+| 010 | P1 | resolved | public-hub.html FALLBACK_MANIFEST was not covered by sync-manifest and drifted to the 2026-04-12 registry | Fixed 2026-09-10: added to sync targets, regenerated, drift check gates CI |
 | 006 | P1 | resolved | Public manifest exposed 11 more private repo URLs plus localPath/runCommand values | Fixed 2026-07-03: blanked 10 private URLs, repointed BPMDelayCalc to public bpm-delay-calculator, cleared all localPath/runCommand |
 | 007 | P2 | resolved | private-hub.html was indexable and listed in sitemap.xml | Fixed 2026-07-03: robots meta set to noindex,nofollow; removed from sitemap |
 | 008 | P2 | resolved | index.html footer linked to missing archives/index-v1.html (live 404) | Fixed 2026-07-03: link removed |
