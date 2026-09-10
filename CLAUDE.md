@@ -21,7 +21,7 @@ GitHub Pages org site for DaveHomeAssist. Contains the project hub (index.html),
 
 ## Manifest Sync
 
-`project-manifest.json` is the single source of truth for the project list. Both `private-hub.html` and `index.html` embed a `FALLBACK_MANIFEST` block so the hubs still render if the fetch fails. After editing `project-manifest.json`, run `npm run sync-manifest` to propagate changes to both hubs' embedded fallbacks. Never edit the `FALLBACK_MANIFEST` blocks directly.
+`project-manifest.json` is the single source of truth for the project list. `index.html`, `public-hub.html` and `private-hub.html` each embed a `FALLBACK_MANIFEST` block so the hubs still render if the fetch fails. After editing `project-manifest.json`, run `npm run sync-manifest` to propagate changes to every embedded fallback (the target list lives in `scripts/sync-manifest.mjs`; add any new hub page there). Never edit the `FALLBACK_MANIFEST` blocks directly. `node scripts/sync-manifest.mjs --check` reports drift without writing.
 
 ## Documentation Maintenance
 

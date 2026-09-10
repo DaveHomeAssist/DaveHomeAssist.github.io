@@ -341,7 +341,7 @@ const FALLBACK_MANIFEST = {
   "meta": {
     "owner": "DaveHomeAssist",
     "github": "https://github.com/DaveHomeAssist",
-    "lastUpdated": "2026-04-12",
+    "lastUpdated": "2026-08-23",
     "hub": "https://davehomeassist.github.io"
   },
   "projects": [
@@ -349,7 +349,7 @@ const FALLBACK_MANIFEST = {
       "id": "davehomeassist-hub",
       "name": "DaveHomeAssist Hub",
       "description": "Central portfolio and project directory",
-      "category": "infrastructure",
+      "category": "portfolio-hub",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -358,28 +358,35 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/DaveHomeAssist.github.io",
       "localPath": "",
       "runCommand": "",
-      "tags": ["hub", "portfolio"]
+      "tags": [
+        "hub",
+        "portfolio"
+      ]
     },
     {
       "id": "trailkeeper",
       "name": "Trailkeeper",
       "description": "Trail tracking and outdoor activity logger",
-      "category": "outdoor",
+      "category": "garden-outdoor",
       "status": "active",
       "visibility": "public",
-      "featured": true,
+      "featured": false,
       "hosting": "github-pages",
       "url": "https://davehomeassist.github.io/trailkeeper",
       "repo": "https://github.com/DaveHomeAssist/trailkeeper",
       "localPath": "",
       "runCommand": "",
-      "tags": ["hiking", "tracking", "outdoor"]
+      "tags": [
+        "hiking",
+        "tracking",
+        "outdoor"
+      ]
     },
     {
       "id": "garden-os",
       "name": "Garden OS",
       "description": "Garden management OS with Beds, Planner, Doctor, and Journal workflows",
-      "category": "outdoor",
+      "category": "garden-outdoor",
       "status": "active",
       "visibility": "public",
       "featured": true,
@@ -388,13 +395,17 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/garden-os",
       "localPath": "",
       "runCommand": "",
-      "tags": ["garden", "planner", "outdoor"]
+      "tags": [
+        "garden",
+        "planner",
+        "outdoor"
+      ]
     },
     {
       "id": "garden-league-simulator",
       "name": "Garden League Simulator",
       "description": "Competitive garden league game simulator",
-      "category": "outdoor",
+      "category": "garden-outdoor",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -403,14 +414,18 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/garden-os",
       "localPath": "",
       "runCommand": "",
-      "tags": ["garden", "game", "simulator"],
+      "tags": [
+        "garden",
+        "game",
+        "simulator"
+      ],
       "parentProject": "garden-os"
     },
     {
       "id": "garden-planner-v5",
       "name": "Garden Planner v5",
       "description": "Garden OS planner with beds, plant profiles, and crop timelines",
-      "category": "outdoor",
+      "category": "garden-outdoor",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -419,29 +434,36 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/garden-os",
       "localPath": "",
       "runCommand": "",
-      "tags": ["garden", "planner"],
+      "tags": [
+        "garden",
+        "planner"
+      ],
       "parentProject": "garden-os"
     },
     {
       "id": "graph-explorer",
       "name": "Graph Explorer",
       "description": "Interactive project ecosystem and dependency graph visualizer",
-      "category": "dev-tools",
+      "category": "creative-design-tools",
       "status": "active",
       "visibility": "public",
-      "featured": true,
+      "featured": false,
       "hosting": "github-pages",
       "url": "https://davehomeassist.github.io/graph-explorer",
       "repo": "https://github.com/DaveHomeAssist/graph-explorer",
       "localPath": "",
       "runCommand": "",
-      "tags": ["visualization", "graph", "ecosystem"]
+      "tags": [
+        "visualization",
+        "graph",
+        "ecosystem"
+      ]
     },
     {
       "id": "notion-widgets",
       "name": "NotionWidgets",
       "description": "Custom Notion embed widgets and components",
-      "category": "dev-tools",
+      "category": "command-center-ops",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -450,13 +472,17 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/NotionWidgets",
       "localPath": "",
       "runCommand": "",
-      "tags": ["notion", "widgets", "embeds"]
+      "tags": [
+        "notion",
+        "widgets",
+        "embeds"
+      ]
     },
     {
       "id": "gemini-api-cost-calculator",
       "name": "Gemini API Cost Calculator",
-      "description": "Cost estimation tool for Google Gemini API usage",
-      "category": "dev-tools",
+      "description": "Real-time API cost comparison across Gemini, Claude, and competitor models",
+      "category": "research-developer-utility",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -465,13 +491,17 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/gemini-api-cost-calculator",
       "localPath": "",
       "runCommand": "",
-      "tags": ["api", "calculator", "gemini"]
+      "tags": [
+        "api",
+        "calculator",
+        "gemini"
+      ]
     },
     {
       "id": "sdlc-tool-stack-map",
       "name": "SDLC Tool Stack Map",
       "description": "Interactive map of software development lifecycle tools",
-      "category": "dev-tools",
+      "category": "research-developer-utility",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -480,13 +510,17 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/sdlc-tool-stack-map",
       "localPath": "",
       "runCommand": "",
-      "tags": ["sdlc", "devops", "tooling"]
+      "tags": [
+        "sdlc",
+        "devops",
+        "tooling"
+      ]
     },
     {
       "id": "web-templates",
       "name": "Web Templates",
-      "description": "Reusable web template collection",
-      "category": "dev-tools",
+      "description": "Reference layout pack — 8 patterns for filterable tables, kanban, roadmaps, and directories",
+      "category": "creative-design-tools",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -495,29 +529,37 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/web-templates",
       "localPath": "",
       "runCommand": "",
-      "tags": ["templates", "html", "css"]
+      "tags": [
+        "templates",
+        "html",
+        "css"
+      ]
     },
     {
-      "id": "homelab-os",
-      "name": "Homelab OS",
+      "id": "home-os",
+      "name": "Home OS",
       "description": "Home lab infrastructure management dashboard",
-      "category": "infrastructure",
-      "status": "active",
+      "category": "home-personal-ops",
+      "status": "archived",
       "visibility": "public",
       "featured": false,
       "hosting": "github-pages",
-      "url": "https://davehomeassist.github.io/homelab-os",
-      "repo": "https://github.com/DaveHomeAssist/DaveHomeAssist.github.io",
+      "url": "https://davehomeassist.github.io/home-os",
+      "repo": "https://github.com/DaveHomeAssist/home-os",
       "localPath": "",
       "runCommand": "",
-      "tags": ["homelab", "infrastructure", "dashboard"]
+      "tags": [
+        "homelab",
+        "infrastructure",
+        "dashboard"
+      ]
     },
     {
       "id": "elysium-landing",
       "name": "Elysium Landing",
       "description": "Landing page for Elysium project",
-      "category": "creative",
-      "status": "active",
+      "category": "business-client-sites",
+      "status": "archived",
       "visibility": "public",
       "featured": false,
       "hosting": "github-pages",
@@ -525,103 +567,126 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/elysium-landing",
       "localPath": "",
       "runCommand": "",
-      "tags": ["landing-page", "creative"]
+      "tags": [
+        "landing-page",
+        "creative"
+      ]
     },
     {
       "id": "shieldbox",
       "name": "ShieldBox",
-      "description": "Insurance quote request system",
-      "category": "client-work",
+      "description": "Event security quote request form — gold master demo (shieldboxsecurity.com)",
+      "category": "business-client-sites",
       "status": "active",
       "visibility": "public",
       "featured": false,
-      "hosting": "github-pages",
-      "url": "",
-      "repo": "https://github.com/DaveHomeAssist/shieldbox-event-quote",
+      "hosting": "custom-domain",
+      "url": "https://shieldboxsecurity.com",
+      "repo": "https://github.com/DaveHomeAssist/shieldbox-security",
       "localPath": "",
       "runCommand": "",
-      "tags": ["insurance", "quotes", "client"]
+      "tags": [
+        "event-security",
+        "quotes",
+        "client"
+      ]
     },
     {
       "id": "freelance",
       "name": "Freelance",
       "description": "Freelance business management site",
-      "category": "client-work",
+      "category": "business-client-sites",
       "status": "active",
       "visibility": "public",
       "featured": false,
-      "hosting": "netlify",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/freelance",
       "repo": "https://github.com/DaveHomeAssist/freelance",
       "localPath": "",
       "runCommand": "",
-      "tags": ["freelance", "business"]
+      "tags": [
+        "freelance",
+        "business"
+      ]
     },
     {
       "id": "freelance-landing",
       "name": "Freelance Landing",
       "description": "Landing page for freelance services",
-      "category": "client-work",
+      "category": "business-client-sites",
       "status": "active",
       "visibility": "unlisted",
       "featured": false,
       "hosting": "github-pages",
-      "url": "",
+      "url": "https://davehomeassist.github.io/freelance-landing",
       "repo": "https://github.com/DaveHomeAssist/freelance-landing",
       "localPath": "",
       "runCommand": "",
-      "tags": ["freelance", "landing-page"]
+      "tags": [
+        "freelance",
+        "landing-page"
+      ]
     },
     {
       "id": "contractor",
       "name": "Contractor",
       "description": "Contractor management and scheduling",
-      "category": "client-work",
+      "category": "business-client-sites",
       "status": "active",
       "visibility": "public",
       "featured": false,
-      "hosting": "netlify",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/contractor",
       "repo": "https://github.com/DaveHomeAssist/contractor",
       "localPath": "",
       "runCommand": "",
-      "tags": ["contractor", "scheduling"]
+      "tags": [
+        "contractor",
+        "scheduling"
+      ]
     },
     {
       "id": "act-two-catering",
       "name": "Act Two Catering",
       "description": "Catering business website",
-      "category": "client-work",
+      "category": "business-client-sites",
       "status": "active",
       "visibility": "unlisted",
       "featured": false,
-      "hosting": "netlify",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/act-two-catering",
       "repo": "https://github.com/DaveHomeAssist/act-two-catering",
       "localPath": "",
       "runCommand": "",
-      "tags": ["catering", "client"]
+      "tags": [
+        "catering",
+        "client"
+      ]
     },
     {
       "id": "curl-plan",
       "name": "Curl Plan",
-      "description": "Curling strategy and game planning tool",
-      "category": "outdoor",
+      "description": "CurlPlan: curling-native app to map your season and stay close to your circle (CRDT sync, iOS in flight)",
+      "category": "research-developer-utility",
       "status": "active",
       "visibility": "public",
-      "featured": false,
+      "featured": true,
       "hosting": "github-pages",
       "url": "https://davehomeassist.github.io/curl-plan/",
       "repo": "https://github.com/DaveHomeAssist/curl-plan",
       "localPath": "",
       "runCommand": "",
-      "tags": ["curling", "strategy", "sports"]
+      "tags": [
+        "curling",
+        "strategy",
+        "sports"
+      ]
     },
     {
       "id": "mlb-ballparks-quest",
       "name": "MLB Ballparks Quest",
       "description": "Track visits to MLB ballparks across the country",
-      "category": "outdoor",
+      "category": "games-interactive-play",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -630,14 +695,20 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/mlb-ballparks-quest",
       "localPath": "",
       "runCommand": "",
-      "tags": ["baseball", "travel", "quest"],
-      "dependencies": ["quest-platform"]
+      "tags": [
+        "baseball",
+        "travel",
+        "quest"
+      ],
+      "dependencies": [
+        "quest-platform"
+      ]
     },
     {
       "id": "festival-atlas",
       "name": "Festival Atlas",
       "description": "Music festival discovery and tracking map",
-      "category": "creative",
+      "category": "events-planning",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -646,61 +717,84 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/festival-atlas",
       "localPath": "",
       "runCommand": "",
-      "tags": ["music", "festivals", "map"],
-      "dependencies": ["quest-platform"]
+      "tags": [
+        "music",
+        "festivals",
+        "map"
+      ],
+      "dependencies": [
+        "quest-platform"
+      ]
     },
     {
       "id": "quest-platform",
       "name": "Quest Platform",
-      "description": "Shared runtime library for quest-style tracking apps",
-      "category": "infrastructure",
-      "status": "active",
+      "description": "Shared runtime library for quest-style tracking apps (retired; extraction closed 2026-07-11)",
+      "category": "games-interactive-play",
+      "status": "archived",
       "visibility": "unlisted",
       "featured": false,
-      "hosting": "github-pages",
+      "hosting": "none",
       "url": "",
       "repo": "https://github.com/DaveHomeAssist/quest-platform",
       "localPath": "",
       "runCommand": "",
-      "tags": ["library", "shared", "runtime"],
-      "dependents": ["mlb-ballparks-quest", "festival-atlas"]
+      "tags": [
+        "library",
+        "shared",
+        "runtime"
+      ],
+      "dependents": [
+        "mlb-ballparks-quest",
+        "festival-atlas"
+      ]
     },
     {
       "id": "metagrid",
       "name": "Metagrid",
-      "description": "Component library with animation utilities",
-      "category": "infrastructure",
+      "description": "Metagrid — wireless power infrastructure concept site (metamaterials, remote AI data centers; patent pending)",
+      "category": "creative-design-tools",
       "status": "active",
       "visibility": "unlisted",
       "featured": false,
-      "hosting": "vercel",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/metagrid",
       "repo": "https://github.com/DaveHomeAssist/metagrid",
       "localPath": "",
       "runCommand": "",
-      "tags": ["library", "components", "animation"],
-      "dependents": ["notion-widgets"]
+      "tags": [
+        "concept-site",
+        "wireless-power",
+        "landing"
+      ],
+      "dependents": [
+        "notion-widgets"
+      ]
     },
     {
       "id": "prompt-lab",
       "name": "Prompt Lab",
       "description": "AI prompt engineering and testing workspace",
-      "category": "dev-tools",
+      "category": "ai-agent-systems",
       "status": "active",
       "visibility": "public",
       "featured": true,
       "hosting": "vercel",
       "url": "https://promptlab.tools",
-      "repo": "https://github.com/DaveHomeAssist/new-land-pages",
+      "repo": "https://github.com/DaveHomeAssist/prompt-lab",
       "localPath": "",
       "runCommand": "",
-      "tags": ["ai", "prompts", "tooling"]
+      "tags": [
+        "ai",
+        "prompts",
+        "tooling"
+      ]
     },
     {
       "id": "deckforge",
       "name": "DeckForge",
       "description": "Stream Deck configuration and action builder",
-      "category": "dev-tools",
+      "category": "av-show-tools",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -709,28 +803,35 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/deckforge",
       "localPath": "",
       "runCommand": "",
-      "tags": ["stream-deck", "automation"]
+      "tags": [
+        "stream-deck",
+        "automation"
+      ]
     },
     {
       "id": "sap-music",
       "name": "SAP Music",
-      "description": "Music streaming/production application",
-      "category": "creative",
+      "description": "SAP (Standard Acid Procedure) — artist site",
+      "category": "audio-music-tools",
       "status": "active",
       "visibility": "public",
       "featured": false,
-      "hosting": "vercel",
-      "url": "",
+      "hosting": "custom-domain",
+      "url": "https://standardacidprocedure.com",
       "repo": "https://github.com/DaveHomeAssist/sap-music",
       "localPath": "",
       "runCommand": "",
-      "tags": ["music", "streaming", "audio"]
+      "tags": [
+        "music",
+        "artist-site",
+        "band"
+      ]
     },
     {
       "id": "nesy",
       "name": "NeSy",
-      "description": "Neural-symbolic AI experimentation",
-      "category": "dev-tools",
+      "description": "Interactive research brief on neuro-symbolic AI in 2026: architectures, evidence, and the LLM reliability shift",
+      "category": "creative-design-tools",
       "status": "active",
       "visibility": "unlisted",
       "featured": false,
@@ -739,13 +840,17 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/nesy",
       "localPath": "",
       "runCommand": "",
-      "tags": ["ai", "neural-symbolic"]
+      "tags": [
+        "ai",
+        "neuro-symbolic",
+        "research-brief"
+      ]
     },
     {
       "id": "lansdowne-lighting-plot",
       "name": "Lansdowne Lighting Plot",
       "description": "Stage lighting design and plotting tool",
-      "category": "creative",
+      "category": "av-show-tools",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -754,13 +859,17 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/lansdowne-lighting-plot",
       "localPath": "",
       "runCommand": "",
-      "tags": ["lighting", "stage", "design"]
+      "tags": [
+        "lighting",
+        "stage",
+        "design"
+      ]
     },
     {
       "id": "davellm",
       "name": "DaveLLM",
       "description": "Local-first LLM development server with OpenAI-compatible API",
-      "category": "dev-tools",
+      "category": "ai-agent-systems",
       "status": "active",
       "visibility": "public",
       "featured": false,
@@ -769,73 +878,92 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/DaveLLM",
       "localPath": "",
       "runCommand": "",
-      "tags": ["llm", "local", "ai"]
+      "tags": [
+        "llm",
+        "local",
+        "ai"
+      ]
     },
     {
       "id": "readout",
       "name": "ReadOut",
       "description": "Standalone desktop reading application",
-      "category": "dev-tools",
+      "category": "av-show-tools",
       "status": "active",
-      "visibility": "private",
+      "visibility": "public",
       "featured": false,
-      "hosting": "local",
-      "url": "",
-      "repo": "https://github.com/DaveHomeAssist/ReadOut",
+      "hosting": "none",
+      "url": "https://github.com/DaveHomeAssist/readout",
+      "repo": "https://github.com/DaveHomeAssist/readout",
       "localPath": "",
       "runCommand": "",
-      "tags": ["desktop", "reading", "app"]
+      "tags": [
+        "desktop",
+        "reading",
+        "app"
+      ]
     },
     {
       "id": "curling-simulator",
       "name": "Curling Simulator",
       "description": "Curling game simulator",
-      "category": "outdoor",
+      "category": "games-interactive-play",
       "status": "wip",
-      "visibility": "private",
+      "visibility": "unlisted",
       "featured": false,
-      "hosting": "none",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/curling-simulator",
       "repo": "https://github.com/DaveHomeAssist/curling-simulator",
       "localPath": "",
       "runCommand": "",
-      "tags": ["curling", "simulator", "game"]
+      "tags": [
+        "curling",
+        "simulator",
+        "game"
+      ]
     },
     {
       "id": "daily-prophet",
       "name": "Daily Prophet",
       "description": "Self-contained daily content generator",
-      "category": "creative",
+      "category": "content-signals",
       "status": "active",
-      "visibility": "private",
+      "visibility": "unlisted",
       "featured": false,
-      "hosting": "local",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/daily-prophet",
       "repo": "https://github.com/DaveHomeAssist/daily-prophet",
       "localPath": "",
       "runCommand": "",
-      "tags": ["content", "daily"]
+      "tags": [
+        "content",
+        "daily"
+      ]
     },
     {
       "id": "ai-agent-personalities",
       "name": "AI Agent Personalities",
       "description": "Documentation for AI agent personality profiles",
-      "category": "dev-tools",
+      "category": "ai-agent-systems",
       "status": "active",
-      "visibility": "private",
+      "visibility": "unlisted",
       "featured": false,
-      "hosting": "none",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/ai-agent-personalities",
       "repo": "https://github.com/DaveHomeAssist/ai-agent-personalities",
       "localPath": "",
       "runCommand": "",
-      "tags": ["ai", "agents", "documentation"]
+      "tags": [
+        "ai",
+        "agents",
+        "documentation"
+      ]
     },
     {
       "id": "av-resume",
       "name": "AV Resume",
       "description": "Interactive AV-themed resume",
-      "category": "creative",
+      "category": "av-show-tools",
       "status": "active",
       "visibility": "unlisted",
       "featured": false,
@@ -844,13 +972,16 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/av-resume",
       "localPath": "",
       "runCommand": "",
-      "tags": ["resume", "portfolio"]
+      "tags": [
+        "resume",
+        "portfolio"
+      ]
     },
     {
       "id": "theme-organizer-resource",
       "name": "Theme Organizer Resource",
       "description": "Theme and resource organization tool",
-      "category": "dev-tools",
+      "category": "creative-design-tools",
       "status": "active",
       "visibility": "unlisted",
       "featured": false,
@@ -859,43 +990,54 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/theme-organizer-resource",
       "localPath": "",
       "runCommand": "",
-      "tags": ["themes", "resources", "organizer"]
+      "tags": [
+        "themes",
+        "resources",
+        "organizer"
+      ]
     },
     {
       "id": "codedash-mar24",
       "name": "CodeDash Mar24",
-      "description": "Hackathon/code dash project from March 2024",
-      "category": "creative",
+      "description": "Historical Code Dashboard snapshot from March 2026",
+      "category": "command-center-ops",
       "status": "archived",
-      "visibility": "private",
+      "visibility": "unlisted",
       "featured": false,
-      "hosting": "none",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/codedash-mar24",
       "repo": "https://github.com/DaveHomeAssist/codedash-mar24",
       "localPath": "",
       "runCommand": "",
-      "tags": ["hackathon", "archived"]
+      "tags": [
+        "hackathon",
+        "archived"
+      ]
     },
     {
       "id": "skills",
       "name": "Skills",
       "description": "Documentation repo for AI skill definitions",
-      "category": "infrastructure",
+      "category": "ai-agent-systems",
       "status": "active",
-      "visibility": "private",
+      "visibility": "unlisted",
       "featured": false,
-      "hosting": "none",
-      "url": "",
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/skills",
       "repo": "https://github.com/DaveHomeAssist/skills",
       "localPath": "",
       "runCommand": "",
-      "tags": ["documentation", "skills", "ai"]
+      "tags": [
+        "documentation",
+        "skills",
+        "ai"
+      ]
     },
     {
       "id": "veronica-lucas-wedding",
       "name": "Veronica & Lucas Wedding",
       "description": "Wedding website — separate domain, intentionally isolated",
-      "category": "client-work",
+      "category": "business-client-sites",
       "status": "active",
       "visibility": "isolated",
       "featured": false,
@@ -904,23 +1046,552 @@ const FALLBACK_MANIFEST = {
       "repo": "https://github.com/DaveHomeAssist/VeronicaLucasWedding",
       "localPath": "",
       "runCommand": "",
-      "tags": ["wedding", "client"]
+      "tags": [
+        "wedding",
+        "client"
+      ]
+    },
+    {
+      "id": "pixelforge",
+      "name": "PixelForge",
+      "description": "Lightweight browser-based drawing app with raster and vector layers",
+      "category": "creative-design-tools",
+      "status": "active",
+      "visibility": "public",
+      "featured": true,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/PixelForge",
+      "repo": "https://github.com/DaveHomeAssist/PixelForge",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "drawing",
+        "canvas",
+        "editor"
+      ]
+    },
+    {
+      "id": "bpm-delay-calculator",
+      "name": "BPM Delay Calculator",
+      "description": "Tempo-synced delay and reverb time calculator for music production",
+      "category": "audio-music-tools",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/bpm-delay-calculator",
+      "repo": "https://github.com/DaveHomeAssist/bpm-delay-calculator",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "music",
+        "calculator",
+        "audio"
+      ]
+    },
+    {
+      "id": "stereo-field-compressor",
+      "name": "Stereo Field Compressor",
+      "description": "Sidechain-driven spatial compression plugin (public prototype, archived; canonical source pending duplicate-resolution review)",
+      "category": "audio-music-tools",
+      "status": "archived",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "none",
+      "url": "",
+      "repo": "https://github.com/DaveHomeAssist/stereo-field-compressor",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "music",
+        "audio",
+        "plugin",
+        "juce"
+      ]
+    },
+    {
+      "id": "garden-cage-build-guide",
+      "name": "Garden Cage Build Guide",
+      "description": "Step-by-step garden cage construction guide",
+      "category": "garden-outdoor",
+      "status": "archived",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/garden-cage-build-guide",
+      "repo": "https://github.com/DaveHomeAssist/garden-cage-build-guide",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "garden",
+        "diy",
+        "guide"
+      ]
+    },
+    {
+      "id": "garden-planner",
+      "name": "Garden Planner",
+      "description": "Archived standalone raised-bed planner (lifecycle-historical); superseded by Garden Planner v5 inside Garden OS",
+      "category": "garden-outdoor",
+      "status": "archived",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/garden-planner/",
+      "repo": "https://github.com/DaveHomeAssist/garden-planner",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "garden",
+        "planner",
+        "archived"
+      ],
+      "parentProject": "garden-os"
+    },
+    {
+      "id": "mixmash",
+      "name": "MixMash",
+      "description": "MixMash Studio — hub for games that play in your browser (mixmash.games)",
+      "category": "games-interactive-play",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/mixmash",
+      "repo": "https://github.com/DaveHomeAssist/mixmash",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "games",
+        "browser",
+        "hub"
+      ]
+    },
+    {
+      "id": "park-rave-005",
+      "name": "Park Rave 005",
+      "description": "Park rave event page",
+      "category": "events-planning",
+      "status": "archived",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/park-rave-005",
+      "repo": "https://github.com/DaveHomeAssist/park-rave-005",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "events",
+        "music"
+      ]
+    },
+    {
+      "id": "phillies-wire",
+      "name": "Phillies Wire",
+      "description": "Philadelphia Phillies news and content aggregator",
+      "category": "content-signals",
+      "status": "active",
+      "visibility": "public",
+      "featured": true,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/phillies-wire",
+      "repo": "https://github.com/DaveHomeAssist/phillies-wire",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "baseball",
+        "phillies",
+        "sports"
+      ]
+    },
+    {
+      "id": "system-by-dave",
+      "name": "System by Dave",
+      "description": "Personal system and workflow documentation site",
+      "category": "ai-agent-systems",
+      "status": "active",
+      "visibility": "public",
+      "featured": true,
+      "hosting": "custom-domain",
+      "url": "https://systembydave.com",
+      "repo": "https://github.com/DaveHomeAssist/system-by-dave",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "system",
+        "workflow",
+        "documentation"
+      ]
+    },
+    {
+      "id": "repo-favicons",
+      "name": "Repo Favicons",
+      "description": "Shared favicon and icon assets for all repos",
+      "category": "command-center-ops",
+      "status": "active",
+      "visibility": "unlisted",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/repo-favicons",
+      "repo": "https://github.com/DaveHomeAssist/repo-favicons",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "assets",
+        "icons",
+        "shared"
+      ]
+    },
+    {
+      "id": "recipe-tracker",
+      "name": "Recipe Tracker",
+      "description": "Offline-capable family recipe journal with search, tags, editing, import/export backups, and PWA install support.",
+      "category": "home-personal-ops",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/recipe-tracker/",
+      "repo": "https://github.com/DaveHomeAssist/recipe-tracker",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "recipes",
+        "pwa",
+        "family"
+      ]
+    },
+    {
+      "id": "code-dashboard",
+      "name": "Code Dashboard",
+      "description": "Notion-backed dashboard automation for tracking code projects and workspace status from local scripts.",
+      "category": "command-center-ops",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "none",
+      "url": "https://github.com/DaveHomeAssist/code-dashboard",
+      "repo": "https://github.com/DaveHomeAssist/code-dashboard",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "notion",
+        "dashboard",
+        "automation"
+      ]
+    },
+    {
+      "id": "plotforge-candidate",
+      "name": "PlotForge",
+      "description": "Lighting plot generator: vector SVG drafting, structured document model, IndexedDB autosave",
+      "category": "av-show-tools",
+      "status": "candidate",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "vercel",
+      "url": "https://plotforge-beta.vercel.app",
+      "repo": "https://github.com/DaveHomeAssist/plotforge",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "javascript"
+      ]
+    },
+    {
+      "id": "new-land-pages-candidate",
+      "name": "New Land Pages",
+      "description": "Standalone Pages deployment of the new-land.html Prompt Lab landing page concept",
+      "category": "business-client-sites",
+      "status": "candidate",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/new-land-pages/",
+      "repo": "https://github.com/DaveHomeAssist/new-land-pages",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "html"
+      ]
+    },
+    {
+      "id": "command-center-061eed-candidate",
+      "name": "Command Center",
+      "description": "Public operations dashboard for project status, git sync state, and domain health",
+      "category": "command-center-ops",
+      "status": "candidate",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/command-center-061eed/",
+      "repo": "https://github.com/DaveHomeAssist/command-center-061eed",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "html"
+      ]
+    },
+    {
+      "id": "hat-in-ring-candidate",
+      "name": "Hat In Ring Archive",
+      "description": "Hat-in-Ring Radar — 2028 presidential signal tracker. Auto-ingests FEC + Google News, scores status tier × momentum, daily rebuild to GitHub Pages.",
+      "category": "content-signals",
+      "status": "archived",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/hat-in-ring/",
+      "repo": "https://github.com/DaveHomeAssist/hat-in-ring",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "python",
+        "archived"
+      ]
+    },
+    {
+      "id": "hatinring-candidate",
+      "name": "Hat In Ring",
+      "description": "Hat-in-Ring Radar — 2028 presidential signal tracker",
+      "category": "content-signals",
+      "status": "candidate",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "custom-domain",
+      "url": "https://hatinring.com",
+      "repo": "https://github.com/DaveHomeAssist/hatinring",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "html"
+      ]
+    },
+    {
+      "id": "notion-banner-generator-candidate",
+      "name": "Notion Banner Generator",
+      "description": "Local-first generator for Notion page covers. Deterministic Canvas design rules, optional AI enhancement, zero backend.",
+      "category": "creative-design-tools",
+      "status": "candidate",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/notion-banner-generator/",
+      "repo": "https://github.com/DaveHomeAssist/notion-banner-generator",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "typescript"
+      ]
+    },
+    {
+      "id": "notion-banners-candidate",
+      "name": "Notion Banners",
+      "description": "Sliced banner covers for top-level Notion sidebar pages (16 art tiles, 624x290)",
+      "category": "creative-design-tools",
+      "status": "candidate",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "none",
+      "url": "https://github.com/DaveHomeAssist/notion-banners",
+      "repo": "https://github.com/DaveHomeAssist/notion-banners",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate"
+      ]
+    },
+    {
+      "id": "clever-paws-candidate",
+      "name": "Clever Paws",
+      "description": "Calm, evidence-based cat training reference with local progress tracking",
+      "category": "home-personal-ops",
+      "status": "candidate",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/clever-paws/",
+      "repo": "https://github.com/DaveHomeAssist/clever-paws",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "html"
+      ]
+    },
+    {
+      "id": "home-comic-dashboard-candidate",
+      "name": "Home Comic Dashboard",
+      "description": "Family-facing Home Assistant dashboard with a pulp comic book aesthetic. Current surface uses React UMD + Babel; future architecture should follow product needs.",
+      "category": "home-personal-ops",
+      "status": "candidate",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/home-comic-dashboard/",
+      "repo": "https://github.com/DaveHomeAssist/home-comic-dashboard",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "javascript"
+      ]
+    },
+    {
+      "id": "utility-candidate",
+      "name": "Utility",
+      "description": "Grab-bag of standalone scripts, prototypes, and single-file tools",
+      "category": "research-developer-utility",
+      "status": "candidate",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "none",
+      "url": "https://github.com/DaveHomeAssist/Utility",
+      "repo": "https://github.com/DaveHomeAssist/Utility",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "catalog-candidate",
+        "html"
+      ]
+    },
+    {
+      "id": "groundskeeper",
+      "name": "The Groundskeeper",
+      "description": "Weekly gardening dispatch for the raised beds of Oaklyn, NJ (zone 7a/7b) — web and email editions, published Saturday mornings",
+      "category": "garden-outdoor",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/groundskeeper/",
+      "repo": "https://github.com/DaveHomeAssist/groundskeeper",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "garden",
+        "newsletter",
+        "weekly"
+      ]
+    },
+    {
+      "id": "noteforge",
+      "name": "NoteForge",
+      "description": "Local-first markdown notes app (Obsidian/Notion-style): wikilinks, backlinks, tags, graph, nested notes, editable tables, PWA. Vanilla JS + Vite.",
+      "category": "research-developer-utility",
+      "status": "active",
+      "visibility": "public",
+      "featured": false,
+      "hosting": "github-pages",
+      "url": "https://davehomeassist.github.io/noteforge/",
+      "repo": "https://github.com/DaveHomeAssist/noteforge",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "notes",
+        "markdown",
+        "local-first",
+        "pwa"
+      ]
     }
   ],
   "categories": {
-    "outdoor": { "label": "Outdoor & Sports", "icon": "🌲", "color": "#2d6a4f" },
-    "dev-tools": { "label": "Dev Tools", "icon": "⚙️", "color": "#4361ee" },
-    "creative": { "label": "Creative", "icon": "🎨", "color": "#e76f51" },
-    "client-work": { "label": "Client Work", "icon": "💼", "color": "#6c757d" },
-    "infrastructure": { "label": "Infrastructure", "icon": "🔧", "color": "#7209b7" }
+    "ai-agent-systems": {
+      "label": "AI & Agent Systems",
+      "icon": "AI",
+      "color": "#4361ee"
+    },
+    "audio-music-tools": {
+      "label": "Audio & Music Tools",
+      "icon": "AU",
+      "color": "#9d4edd"
+    },
+    "av-show-tools": {
+      "label": "AV & Show Tools",
+      "icon": "AV",
+      "color": "#f77f00"
+    },
+    "business-client-sites": {
+      "label": "Business & Client Sites",
+      "icon": "BC",
+      "color": "#6c757d"
+    },
+    "command-center-ops": {
+      "label": "Command Center & Ops",
+      "icon": "CC",
+      "color": "#0f766e"
+    },
+    "content-signals": {
+      "label": "Content & Signals",
+      "icon": "CS",
+      "color": "#d62828"
+    },
+    "creative-design-tools": {
+      "label": "Creative & Design Tools",
+      "icon": "CD",
+      "color": "#e76f51"
+    },
+    "events-planning": {
+      "label": "Events & Planning",
+      "icon": "EP",
+      "color": "#2a9d8f"
+    },
+    "games-interactive-play": {
+      "label": "Games & Interactive Play",
+      "icon": "GI",
+      "color": "#3a0ca3"
+    },
+    "garden-outdoor": {
+      "label": "Garden & Outdoor",
+      "icon": "GO",
+      "color": "#2d6a4f"
+    },
+    "home-personal-ops": {
+      "label": "Home & Personal Ops",
+      "icon": "HP",
+      "color": "#588157"
+    },
+    "portfolio-hub": {
+      "label": "Portfolio & Hub",
+      "icon": "PH",
+      "color": "#18201f"
+    },
+    "research-developer-utility": {
+      "label": "Research & Developer Utility",
+      "icon": "RD",
+      "color": "#457b9d"
+    }
   },
   "hostingPlatforms": {
-    "github-pages": { "label": "GitHub Pages", "color": "#24292e" },
-    "vercel": { "label": "Vercel", "color": "#000000" },
-    "netlify": { "label": "Netlify", "color": "#00ad9f" },
-    "local": { "label": "Local", "color": "#e63946" },
-    "custom-domain": { "label": "Custom Domain", "color": "#8338ec" },
-    "none": { "label": "Not Deployed", "color": "#adb5bd" }
+    "github-pages": {
+      "label": "GitHub Pages",
+      "color": "#24292e"
+    },
+    "vercel": {
+      "label": "Vercel",
+      "color": "#000000"
+    },
+    "netlify": {
+      "label": "Netlify",
+      "color": "#00ad9f"
+    },
+    "local": {
+      "label": "Local",
+      "color": "#e63946"
+    },
+    "custom-domain": {
+      "label": "Custom Domain",
+      "color": "#8338ec"
+    },
+    "none": {
+      "label": "Not Deployed",
+      "color": "#adb5bd"
+    }
   }
 };
 
