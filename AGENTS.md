@@ -4,6 +4,10 @@
 
 Inherits root rules from `/Users/daverobertson/Code/AGENTS.md`.
 
+## Workspace contract
+
+Read `~/Code/ops-hub/90-governance/WORKSPACE_OPERATING_RULES.md` before project rules, including COMMS (one entry on the shared Agent Communications Page per session).
+
 ## Project Overview
 
 GitHub Pages org site for DaveHomeAssist. Contains multiple landing page iterations (v1 through v4 plus current index), a video engineer page, a Vivaldi setup map, and an Elysium Landing subsite. Serves as the public hub for the ecosystem.
