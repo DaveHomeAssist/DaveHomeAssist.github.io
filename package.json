@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "validate-manifest": "node scripts/validate-public-manifest.mjs",
-    "check-manifest": "npm run validate-manifest && node scripts/sync-manifest.mjs --check",
-    "sync-manifest": "npm run validate-manifest && node scripts/sync-manifest.mjs",
+    "bake-stats": "node scripts/bake-hero-stats.mjs",
+    "check-manifest": "npm run validate-manifest && node scripts/sync-manifest.mjs --check && node scripts/bake-hero-stats.mjs --check",
+    "sync-manifest": "npm run validate-manifest && node scripts/sync-manifest.mjs && node scripts/bake-hero-stats.mjs",
     "test": "npm run check-manifest"
   }
 }

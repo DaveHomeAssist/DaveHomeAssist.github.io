@@ -46,5 +46,10 @@ mean inactivity. Tracked work lives in:
 
 ## Local development
 
-Static site, no build. Open `index.html` or serve the directory with any
-static file server.
+Static site. Open `index.html` or serve the directory with any static file
+server.
+
+Hero counts in `index.html` are written from `project-manifest.json` by
+`npm run bake-stats` (also run at the end of `npm run sync-manifest`). The
+page script still updates those numbers after load. `npm run check-manifest`
+fails if the static numbers drift.
