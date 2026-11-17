@@ -10,9 +10,17 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { getHeroStats } from './lib/project-counts.js';
+import { runInNewContext } from 'node:vm';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const countsPath = resolve(__dirname, 'lib/project-counts.js');
+const countsGlobal = {};
+runInNewContext(readFileSync(countsPath, 'utf8'), countsGlobal, { filename: countsPath });
+const { getHeroStats } = countsGlobal.ProjectCounts || {};
+if (typeof getHeroStats !== 'function') {
+  throw new Error('scripts/lib/project-counts.js did not set ProjectCounts.getHeroStats');
+}
+
 const repoRoot = resolve(__dirname, '..');
 const checkOnly = process.argv.includes('--check');
 

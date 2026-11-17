@@ -1064,8 +1064,9 @@
   </footer>
 </div>
 
-<script type="module">
-import { getActiveProjects, getFeaturedProjects, getPublicProjects, isPublicProject } from './scripts/lib/project-counts.js';
+<script src="./scripts/lib/project-counts.js"></script>
+<script>
+const { getActiveProjects, getFeaturedProjects, getPublicProjects, isPublicProject } = ProjectCounts;
 
 const FALLBACK_MANIFEST = {
   "meta": {

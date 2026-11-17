@@ -5,27 +5,41 @@
 // `unlisted` and `isolated` stay out of the public catalog.
 // `featured` and `status` are separate fields: they do not change
 // whether a project is public.
+//
+// Classic script (no import/export) so index.html can load it from disk
+// with a plain <script src>. Node reads the same file through vm and
+// uses globalThis.ProjectCounts.
 
-export function isPublicProject(project) {
-  return Boolean(project) && project.visibility === 'public';
-}
+(function (root) {
+  function isPublicProject(project) {
+    return Boolean(project) && project.visibility === 'public';
+  }
 
-export function getPublicProjects(projects) {
-  return (Array.isArray(projects) ? projects : []).filter(isPublicProject);
-}
+  function getPublicProjects(projects) {
+    return (Array.isArray(projects) ? projects : []).filter(isPublicProject);
+  }
 
-export function getFeaturedProjects(projects) {
-  return getPublicProjects(projects).filter((project) => project.featured === true);
-}
+  function getFeaturedProjects(projects) {
+    return getPublicProjects(projects).filter((project) => project.featured === true);
+  }
 
-export function getActiveProjects(projects) {
-  return getPublicProjects(projects).filter((project) => project.status === 'active');
-}
+  function getActiveProjects(projects) {
+    return getPublicProjects(projects).filter((project) => project.status === 'active');
+  }
 
-export function getHeroStats(projects) {
-  return {
-    public: getPublicProjects(projects).length,
-    featured: getFeaturedProjects(projects).length,
-    active: getActiveProjects(projects).length,
+  function getHeroStats(projects) {
+    return {
+      public: getPublicProjects(projects).length,
+      featured: getFeaturedProjects(projects).length,
+      active: getActiveProjects(projects).length,
+    };
+  }
+
+  root.ProjectCounts = {
+    isPublicProject,
+    getPublicProjects,
+    getFeaturedProjects,
+    getActiveProjects,
+    getHeroStats,
   };
-}
+})(typeof globalThis !== 'undefined' ? globalThis : this);
