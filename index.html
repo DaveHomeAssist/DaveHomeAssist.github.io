@@ -991,15 +991,15 @@
           <div class="panel-title">One hub for the workbench.</div>
           <div class="panel-meta">
             <div class="panel-stat">
-              <div class="panel-stat-value" id="statPublicProjects">0</div>
+              <div class="panel-stat-value" id="statPublicProjects">48</div>
               <div class="panel-stat-label">Public</div>
             </div>
             <div class="panel-stat">
-              <div class="panel-stat-value" id="statFeaturedProjects">0</div>
+              <div class="panel-stat-value" id="statFeaturedProjects">6</div>
               <div class="panel-stat-label">Featured</div>
             </div>
             <div class="panel-stat">
-              <div class="panel-stat-value" id="statActiveProjects">0</div>
+              <div class="panel-stat-value" id="statActiveProjects">32</div>
               <div class="panel-stat-label">Active</div>
             </div>
           </div>
@@ -1064,12 +1064,14 @@
   </footer>
 </div>
 
-<script>
+<script type="module">
+import { getActiveProjects, getFeaturedProjects, getPublicProjects, isPublicProject } from './scripts/lib/project-counts.js';
+
 const FALLBACK_MANIFEST = {
   "meta": {
     "owner": "DaveHomeAssist",
     "github": "https://github.com/DaveHomeAssist",
-    "lastUpdated": "2026-08-23",
+    "lastUpdated": "2026-11-17",
     "hub": "https://davehomeassist.github.io"
   },
   "projects": [
@@ -1920,7 +1922,7 @@ const FALLBACK_MANIFEST = {
       "category": "content-signals",
       "status": "active",
       "visibility": "public",
-      "featured": true,
+      "featured": false,
       "hosting": "github-pages",
       "url": "https://davehomeassist.github.io/phillies-wire",
       "repo": "https://github.com/DaveHomeAssist/phillies-wire",
@@ -1930,6 +1932,24 @@ const FALLBACK_MANIFEST = {
         "baseball",
         "phillies",
         "sports"
+      ]
+    },
+    {
+      "id": "avbydave",
+      "name": "AV by Dave",
+      "description": "One console for live-show crews: video, audio, show control, lighting and the specialist tools as resizable panels. Contact: avbydave@gmail.com",
+      "category": "av-show-tools",
+      "status": "active",
+      "visibility": "public",
+      "featured": true,
+      "hosting": "custom-domain",
+      "url": "https://avbydave.com",
+      "repo": "https://github.com/DaveHomeAssist/avbydave",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "av",
+        "live-show"
       ]
     },
     {
@@ -2426,16 +2446,8 @@ function getOrderedCategoryKeys(categoryKeys) {
   });
 }
 
-function getFeaturedProjects() {
-  return manifestData.projects.filter(project => project.featured && project.visibility === 'public');
-}
-
 function getDirectoryProjects() {
-  return manifestData.projects.filter(project =>
-    project.visibility === 'public' &&
-    !project.featured &&
-    project.id !== 'davehomeassist-hub'
-  );
+  return getPublicProjects(manifestData.projects);
 }
 
 function getProjectHref(project) {
@@ -2465,7 +2477,7 @@ function getCategoryStyle(project) {
 function getActiveWorkbenchProjects() {
   const priority = ['mlb-ballparks-quest', 'recipe-tracker', 'code-dashboard', 'garden-os'];
   const byId = new Map(manifestData.projects.map(project => [project.id, project]));
-  return priority.map(id => byId.get(id)).filter(project => project && project.visibility === 'public');
+  return priority.map(id => byId.get(id)).filter(project => isPublicProject(project));
 }
 
 function isExternalHref(href) {
@@ -2549,9 +2561,9 @@ function buildSummaryText(filteredCount, totalCount) {
 }
 
 function renderStats() {
-  const publicProjects = manifestData.projects.filter(project => project.visibility === 'public');
-  const featured = getFeaturedProjects();
-  const active = publicProjects.filter(project => project.status === 'active');
+  const publicProjects = getPublicProjects(manifestData.projects);
+  const featured = getFeaturedProjects(manifestData.projects);
+  const active = getActiveProjects(manifestData.projects);
 
   statPublicProjects.textContent = String(publicProjects.length);
   statFeaturedProjects.textContent = String(featured.length);
@@ -2594,7 +2606,7 @@ function renderCategoryFilters() {
 }
 
 function renderFeatured() {
-  const featured = getFeaturedProjects();
+  const featured = getFeaturedProjects(manifestData.projects);
 
   featuredGrid.innerHTML = featured.map(project => {
     const category = manifestData.categories[project.category] || {};

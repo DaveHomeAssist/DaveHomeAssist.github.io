@@ -2,7 +2,7 @@
   "meta": {
     "owner": "DaveHomeAssist",
     "github": "https://github.com/DaveHomeAssist",
-    "lastUpdated": "2026-08-23",
+    "lastUpdated": "2026-11-17",
     "hub": "https://davehomeassist.github.io"
   },
   "projects": [
@@ -853,7 +853,7 @@
       "category": "content-signals",
       "status": "active",
       "visibility": "public",
-      "featured": true,
+      "featured": false,
       "hosting": "github-pages",
       "url": "https://davehomeassist.github.io/phillies-wire",
       "repo": "https://github.com/DaveHomeAssist/phillies-wire",
@@ -863,6 +863,24 @@
         "baseball",
         "phillies",
         "sports"
+      ]
+    },
+    {
+      "id": "avbydave",
+      "name": "AV by Dave",
+      "description": "One console for live-show crews: video, audio, show control, lighting and the specialist tools as resizable panels. Contact: avbydave@gmail.com",
+      "category": "av-show-tools",
+      "status": "active",
+      "visibility": "public",
+      "featured": true,
+      "hosting": "custom-domain",
+      "url": "https://avbydave.com",
+      "repo": "https://github.com/DaveHomeAssist/avbydave",
+      "localPath": "",
+      "runCommand": "",
+      "tags": [
+        "av",
+        "live-show"
       ]
     },
     {
