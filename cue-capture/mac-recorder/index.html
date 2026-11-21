@@ -1,0 +1,1818 @@
+<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Theater Cue Capture | Three Routes</title>
+
+
+
+<style>
+/* Layout: a locked one-screen portal. Show-plate banner, step tabs with a route switch, then one frosted panel per step that folds into sub-tabs when space runs short. */
+:root {
+  --bg: #e9f1f8;
+  --bg-image: none;
+  --bg-image-opacity: 0.2;
+  --glass: rgba(255, 255, 255, 0.78);
+  --glass-strong: rgba(255, 255, 255, 0.95);
+  --node: rgba(255, 255, 255, 0.92);
+  --fg: #0d2033;
+  --muted: #475d73;
+  --line: rgba(29, 74, 122, 0.16);
+  --chip-line: rgba(29, 74, 122, 0.6);
+  --route-line: rgba(28, 93, 172, 0.42);
+  --accent: #1c5dac;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(28, 93, 172, 0.10);
+  --accent-glow: rgba(28, 93, 172, 0.18);
+  --code-bg: rgba(13, 32, 51, 0.05);
+  --band: rgba(13, 32, 51, 0.08);
+  --hl-fmt: #0b6f7a;
+  --hl-cmd: #6747c2;
+  --warn: #8a5600;
+  --stale: #52637a;
+  --bad: #ad2419;
+  /* data colors: validated categorical slots 1-3, sequential track, fixed status */
+  --series-1: #2a78d6;
+  --sig-cue: #2a78d6;
+  --sig-pic: #eb6834;
+  --sig-clk: #1baf7a;
+  --track: #b7d3f6;
+  --status-good: #0ca30c;
+  --status-warn: #fab219;
+  --status-crit: #d03b3b;
+  --good-ink: #006300;
+  --on-crit: #ffffff;
+  --shadow: 0 1px 2px rgba(13, 32, 51, 0.06), 0 10px 28px rgba(13, 32, 51, 0.08);
+  --hero-base: #0a2240;
+  --hero-fg: #f3f8ff;
+  --hero-muted: rgba(226, 238, 252, 0.86);
+  --hero-chip: rgba(255, 255, 255, 0.14);
+  --hero-chip-line: rgba(255, 255, 255, 0.32);
+  --hero-veil: linear-gradient(90deg, rgba(5, 19, 40, 0.84) 0%, rgba(5, 19, 40, 0.5) 46%, rgba(5, 19, 40, 0.08) 100%);
+  --f-display: "Marcellus", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --f-body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #050e1c;
+    --bg-image: none;
+    --bg-image-opacity: 0.6;
+    --glass: rgba(9, 24, 45, 0.76);
+    --glass-strong: rgba(14, 34, 62, 0.96);
+    --node: rgba(14, 34, 62, 0.92);
+    --fg: #e3edf8;
+    --muted: #9db3ca;
+    --line: rgba(143, 202, 255, 0.16);
+    --chip-line: rgba(143, 202, 255, 0.5);
+    --route-line: rgba(142, 203, 255, 0.45);
+    --accent: #8ecbff;
+    --accent-ink: #04101f;
+    --accent-soft: rgba(142, 203, 255, 0.12);
+    --accent-glow: rgba(142, 203, 255, 0.22);
+    --code-bg: rgba(142, 203, 255, 0.07);
+    --band: rgba(227, 237, 248, 0.10);
+    --hl-fmt: #6fdde6;
+    --hl-cmd: #b8a5ff;
+    --warn: #f0c26a;
+    --stale: #a9b9ca;
+    --bad: #ff9b8f;
+    --series-1: #3987e5;
+    --sig-cue: #3987e5;
+    --sig-pic: #d95926;
+    --sig-clk: #199e70;
+    --track: #184f95;
+    --good-ink: #0ca30c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 36px rgba(0, 0, 0, 0.4);
+    --hero-veil: linear-gradient(90deg, rgba(2, 9, 20, 0.9) 0%, rgba(2, 9, 20, 0.58) 46%, rgba(2, 9, 20, 0.12) 100%);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #050e1c;
+  --bg-image: none;
+  --bg-image-opacity: 0.6;
+  --glass: rgba(9, 24, 45, 0.76);
+  --glass-strong: rgba(14, 34, 62, 0.96);
+  --node: rgba(14, 34, 62, 0.92);
+  --fg: #e3edf8;
+  --muted: #9db3ca;
+  --line: rgba(143, 202, 255, 0.16);
+  --chip-line: rgba(143, 202, 255, 0.5);
+  --route-line: rgba(142, 203, 255, 0.45);
+  --accent: #8ecbff;
+  --accent-ink: #04101f;
+  --accent-soft: rgba(142, 203, 255, 0.12);
+  --accent-glow: rgba(142, 203, 255, 0.22);
+  --code-bg: rgba(142, 203, 255, 0.07);
+  --band: rgba(227, 237, 248, 0.10);
+  --hl-fmt: #6fdde6;
+  --hl-cmd: #b8a5ff;
+  --warn: #f0c26a;
+  --stale: #a9b9ca;
+  --bad: #ff9b8f;
+  --series-1: #3987e5;
+  --sig-cue: #3987e5;
+  --sig-pic: #d95926;
+  --sig-clk: #199e70;
+  --track: #184f95;
+  --good-ink: #0ca30c;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 14px 36px rgba(0, 0, 0, 0.4);
+  --hero-veil: linear-gradient(90deg, rgba(2, 9, 20, 0.9) 0%, rgba(2, 9, 20, 0.58) 46%, rgba(2, 9, 20, 0.12) 100%);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { height: 100%; overflow: hidden; }
+body {
+  height: 100%; margin: 0; overflow: hidden;
+  background: var(--bg); color: var(--fg);
+  font-family: var(--f-body); font-size: 15px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.backdrop {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: var(--bg-image); background-size: cover; background-position: center;
+  opacity: var(--bg-image-opacity);
+}
+
+/* Route variants: only the active route's content shows */
+:root[data-active-route="cheap"] .v:not(.v-cheap),
+:root[data-active-route="net"] .v:not(.v-net),
+:root[data-active-route="ai"] .v:not(.v-ai) { display: none !important; }
+
+/* ---------- Shell ---------- */
+.shell {
+  position: relative; z-index: 1;
+  height: 100%; width: 100%; max-width: 1480px; margin: 0 auto;
+  display: grid; gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-areas: "banner banner" "tabs route" "panels panels";
+  padding-block: 14px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.banner { grid-area: banner; }
+.tabs { grid-area: tabs; }
+.routebar { grid-area: route; }
+.panels { grid-area: panels; }
+
+/* ---------- Banner ---------- */
+.banner {
+  position: relative; overflow: hidden; isolation: isolate;
+  min-height: clamp(88px, 15vh, 180px);
+  display: flex; align-items: flex-end;
+  border-radius: 18px; background: var(--hero-base); box-shadow: var(--shadow);
+  color: var(--hero-fg);
+}
+.banner-img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 50% 64%; z-index: -3; }
+.banner::before { content: ""; position: absolute; inset: 0; background: var(--hero-veil); z-index: -2; }
+.snow { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+.banner-copy { padding: 16px 22px; max-width: 48rem; min-width: 0; }
+.eyebrow { margin: 0 0 6px; font: 600 11px/1.2 var(--f-body); letter-spacing: 0.16em; text-transform: uppercase; color: var(--hero-muted); }
+.banner h1 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(30px, 4vw, 54px); line-height: 1; letter-spacing: 0.01em; text-wrap: balance; }
+.lede { margin: 8px 0 0; font-size: clamp(13px, 1.25vw, 17px); color: var(--hero-muted); text-wrap: balance; }
+.plate { position: absolute; right: 18px; bottom: 14px; margin: 0; font: 500 10.5px/1 var(--f-mono); letter-spacing: 0.04em; color: var(--hero-muted); }
+.theme-btn {
+  position: absolute; top: 12px; right: 12px;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 12px; border-radius: 999px;
+  background: var(--hero-chip); border: 1px solid var(--hero-chip-line); color: var(--hero-fg);
+  font-size: 12.5px; font-weight: 600; cursor: pointer;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.theme-btn svg { width: 15px; height: 15px; }
+.theme-btn[aria-pressed="true"] { background: var(--hero-fg); color: var(--hero-base); }
+
+/* ---------- Tabs and route switch ---------- */
+.tabs { min-width: 0; }
+[role="tablist"], .routebar {
+  display: flex; gap: 4px; padding: 5px;
+  background: var(--glass); border: 1px solid var(--line); border-radius: 14px;
+  -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: var(--shadow);
+}
+[role="tab"] {
+  flex: 1 1 0; min-width: 0;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 8px 8px; border: 0; border-radius: 10px;
+  background: transparent; color: var(--muted);
+  font-size: 13.5px; font-weight: 600; line-height: 1.2; white-space: nowrap;
+  cursor: pointer; transition: background-color 0.2s, color 0.2s;
+}
+[role="tab"]:hover { color: var(--fg); background: var(--accent-soft); }
+[role="tab"][aria-selected="true"] { color: var(--fg); background: var(--glass-strong); box-shadow: inset 0 0 0 1px var(--line), 0 2px 12px var(--accent-glow); }
+.tab-num {
+  flex: none; display: inline-grid; place-items: center; width: 24px; height: 24px;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  background: var(--accent-soft); color: var(--accent);
+  font: 600 11px/1 var(--f-mono);
+}
+.tab-num svg { width: 12px; height: 12px; }
+[aria-selected="true"] .tab-num { background: var(--accent); color: var(--accent-ink); }
+/* Route switch: a choice, not navigation. A tinted group with a tag on its top edge and one bordered chip per route. */
+.routebar {
+  position: relative; align-items: center; gap: 6px; margin-left: 8px;
+  background: linear-gradient(var(--accent-soft), var(--accent-soft)), var(--glass);
+  border-color: var(--route-line);
+}
+.routebar-label {
+  position: absolute; top: -7px; left: 12px;
+  padding: 3px 7px 3px 8px; border-radius: 999px;
+  background: var(--accent); color: var(--accent-ink);
+  font: 600 9.5px/1 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase;
+}
+.seg { position: relative; display: flex; }
+.seg input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.seg span {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 7px 12px 7px 10px; border: 1px solid var(--chip-line); border-radius: 999px;
+  background: var(--glass-strong); color: var(--fg);
+  font-size: 13.5px; font-weight: 600; line-height: 1.2; white-space: nowrap;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.seg span::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--muted); }
+.seg input:hover + span { border-color: var(--accent); }
+.seg input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.seg input:checked + span::before { border-color: currentColor; background: radial-gradient(circle, currentColor 0 2.2px, transparent 2.8px); }
+.seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- Panels ---------- */
+.panels { min-height: 0; min-width: 0; display: grid; }
+.panel { min-height: 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; overflow: hidden; border-radius: 14px; }
+.panel:focus-visible { outline-offset: -2px; }
+.panel-head { flex: none; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 16px; row-gap: 2px; padding: 2px 4px 0; }
+.step-tag { flex-basis: 100%; margin: 0; font: 600 11px/1.3 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.panel-head h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(22px, 2.2vw, 30px); line-height: 1.1; text-wrap: balance; }
+.kicker { margin: 0; color: var(--muted); font-size: 14px; }
+
+.blocks { flex: 1 1 auto; min-height: 0; min-width: 0; display: grid; gap: 12px; align-content: start; }
+.block { min-width: 0; display: flex; flex-direction: column; }
+.block-tab { display: none; }
+.block-body {
+  flex: 1 1 auto; min-width: 0; container-type: inline-size;
+  padding: 16px 18px; border-radius: 14px;
+  background: var(--glass); border: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15); backdrop-filter: blur(14px) saturate(1.15);
+}
+.block-body h3 { margin: 0 0 8px; font-size: 15.5px; font-weight: 700; line-height: 1.3; text-wrap: balance; }
+.block-body p { margin: 0 0 8px; max-width: 68ch; }
+.block-body p:last-child { margin-bottom: 0; }
+.block-body a { color: var(--accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.16em; border-radius: 3px; }
+.block-body a:hover { text-decoration-thickness: 2px; }
+.small { font-size: 13px; color: var(--muted); }
+.label { font-size: 11px; font-weight: 700; line-height: 1.2; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 3px; }
+@container (min-width: 560px) {
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 320px); gap: 20px; align-items: start; }
+  .split > .still, .split > .msc, .split > .offset, .split > .tree { margin-top: 0; }
+}
+/* Landscape phones: put each section's figure beside its text so the section fits the height */
+@media (max-height: 440px) {
+  @container (min-width: 400px) {
+    .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(140px, 0.6fr); gap: 14px; align-items: start; }
+    .split > .still, .split > .msc, .split > .offset, .split > .tree { margin-top: 0; }
+    .entry-split { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(140px, 0.75fr); column-gap: 14px; align-items: start; }
+    .entry-split > p { grid-column: 1; grid-row: 1; }
+    .entry-split > .labels { grid-column: 1; grid-row: 2; margin-top: 0; }
+    .entry-split > .entry { grid-column: 2; grid-row: 1 / span 2; margin: 0; }
+    .flowfig { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 14px; align-items: start; }
+    .flowfig .flow { grid-column: 1; grid-row: 1 / span 2; width: auto; height: min(70vh, 300px); max-height: none; aspect-ratio: 320 / 302; }
+    .flowfig .keys { grid-column: 2; grid-row: 1; margin-top: 0; flex-direction: column; gap: 2px; }
+    .flowfig figcaption { grid-column: 2; grid-row: 2; font-size: 12.5px; }
+  }
+}
+
+/* Per-panel layouts (open mode) */
+[data-panel="overview"] .blocks { grid-template-columns: minmax(250px, 0.85fr) minmax(0, 1.1fr) minmax(0, 1.4fr); grid-template-areas: "routes flow compare"; }
+[data-panel="gear"] .blocks { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+[data-panel="setup"] .blocks { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+[data-panel="run"] .blocks { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); grid-template-areas: "watch drops" "notes drops"; }
+:where(:root[data-active-route="ai"]) [data-panel="run"] .blocks { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1.1fr); grid-template-areas: "watch drops flagged" "notes drops flagged"; }
+[data-panel="review"] .blocks { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1.1fr); grid-template-areas: "evidence entries extra"; }
+[data-panel="wrap"] .blocks { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+[data-panel="sessions"] .blocks { grid-template-columns: minmax(250px, 0.9fr) minmax(0, 1fr) minmax(0, 1.35fr); grid-template-rows: minmax(0, 1fr); align-content: stretch; }
+@media (max-width: 1180px) {
+  [data-panel="setup"] .blocks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  [data-panel="overview"] .blocks { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); grid-template-areas: "routes flow" "compare compare"; }
+}
+@media (max-width: 860px) {
+  [data-panel] .blocks { grid-template-columns: minmax(0, 1fr); grid-template-areas: none; }
+}
+@media (min-width: 2000px) {
+  .shell { max-width: 2560px; }
+  [data-panel="overview"] .blocks { grid-template-columns: minmax(300px, 0.7fr) minmax(0, 1fr) minmax(0, 1.5fr); }
+}
+
+/* Strip mode: blocks become sub-tabs, one body visible */
+.panel.is-strip .blocks { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); grid-template-rows: auto minmax(0, 1fr); grid-template-areas: none; gap: 8px 6px; }
+.panel.is-strip .block { display: contents; }
+.panel.is-strip .block-tab {
+  grid-row: 1; min-width: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 7px 4px; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--glass); color: var(--muted);
+  font-size: 12.5px; font-weight: 600; line-height: 1.2; white-space: nowrap; cursor: pointer;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.panel.is-strip .block-tab[aria-expanded="true"] { background: var(--accent); border-color: transparent; color: var(--accent-ink); }
+.panel.is-strip .block-body { grid-row: 2; grid-column: 1 / -1; align-self: start; }
+.panel.is-strip .block-body:not(.is-active) { display: none; }
+.panel.is-compact { gap: 8px; }
+.panel.is-compact .kicker { display: none; }
+.panel.is-compact .panel-head h2 { font-size: 20px; }
+.panel.is-compact .block-body { padding: 12px 14px; font-size: 13.5px; line-height: 1.42; }
+.panel.is-compact .block-body h3 { font-size: 14px; margin-bottom: 6px; }
+.panel.is-compact .block-body p { margin-bottom: 6px; }
+.panel.is-compact .drop-img { height: 44px; margin: -12px -14px 10px; }
+.panel.is-compact .evidence th, .panel.is-compact .evidence td { padding-block: 4px; font-size: 12.5px; line-height: 1.38; }
+.panel.is-compact .evidence tbody th { width: 27%; }
+.panel.is-compact .fieldnote { padding: 6px 10px; font-size: 12.5px; }
+.panel.is-compact .still img { max-height: 120px; }
+.panel.is-compact .tree { padding: 8px 10px; line-height: 1.45; }
+.panel.is-compact .entry { margin: 8px 0; padding: 8px; }
+.panel.is-compact .labels { gap: 4px; font-size: 12.5px; }
+.panel.is-compact .entry { gap: 4px; }
+.panel.is-compact .entry span { padding: 1px 6px; font-size: 11px; line-height: 1.35; }
+.panel.is-compact .keys { margin-top: 6px; }
+.panel.is-compact .cmp th, .panel.is-compact .cmp td { padding-block: 4px; }
+.panel.is-scroll .blocks { flex-basis: 0; }
+.panel.is-scroll .block-body.is-active { align-self: stretch; overflow: auto; overscroll-behavior: contain; }
+
+/* ---------- Components ---------- */
+.fieldnote { margin: 10px 0 0; padding: 8px 12px; border-radius: 10px; background: var(--code-bg); border: 1px dashed var(--line); font-size: 13px; line-height: 1.45; color: var(--muted); }
+.fieldnote b { display: block; margin-bottom: 1px; font: 600 10.5px/1.4 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.still { margin: 10px 0 0; }
+.still img { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; background: var(--hero-base); }
+.still figcaption { margin-top: 5px; font: 500 11px/1.4 var(--f-mono); color: var(--muted); }
+.stills-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.stills-2 .still { margin-top: 6px; }
+
+.routes { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.route-card {
+  position: relative; width: 100%; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center;
+  padding: 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--glass-strong);
+  text-align: left; cursor: pointer;
+}
+.route-card img { display: block; width: 96px; max-width: 100%; aspect-ratio: 16 / 11; object-fit: cover; border-radius: 8px; background: var(--hero-base); }
+.route-card strong { display: block; padding-right: 22px; font-family: var(--f-display); font-weight: 400; font-size: 18px; line-height: 1.15; }
+.route-card .pitch { display: block; margin-top: 2px; font-size: 13px; line-height: 1.38; color: var(--muted); }
+.route-card .picked { display: none; position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); }
+.route-card .picked svg { display: block; width: 12px; height: 12px; margin: 3px; }
+.route-card[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 4px 16px var(--accent-glow); }
+.route-card[aria-pressed="true"] .picked { display: block; }
+.credit { margin: 8px 0 0 !important; font: 500 11px/1.4 var(--f-mono); color: var(--muted); }
+
+.flowfig { margin: 0; }
+.flow { display: block; width: 100%; height: auto; max-height: clamp(200px, 36vh, 400px); color: var(--fg); font-family: var(--f-body); }
+:where(.panel.is-strip) .flow { max-height: min(52vh, 420px); }
+.flow text { fill: currentColor; font-size: 11px; }
+.flow .lbl { font-size: 10px; fill: var(--muted); }
+.flow .t-show { fill: var(--muted); }
+.flow .n { fill: var(--node); stroke: currentColor; stroke-width: 1.25; }
+.flow .n-show { fill: none; stroke: var(--muted); stroke-width: 1; }
+.flow .w { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.flow .w-cue { stroke: var(--sig-cue); } .flow .a-cue { fill: var(--sig-cue); }
+.flow .w-pic { stroke: var(--sig-pic); } .flow .a-pic { fill: var(--sig-pic); }
+.flow .w-clk { stroke: var(--sig-clk); } .flow .a-clk { fill: var(--sig-clk); }
+.flow .w-ink { stroke: currentColor; stroke-width: 1.25; } .flow .a-ink { fill: currentColor; }
+.flow .w-show { stroke: var(--muted); stroke-width: 1.25; } .flow .a-show { fill: var(--muted); }
+.flow .w-dash { stroke-dasharray: 4 4; }
+.keys { display: flex; flex-wrap: wrap; gap: 3px 14px; margin: 8px 0 0; padding: 0; list-style: none; font-size: 12px; color: var(--muted); }
+.keys li { display: flex; align-items: center; gap: 6px; }
+.keys i { width: 18px; height: 0; border-top: 2px solid var(--k, currentColor); border-radius: 2px; }
+.keys .k-band { width: 14px; height: 10px; border: 0; border-radius: 2px; background: var(--band); }
+.keys .k-alert { width: 0; height: 0; border: 5px solid transparent; border-top: 0; border-bottom: 9px solid var(--status-warn); border-radius: 0; }
+.flowfig figcaption { margin-top: 8px; font-size: 13.5px; line-height: 1.45; color: var(--muted); max-width: 60ch; }
+
+.cmp { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; }
+.cmp th, .cmp td { text-align: left; vertical-align: top; padding: 7px 8px; border-top: 1px solid var(--line); }
+.cmp thead th { border-top: 0; padding-top: 2px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.cmp tbody th { width: 78px; padding-left: 0; font-weight: 700; }
+.cmp thead td { width: 78px; border-top: 0; padding: 0; }
+.cmp-key { margin: 6px 0 0 !important; }
+.cmp .h-short { display: none; }
+.cmp-word { display: flex; align-items: center; gap: 7px; font-weight: 600; }
+.cmp-note { display: block; margin-top: 2px; font-size: 12.5px; line-height: 1.38; color: var(--muted); }
+.dots { flex: none; display: inline-flex; gap: 3px; }
+.dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--track); }
+.dots[data-n="1"] i:nth-child(-n+1), .dots[data-n="2"] i:nth-child(-n+2), .dots[data-n="3"] i:nth-child(-n+3) { background: var(--series-1); }
+.cmp .is-on { background: var(--accent-soft); }
+.cmp thead .is-on { color: var(--fg); }
+/* Focus: on short screens and in compact panels the note shows only under the selected route */
+@media (max-height: 800px) {
+  .cmp .cmp-note { display: none; }
+  .cmp .is-on .cmp-note { display: block; }
+  .cmp thead th.is-on { width: 46%; }
+}
+.panel.is-compact .cmp .cmp-note { display: none; }
+.panel.is-compact .cmp .is-on .cmp-note { display: block; }
+.panel.is-compact .cmp thead th.is-on { width: 46%; }
+/* Tight: on narrow or very short screens the other two routes shrink to their dots */
+@container (max-width: 520px) {
+  .cmp tbody th, .cmp thead td { width: 56px; }
+  .cmp thead th { width: 38px; }
+  .cmp td, .cmp thead th { padding-inline: 4px; }
+  .cmp .h-long { display: none; }
+  .cmp .h-short { display: inline; }
+  .cmp .cmp-note { display: none; }
+  .cmp .cmp-word b { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .cmp thead th.is-on, .panel.is-compact .cmp thead th.is-on { width: auto; }
+  .cmp .is-on .h-long { display: inline; }
+  .cmp .is-on .h-short { display: none; }
+  .cmp .is-on .cmp-note { display: block; }
+  .cmp .is-on .cmp-word b { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
+}
+@media (max-height: 440px) {
+  .cmp { font-size: 12.5px; }
+  .cmp-key, .drop-img { display: none; }
+  .cmp th, .cmp td { padding-block: 3px; }
+  .cmp tbody th, .cmp thead td { width: 74px; }
+  .cmp thead th { width: 44px; }
+  .cmp .h-long { display: none; }
+  .cmp .h-short { display: inline; }
+  .cmp .cmp-word { display: inline-flex; }
+  .cmp .cmp-word b { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .cmp thead th.is-on, .panel.is-compact .cmp thead th.is-on { width: auto; }
+  .cmp .is-on .h-long { display: inline; }
+  .cmp .is-on .h-short { display: none; }
+  .cmp .is-on .cmp-word b { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
+  .cmp .is-on .cmp-note, .panel.is-compact .cmp .is-on .cmp-note { display: inline; margin: 0 0 0 8px; }
+}
+
+.gear { margin: 0; display: grid; gap: 10px; }
+.gear dt { font-size: 11px; font-weight: 700; line-height: 1.2; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 3px; }
+.gear dd { margin: 0; }
+
+.msc { margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; background: var(--code-bg); border: 1px solid var(--line); }
+.msc figcaption { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.hex { font: 500 12.5px/1.5 var(--f-mono); color: var(--muted); word-spacing: 0.1em; }
+.hex .b-fmt, .decode .d-fmt { color: var(--hl-fmt); }
+.hex .b-cmd, .decode .d-cmd { color: var(--hl-cmd); }
+.hex .b-cue, .decode .d-cue { color: var(--accent); }
+.hex .b-fmt, .hex .b-cmd, .hex .b-cue { font-weight: 600; }
+.decode { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.decode span { padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; font: 600 11.5px/1.5 var(--f-mono); color: var(--muted); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; padding: 0; list-style: none; }
+.chips li { padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--fg); font-size: 12.5px; font-weight: 600; }
+.offset { margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: var(--code-bg); border: 1px solid var(--line); font: 500 12px/1.5 var(--f-mono); color: var(--muted); }
+.offset b { color: var(--fg); font-weight: 600; }
+
+.timeline { margin-top: 10px; padding: 24px 14px 22px; border-radius: 10px; background: var(--code-bg); border: 1px solid var(--line); }
+.tl-axis { position: relative; height: 2px; background: var(--line); }
+.tl-buffer { position: absolute; left: 0; width: 25%; top: -7px; height: 16px; border-radius: 3px; background: repeating-linear-gradient(90deg, var(--accent-glow) 0 3px, transparent 3px 6px); }
+.tl-buffer span { position: absolute; left: 0; bottom: calc(100% + 4px); font: 500 10.5px/1 var(--f-mono); color: var(--muted); white-space: nowrap; }
+.tl-tick { position: absolute; left: var(--x); top: 0; transform: translateX(-50%); display: grid; justify-items: center; }
+.tl-tick::before { content: ""; width: 12px; height: 12px; margin-top: -6px; transform: rotate(45deg); background: var(--glass-strong); border: 1.5px solid var(--accent); }
+.tl-tick.is-go::before { background: var(--accent); }
+.tl-tick b { margin-top: 5px; font: 600 11px/1 var(--f-mono); white-space: nowrap; }
+
+.feeds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 4px 0 10px; }
+.feed { padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); }
+.feed p { margin: 0; font-size: 14px; line-height: 1.45; }
+.log { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+.log caption { text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding-bottom: 4px; }
+.log td { padding: 5px 8px 5px 0; border-top: 1px solid var(--line); vertical-align: baseline; }
+.log td:first-child { font-family: var(--f-mono); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; width: 1%; }
+.log td:nth-child(2) { width: 1%; white-space: nowrap; }
+.tag { display: inline-block; padding: 1px 7px; border-radius: 5px; font: 600 10.5px/1.5 var(--f-mono); letter-spacing: 0.04em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent); }
+
+.drop-img { position: relative; height: 72px; margin: -16px -18px 12px; overflow: hidden; border-radius: 13px 13px 0 0; background: var(--hero-base); }
+.drop-img img { width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 50% 0; display: block; }
+.steps { margin: 0 0 8px; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 7px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: baseline; }
+.steps li::before { content: counter(s); display: grid; place-items: center; width: 22px; height: 22px; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); background: var(--accent-soft); color: var(--accent); font: 600 11px/1 var(--f-mono); transform: translateY(5px); }
+
+.evidence { width: 100%; border-collapse: collapse; margin-top: 6px; }
+.evidence th, .evidence td { text-align: left; vertical-align: top; padding: 8px 10px 8px 0; border-top: 1px solid var(--line); }
+.evidence thead th { border-top: 0; padding-top: 2px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.evidence tbody th { width: 34%; font-weight: 700; }
+
+.entry { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0; padding: 10px; border-radius: 10px; background: var(--code-bg); border: 1px solid var(--line); }
+.entry span { padding: 2px 8px; border-radius: 6px; background: var(--glass-strong); border: 1px solid var(--line); font: 500 12px/1.5 var(--f-mono); }
+.entry .e-cue { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
+.entry .e-todo { border-style: dashed; color: var(--muted); }
+.labels { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.labels li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+.pill { justify-self: start; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; line-height: 1.5; white-space: nowrap; }
+.is-warn { color: var(--warn); background: color-mix(in srgb, var(--warn) 14%, transparent); }
+.is-stale { color: var(--stale); background: color-mix(in srgb, var(--stale) 16%, transparent); }
+.is-bad { color: var(--bad); background: color-mix(in srgb, var(--bad) 13%, transparent); }
+.is-open { color: var(--accent); background: var(--accent-soft); }
+.is-ai { color: var(--hl-cmd); background: color-mix(in srgb, var(--hl-cmd) 14%, transparent); }
+
+.ticks { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.ticks li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 10px; align-items: baseline; }
+.ticks li::before { content: ""; width: 8px; height: 8px; transform: rotate(45deg) translateY(-1px); background: var(--accent); }
+.tree { margin: 10px 0 0; padding: 10px 12px; overflow-x: auto; border-radius: 10px; background: var(--code-bg); border: 1px solid var(--line); font: 500 12px/1.6 var(--f-mono); color: var(--muted); }
+.tree b { color: var(--fg); font-weight: 600; }
+
+/* Chart styles retained from the original guide */
+.watch-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 8px 0 4px; }
+.watch-head p { margin: 0; font: 500 11px/1.4 var(--f-mono); color: var(--muted); }
+.watch-plot { position: relative; min-height: 190px; outline-offset: 2px; touch-action: pan-y; }
+@media (max-height: 699px) { .watch-plot { min-height: 166px; } }
+@media (max-height: 479px) { .watch-plot { min-height: 138px; } }
+@media (min-height: 860px) { .watch-plot { min-height: 230px; } }
+.watch-plot svg { display: block; }
+.watch-plot .w-band { fill: var(--band); }
+.watch-plot .w-grid { stroke: var(--line); stroke-width: 1; }
+.watch-plot .w-thr { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.watch-plot .w-line { fill: none; stroke: var(--series-1); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.watch-plot .w-ax { fill: var(--muted); font: 500 10.5px var(--f-body); font-variant-numeric: tabular-nums; }
+.watch-plot .w-title { fill: var(--fg); font: 700 11px var(--f-body); }
+.watch-plot .w-alert { fill: var(--status-warn); stroke: var(--fg); stroke-width: 0.75; }
+.watch-plot .w-cross { stroke: var(--fg); stroke-width: 1; }
+.watch-plot .w-dot { fill: var(--series-1); stroke: var(--glass-strong); stroke-width: 2; }
+.watch-tip { position: absolute; top: 4px; z-index: 2; pointer-events: none; padding: 6px 9px; border-radius: 8px; background: var(--glass-strong); border: 1px solid var(--line); box-shadow: var(--shadow); font-size: 12px; line-height: 1.45; white-space: nowrap; }
+.watch-tip b { font-weight: 700; font-variant-numeric: tabular-nums; }
+.watch-tip span { color: var(--muted); }
+.watch-table { overflow: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; scroll-padding-top: 1.8rem; border: 1px solid var(--line); border-radius: 10px; }
+.watch-table table { width: 100%; border-collapse: collapse; font: 500 12px/1.4 var(--f-mono); font-variant-numeric: tabular-nums; }
+.watch-table th { position: sticky; top: 0; background: var(--glass-strong); text-align: left; padding: 4px 8px; }
+.watch-table td { padding: 3px 8px; border-top: 1px solid var(--line); }
+
+/* Sessions */
+.btn { padding: 7px 14px; border: 1px solid transparent; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn:hover { filter: brightness(1.08); }
+.btn-quiet { background: transparent; color: var(--fg); border-color: var(--line); }
+.btn-danger { background: var(--status-crit); color: var(--on-crit); border-color: transparent; }
+.btn:disabled, .stamp:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
+[data-panel="sessions"] .block-body { display: flex; flex-direction: column; min-height: 0; }
+.panel[data-panel="sessions"].is-strip .block-body { align-self: stretch; }
+.slate-bar { flex: none; height: 12px; margin: 2px 0 10px; border-radius: 4px; background: repeating-linear-gradient(-45deg, var(--fg) 0 12px, var(--glass-strong) 12px 24px); opacity: 0.85; }
+.slate-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 10px; }
+.field { display: grid; gap: 3px; min-width: 0; }
+.field span { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.field input { width: 100%; min-width: 0; padding: 6px 8px; border: 1px solid var(--line); border-radius: 7px; background: var(--glass-strong); font: 500 13px/1.3 var(--f-mono); }
+.slate-route { margin: 10px 0 0 !important; font-size: 13px; color: var(--muted); }
+.slate-route b { color: var(--fg); }
+.slate-actions, .session-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+.scroll { flex: 1 1 0; min-height: 120px; overflow: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; border: 1px solid var(--line); border-radius: 10px; background: var(--code-bg); }
+.records { list-style: none; margin: 0; padding: 4px; display: grid; gap: 4px; }
+.record { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding: 8px 10px; border: 1px solid transparent; border-radius: 8px; background: var(--glass-strong); text-align: left; cursor: pointer; }
+.record:hover { border-color: var(--line); }
+.record[aria-current="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.record-id { font-weight: 700; overflow-wrap: anywhere; }
+.record-meta { grid-column: 1 / -1; font: 500 11.5px/1.4 var(--f-mono); color: var(--muted); }
+.state { align-self: start; display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; line-height: 1.6; white-space: nowrap; }
+.state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.state-open { color: var(--good-ink); background: color-mix(in srgb, var(--status-good) 16%, transparent); }
+.state-closed { color: var(--muted); background: var(--accent-soft); }
+.state-closed::before { border-radius: 1px; }
+.session-meta { flex: none; margin: 0 0 6px !important; font: 500 11.5px/1.5 var(--f-mono); color: var(--muted); overflow-wrap: anywhere; }
+.stamps { flex: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 8px; }
+.stamp { padding: 8px 14px; border: 1px solid var(--line); border-radius: 9px; background: var(--glass-strong); font-size: 13.5px; font-weight: 700; cursor: pointer; }
+.stamp:hover:not(:disabled) { border-color: var(--accent); }
+.stamp-note { flex: none; margin-bottom: 8px; }
+#session-detail { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+#session-detail[hidden] { display: none; }
+.events { width: 100%; border-collapse: collapse; font-size: 13px; }
+.events td { padding: 5px 8px; border-top: 1px solid var(--line); vertical-align: baseline; }
+.events tr:first-child td { border-top: 0; }
+.events td:first-child { font-family: var(--f-mono); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; width: 1%; }
+.events td:nth-child(2) { width: 1%; white-space: nowrap; }
+.events td:last-child { overflow-wrap: anywhere; }
+
+/* ---------- Short desktop screens (720p laptops): keep the landing and run views open ---------- */
+@media (max-height: 800px) {
+  .route-card { grid-template-columns: 80px minmax(0, 1fr); gap: 10px; padding: 7px 8px; }
+  .route-card img { width: 80px; }
+  .route-card .pitch { font-size: 12.5px; line-height: 1.35; }
+  .drop-img { display: none; }
+  .cmp .cmp-word { display: inline-flex; }
+  .cmp .is-on .cmp-note, .panel.is-compact .cmp .is-on .cmp-note { display: inline; margin: 0 0 0 8px; }
+}
+@media (min-height: 441px) and (max-height: 800px) and (min-width: 1181px) {
+  [data-panel="overview"] .blocks { grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.6fr) minmax(0, 1.25fr); }
+}
+@media (min-height: 441px) and (max-height: 800px) {
+  @container (min-width: 480px) {
+    .flowfig { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 16px; align-items: start; }
+    .flowfig .flow { grid-column: 1; grid-row: 1 / span 2; width: auto; height: min(42vh, 330px); max-height: none; aspect-ratio: 320 / 302; }
+    .flowfig .keys { grid-column: 2; grid-row: 1; margin-top: 0; flex-direction: column; gap: 2px; }
+    .flowfig figcaption { grid-column: 2; grid-row: 2; }
+  }
+}
+/* Small portrait phones: slimmer banner and tighter examples */
+@media (min-height: 441px) and (max-height: 700px) and (max-width: 720px) {
+  .eyebrow, .lede, .cmp-key, .flowfig figcaption { display: none; }
+  .flow { max-height: 42vh; }
+  .banner-copy { padding: 10px 56px 10px 14px; }
+  .cmp th, .cmp td { padding-block: 4px; }
+  .panel.is-compact .still img { max-height: 90px; }
+  .panel.is-compact .entry { gap: 3px; padding: 6px; }
+  .panel.is-compact .entry span { font-size: 10.5px; }
+}
+@media (max-height: 800px) and (min-width: 861px) {
+  [data-panel="run"] .blocks { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-areas: "watch notes drops"; }
+  :where(:root[data-active-route="ai"]) [data-panel="run"] .blocks { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-areas: "watch notes drops flagged"; }
+}
+
+/* ---------- Large screens get larger type ---------- */
+@media (min-width: 1200px) and (min-height: 1000px) {
+  body { font-size: 16px; }
+  .block-body { padding: 18px 20px; }
+  .block-body h3 { font-size: 17px; }
+}
+
+/* ---------- Narrow and short screens ---------- */
+@media (max-width: 1023px) {
+  [role="tab"] { flex-direction: column; gap: 3px; padding: 5px 2px; font-size: 12px; }
+  .tab-num { width: 22px; height: 22px; }
+  .seg span { padding: 7px 10px 7px 8px; }
+}
+@media (max-width: 720px) {
+  .shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) auto; grid-template-areas: "banner" "route" "panels" "tabs"; gap: 8px; padding-block: 10px 6px; }
+  [role="tablist"] { gap: 1px; padding: 4px 3px 6px; }
+  [role="tab"] { flex-direction: column; gap: 4px; padding: 6px 0; font-size: 9.5px; }
+  .tab-num { width: 22px; height: 22px; }
+  .routebar { padding: 3px; gap: 4px; margin-left: 0; }
+  .routebar-label { position: static; padding: 0 2px 0 6px; border-radius: 0; background: none; color: var(--muted); font-size: 10px; letter-spacing: 0.1em; }
+  .seg { flex: 1 1 0; }
+  .seg span { flex: 1; gap: 5px; padding: 5px 6px; font-size: 12.5px; }
+  .seg span::before { width: 9px; height: 9px; }
+  .banner { min-height: 0; border-radius: 14px; }
+  .banner-copy { padding: 10px 64px 10px 14px; }
+  .eyebrow { font-size: 9.5px; margin-bottom: 3px; }
+  .banner h1 { font-size: 25px; }
+  .lede { font-size: 12px; margin-top: 3px; }
+  .plate { display: none; }
+  .theme-btn { top: 10px; right: 10px; padding: 7px; }
+  .theme-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .kicker { font-size: 13px; }
+  .panel { gap: 8px; }
+}
+@media (max-height: 600px) {
+  .shell { gap: 8px; padding-block: 8px; }
+  .banner { min-height: 0; }
+  .banner-copy { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 14px; padding: 10px 120px 10px 16px; }
+  .eyebrow { display: none; }
+  .banner h1 { font-size: 24px; }
+  .lede { margin: 0; }
+  .plate { display: none; }
+  [role="tab"] { padding: 6px 8px; }
+  .seg span { padding: 5px 10px 5px 8px; }
+  .kicker { display: none; }
+  .panel { gap: 8px; }
+}
+@media (max-height: 600px) and (max-width: 720px) {
+  .banner-copy { padding-right: 56px; }
+}
+@media (max-height: 600px) and (min-width: 721px) {
+  .routebar-label { top: -6px; padding: 2px 6px 2px 7px; font-size: 9px; }
+}
+@media (max-height: 440px) {
+  .panel-head { display: none; }
+  .scroll { min-height: 60px; }
+  .stamp-note { display: none; }
+  .routes { gap: 6px; }
+  .route-card { grid-template-columns: minmax(0, 1fr); padding: 6px 10px; }
+  .route-card img, .credit { display: none; }
+}
+/* Very short and narrow (400% zoom): slim the chrome so the panel keeps some height */
+@media (max-height: 320px) and (max-width: 720px) {
+  .shell { gap: 6px; padding-block: 6px; }
+  .lede { display: none; }
+  .banner-copy { padding: 6px 56px 6px 12px; }
+  .banner h1 { font-size: 20px; }
+  .theme-btn { top: 5px; right: 8px; padding: 5px; }
+  [role="tablist"] { padding: 3px; }
+  [role="tab"] { padding: 3px 0; }
+  .tab-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .routebar { padding: 2px; }
+  .seg span { gap: 4px; padding: 3px 4px; font-size: 11.5px; }
+  .seg span::before { width: 8px; height: 8px; }
+  .panel.is-strip .blocks { gap: 5px 4px; }
+  .panel.is-strip .block-tab { padding: 4px 2px; font-size: 11.5px; }
+}
+/* Landscape phones: title, route switch and tabs move into a side rail so the panel gets the full height */
+@media (max-height: 440px) and (min-width: 600px) {
+  .shell { grid-template-columns: minmax(136px, 164px) minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); grid-template-areas: "banner panels" "route panels" "tabs panels"; column-gap: 12px; row-gap: 6px; padding-block: 8px; }
+  .banner { flex-direction: row; align-items: center; justify-content: space-between; border-radius: 12px; }
+  .banner-copy { display: block; padding: 8px 4px 8px 12px; }
+  .banner h1 { font-size: 20px; }
+  .eyebrow, .lede, .plate { display: none; }
+  .theme-btn { position: static; flex: none; margin-right: 8px; padding: 6px; }
+  .theme-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tabs { min-height: 0; }
+  [role="tablist"] { flex-direction: column; height: 100%; gap: 1px; padding: 3px; }
+  [role="tab"] { flex: 1 1 0; flex-direction: row; justify-content: flex-start; gap: 8px; padding: 0 8px; font-size: 12.5px; }
+  .tab-num { width: 20px; height: 20px; font-size: 10px; }
+  .routebar { padding: 3px; gap: 3px; margin: 0 0 3px; }
+  .routebar-label { display: none; }
+  .seg { flex: 1 1 auto; }
+  .seg span { flex: 1; padding: 4px 0; font-size: 10.5px; }
+  .seg span::before { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+@media print {
+  html, body, .shell { height: auto; overflow: visible; display: block; }
+  .backdrop, .snow, .theme-btn, .tabs, .routebar, .block-tab { display: none !important; }
+  .panel, .panel[hidden] { display: flex !important; overflow: visible; break-inside: avoid; margin-bottom: 16px; }
+  .panel .block-body { display: block !important; }
+}
+
+/* Standalone guide: diagrams replace production photography. */
+.route-card { grid-template-columns: minmax(0, 1fr); }
+#b-frame .split { display: block; }
+</style>
+<script>
+(function () {
+  var r = 'cheap';
+  try { var s = localStorage.getItem('theater-cue-guide-route'); if (s === 'cheap' || s === 'net' || s === 'ai') r = s; } catch (e) {}
+  document.documentElement.setAttribute('data-active-route', r);
+})();
+</script>
+
+<style>
+#open-kit,#mac-kit button{font:inherit;font-weight:650;cursor:pointer;padding:.4em .8em;border-radius:.5em;color:var(--fg);background:var(--panel,#eef3fc);border:1px solid var(--line,#8392a3)}#open-kit{margin-top:.35em;color:#102436;background:#eef3fc}
+#mac-kit{box-sizing:border-box;max-width:min(52rem,94vw);max-height:85dvh;padding:0;border:1px solid #8495a5;border-radius:1rem;color:CanvasText;background:Canvas}#mac-kit[open]{display:flex;flex-direction:column}#mac-kit form{display:flex;align-items:center;justify-content:space-between;padding:.7em 1.5em;border-bottom:1px solid #8495a5}#mac-kit article{padding:0 1.5em 1em;overflow:auto;line-height:1.55}#mac-kit pre{overflow:auto;padding:.8em;background:rgba(120,140,150,.1)}#mac-kit summary{cursor:pointer}#mac-kit::backdrop{background:#0009}#mac-kit button{color:ButtonText;background:ButtonFace}
+</style></head><body>
+<div class="backdrop" aria-hidden="true"></div>
+<div class="shell">
+  <header class="banner">
+
+
+    <div class="banner-copy">
+      <p class="eyebrow">Field guide for theater techs</p>
+      <h1>Cue Capture</h1><button id="open-kit" type="button">Mac recorder</button>
+      <p class="lede">What fired, when, and what the stage did about it.</p>
+    </div>
+
+    <button id="theme" class="theme-btn" type="button" aria-pressed="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+      <span class="theme-label">Dark mode</span>
+    </button>
+  </header>
+
+  <nav class="tabs" aria-label="Guide sections">
+    <div role="tablist" aria-label="Guide sections">
+      <button role="tab" id="t-overview" data-hash="overview" aria-controls="p-overview" aria-selected="true">
+        <span class="tab-num" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7"/></svg></span><span class="tab-label">Routes</span>
+      </button>
+      <button role="tab" id="t-gear" data-hash="gear" aria-controls="p-gear" aria-selected="false" tabindex="-1"><span class="tab-num" aria-hidden="true">1</span><span class="tab-label">Gear up</span></button>
+      <button role="tab" id="t-setup" data-hash="setup" aria-controls="p-setup" aria-selected="false" tabindex="-1"><span class="tab-num" aria-hidden="true">2</span><span class="tab-label">Set up</span></button>
+      <button role="tab" id="t-run" data-hash="run" aria-controls="p-run" aria-selected="false" tabindex="-1"><span class="tab-num" aria-hidden="true">3</span><span class="tab-label">The run</span></button>
+      <button role="tab" id="t-review" data-hash="review" aria-controls="p-review" aria-selected="false" tabindex="-1"><span class="tab-num" aria-hidden="true">4</span><span class="tab-label">Review</span></button>
+      <button role="tab" id="t-wrap" data-hash="wrap" aria-controls="p-wrap" aria-selected="false" tabindex="-1"><span class="tab-num" aria-hidden="true">5</span><span class="tab-label">Wrap up</span></button>
+
+    </div>
+  </nav>
+
+  <div class="routebar" role="radiogroup" aria-label="Route">
+    <span class="routebar-label" aria-hidden="true">Route</span>
+    <label class="seg"><input type="radio" name="route" id="route-cheap" value="cheap"><span>Cheap</span></label>
+    <label class="seg"><input type="radio" name="route" id="route-net" value="net"><span>Networked</span></label>
+    <label class="seg"><input type="radio" name="route" id="route-ai" value="ai"><span>AI</span></label>
+  </div>
+
+  <main class="panels">
+    <!-- Routes -->
+    <section class="panel" data-panel="overview" role="tabpanel" id="p-overview" aria-labelledby="t-overview" tabindex="0">
+      <header class="panel-head">
+        <p class="step-tag">Start here</p>
+        <h2>Capture cues and stage pictures</h2>
+        <p class="kicker">Three approaches to recording cues and stage pictures. Open Mac recorder for the capture tool, installation and rehearsal test. AI review is optional.</p>
+      </header>
+      <div class="blocks" style="--n: 3">
+        <div class="block" style="grid-area: routes">
+          <button class="block-tab" type="button" aria-controls="b-routes" aria-expanded="true">Routes</button>
+          <div class="block-body" id="b-routes">
+            <h3>Pick a route</h3>
+            <ul class="routes">
+              <li><button class="route-card" type="button" data-route="cheap" aria-pressed="true">
+
+                <span><strong>Cheap</strong><span class="pitch">A phone, a free MIDI monitor and a clock you film. Reviewed by hand.</span></span><span class="picked" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5l2.3 2.3 4.7-5"/></svg></span>
+              </button></li>
+              <li><button class="route-card" type="button" data-route="net" aria-pressed="false">
+
+                <span><strong>Networked</strong><span class="pitch">Taps the show network: one clock, two feeds recorded, stills filed by cue.</span></span><span class="picked" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5l2.3 2.3 4.7-5"/></svg></span>
+              </button></li>
+              <li><button class="route-card" type="button" data-route="ai" aria-pressed="false">
+
+                <span><strong>AI-assisted</strong><span class="pitch">Either capture, plus software that drafts the review for a person to confirm.</span></span><span class="picked" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5l2.3 2.3 4.7-5"/></svg></span>
+              </button></li>
+            </ul>
+
+          </div>
+        </div>
+
+        <div class="block" style="grid-area: flow">
+          <button class="block-tab" type="button" aria-controls="b-flow" aria-expanded="false">Signal flow</button>
+          <div class="block-body" id="b-flow">
+            <h3>Where the signals go</h3>
+            <figure class="flowfig">
+              <svg class="flow v v-cheap" viewBox="0 0 320 302" role="img" aria-label="Cheap route signal flow. The MIDI line from the cue source to playback is split through a thru box into a laptop running a MIDI monitor, which saves the cue log. A phone films the stage and records a clip, and also films the laptop's clock so the two can be lined up. You scrub the clip to each logged time and write the entry.">
+                <text class="lbl" x="6" y="11">The show</text>
+                <rect class="n n-show" x="6" y="16" width="86" height="32" rx="7"/><text class="t-show" x="49" y="36" text-anchor="middle">Cue source</text>
+                <rect class="n n-show" x="117" y="16" width="86" height="32" rx="7"/><text class="t-show" x="160" y="36" text-anchor="middle">Playback</text>
+                <rect class="n n-show" x="228" y="16" width="86" height="32" rx="7"/><text class="t-show" x="271" y="36" text-anchor="middle">Stage</text>
+                <line class="w w-cue" x1="92" y1="32" x2="110" y2="32"/><polygon class="a-cue" points="110,28 110,36 117,32"/>
+                <text class="lbl" x="104.5" y="11" text-anchor="middle">MIDI</text>
+                <line class="w w-show" x1="203" y1="32" x2="221" y2="32"/><polygon class="a-show" points="221,28 221,36 228,32"/>
+                <text class="lbl" x="215.5" y="11" text-anchor="middle">output</text>
+                <circle class="a-cue" cx="104.5" cy="32" r="3"/>
+                <line class="w w-cue" x1="104.5" y1="34" x2="104.5" y2="89"/><polygon class="a-cue" points="100.5,89 108.5,89 104.5,96"/>
+                <text class="lbl" x="111" y="72">thru box</text>
+                <rect class="n" x="40" y="96" width="130" height="32" rx="7"/><text x="105" y="116" text-anchor="middle">Laptop · MIDI monitor</text>
+                <line class="w w-pic" x1="271" y1="48" x2="271" y2="89"/><polygon class="a-pic" points="267,89 275,89 271,96"/>
+                <text class="lbl" x="265" y="72" text-anchor="end">films the stage</text>
+                <rect class="n" x="214" y="96" width="100" height="32" rx="7"/><text x="264" y="116" text-anchor="middle">Phone on a clamp</text>
+                <line class="w w-clk" x1="170" y1="112" x2="207" y2="112"/><polygon class="a-clk" points="207,108 207,116 214,112"/>
+                <text class="lbl" x="192" y="142" text-anchor="middle">films the clock</text>
+                <line class="w w-cue" x1="105" y1="128" x2="105" y2="169"/><polygon class="a-cue" points="101,169 109,169 105,176"/>
+                <text class="lbl" x="111" y="162">saves</text>
+                <rect class="n" x="62" y="176" width="86" height="32" rx="7"/><text x="105" y="196" text-anchor="middle">Cue log</text>
+                <line class="w w-pic" x1="264" y1="128" x2="264" y2="169"/><polygon class="a-pic" points="260,169 268,169 264,176"/>
+                <text class="lbl" x="258" y="162" text-anchor="end">records</text>
+                <rect class="n" x="221" y="176" width="86" height="32" rx="7"/><text x="264" y="196" text-anchor="middle">Video clip</text>
+                <line class="w w-ink" x1="105" y1="208" x2="105" y2="245"/><polygon class="a-ink" points="101,245 109,245 105,252"/>
+                <text class="lbl" x="111" y="234">logged times</text>
+                <line class="w w-ink" x1="264" y1="208" x2="264" y2="245"/><polygon class="a-ink" points="260,245 268,245 264,252"/>
+                <text class="lbl" x="258" y="234" text-anchor="end">frames</text>
+                <rect class="n" x="40" y="252" width="274" height="32" rx="7"/><text x="177" y="272" text-anchor="middle">You: scrub to each time, write the entry</text>
+              </svg>
+              <svg class="flow v v-net" viewBox="0 0 320 302" role="img" aria-label="Networked route signal flow. A listen-only logger on the show network hears the MIDI or OSC cue traffic and saves cue and server logs. A network camera feed and the media server's program output are both recorded on a capture machine. One NTP or timecode clock feeds the logger, the capture machine and the media server. Each logged cue triggers stills at GO and at plus 1, 2 and 3 seconds, filed by cue and firing for you to review.">
+                <text class="lbl" x="6" y="11">The show</text>
+                <rect class="n n-show" x="6" y="16" width="86" height="32" rx="7"/><text class="t-show" x="49" y="36" text-anchor="middle">Cue source</text>
+                <rect class="n n-show" x="117" y="16" width="86" height="32" rx="7"/><text class="t-show" x="160" y="36" text-anchor="middle">Media server</text>
+                <rect class="n n-show" x="228" y="16" width="86" height="32" rx="7"/><text class="t-show" x="271" y="36" text-anchor="middle">Stage</text>
+                <line class="w w-cue" x1="92" y1="32" x2="110" y2="32"/><polygon class="a-cue" points="110,28 110,36 117,32"/>
+                <text class="lbl" x="104.5" y="11" text-anchor="middle">MIDI / OSC</text>
+                <line class="w w-show" x1="203" y1="32" x2="221" y2="32"/><polygon class="a-show" points="221,28 221,36 228,32"/>
+                <text class="lbl" x="215.5" y="11" text-anchor="middle">output</text>
+                <circle class="a-cue" cx="104.5" cy="32" r="3"/>
+                <path class="w w-cue" d="M104.5 34V66H55V89"/><polygon class="a-cue" points="51,89 59,89 55,96"/>
+                <text class="lbl" x="61" y="82">listen-only</text>
+                <rect class="n" x="6" y="96" width="98" height="32" rx="7"/><text x="55" y="116" text-anchor="middle">Network listener</text>
+                <rect class="n" x="121" y="96" width="78" height="32" rx="7"/><text x="160" y="116" text-anchor="middle">NTP or LTC</text>
+                <rect class="n" x="216" y="96" width="98" height="32" rx="7"/><text x="265" y="116" text-anchor="middle">Network camera</text>
+                <line class="w w-pic" x1="250" y1="48" x2="250" y2="89"/><polygon class="a-pic" points="246,89 254,89 250,96"/>
+                <text class="lbl" x="256" y="76">what landed</text>
+                <path class="w w-pic" d="M178 48V62H207.5V169"/><polygon class="a-pic" points="203.5,169 211.5,169 207.5,176"/>
+                <text class="lbl" x="213" y="152">what was sent</text>
+                <line class="w w-clk" x1="121" y1="112" x2="111" y2="112"/><polygon class="a-clk" points="111,108 111,116 104,112"/>
+                <line class="w w-clk" x1="150" y1="96" x2="150" y2="55"/><polygon class="a-clk" points="146,55 154,55 150,48"/>
+                <line class="w w-clk" x1="140" y1="128" x2="140" y2="169"/><polygon class="a-clk" points="136,169 144,169 140,176"/>
+                <text class="lbl" x="134" y="165" text-anchor="end">one clock</text>
+                <line class="w w-cue" x1="55" y1="128" x2="55" y2="169"/><polygon class="a-cue" points="51,169 59,169 55,176"/>
+                <text class="lbl" x="61" y="146">saves</text>
+                <rect class="n" x="4" y="176" width="104" height="32" rx="7"/><text x="56" y="196" text-anchor="middle">Cue + server logs</text>
+                <line class="w w-pic" x1="290" y1="128" x2="290" y2="169"/><polygon class="a-pic" points="286,169 294,169 290,176"/>
+                <rect class="n" x="124" y="176" width="190" height="32" rx="7"/><text x="219" y="196" text-anchor="middle">Capture machine</text>
+                <line class="w w-cue" x1="108" y1="192" x2="117" y2="192"/><polygon class="a-cue" points="117,188 117,196 124,192"/>
+                <text class="lbl" x="116" y="226" text-anchor="middle">each cue triggers</text>
+                <line class="w w-pic" x1="219" y1="208" x2="219" y2="245"/><polygon class="a-pic" points="215,245 223,245 219,252"/>
+                <text class="lbl" x="225" y="236">GO, +1, +2, +3 s</text>
+                <rect class="n" x="124" y="252" width="190" height="32" rx="7"/><text x="219" y="272" text-anchor="middle">Stills filed by cue and firing</text>
+                <line class="w w-ink" x1="124" y1="268" x2="115" y2="268"/><polygon class="a-ink" points="115,264 115,272 108,268"/>
+                <rect class="n" x="4" y="252" width="104" height="32" rx="7"/><text x="56" y="272" text-anchor="middle">You: observe</text>
+                <text class="lbl" x="116" y="298" text-anchor="middle">review</text>
+              </svg>
+              <svg class="flow v v-ai" viewBox="0 0 320 302" role="img" aria-label="AI-assisted route signal flow. The cue log, the stills and the cue sheet from your capture route go into software that measures, compares and describes. It produces a draft entry marked unconfirmed. A person checks the frame and confirms, corrects or rejects the draft before it becomes a review entry, and feeds reference frames back to the software.">
+                <text class="lbl" x="6" y="11">From your capture route</text>
+                <rect class="n" x="6" y="16" width="86" height="32" rx="7"/><text x="49" y="36" text-anchor="middle">Cue log</text>
+                <rect class="n" x="117" y="16" width="86" height="32" rx="7"/><text x="160" y="36" text-anchor="middle">Stills</text>
+                <rect class="n" x="228" y="16" width="86" height="32" rx="7"/><text x="271" y="36" text-anchor="middle">Cue sheet</text>
+                <line class="w w-cue" x1="66" y1="48" x2="66" y2="89"/><polygon class="a-cue" points="62,89 70,89 66,96"/>
+                <text class="lbl" x="72" y="74">times</text>
+                <line class="w w-pic" x1="160" y1="48" x2="160" y2="89"/><polygon class="a-pic" points="156,89 164,89 160,96"/>
+                <text class="lbl" x="154" y="74" text-anchor="end">frames</text>
+                <line class="w w-ink" x1="271" y1="48" x2="271" y2="89"/><polygon class="a-ink" points="267,89 275,89 271,96"/>
+                <text class="lbl" x="265" y="74" text-anchor="end">intended look</text>
+                <rect class="n" x="50" y="96" width="264" height="32" rx="7"/><text x="182" y="116" text-anchor="middle">Software: measure, compare, describe</text>
+                <line class="w w-ink" x1="182" y1="128" x2="182" y2="169"/><polygon class="a-ink" points="178,169 186,169 182,176"/>
+                <text class="lbl" x="188" y="156">drafts</text>
+                <rect class="n" x="107" y="176" width="150" height="32" rx="7"/><text x="182" y="196" text-anchor="middle">Draft entry, unconfirmed</text>
+                <line class="w w-ink" x1="125" y1="208" x2="125" y2="245"/><polygon class="a-ink" points="121,245 129,245 125,252"/>
+                <text class="lbl" x="131" y="234">to review</text>
+                <rect class="n" x="6" y="252" width="150" height="32" rx="7"/><text x="81" y="272" text-anchor="middle">A person checks the frame</text>
+                <line class="w w-ink" x1="156" y1="268" x2="187" y2="268"/><polygon class="a-ink" points="187,264 187,272 194,268"/>
+                <rect class="n" x="194" y="252" width="120" height="32" rx="7"/><text x="254" y="272" text-anchor="middle">Review entry</text>
+                <text class="lbl" x="175" y="298" text-anchor="middle">confirms, corrects or rejects</text>
+                <path class="w w-ink w-dash" d="M24 252V112H43"/><polygon class="a-ink" points="43,108 43,116 50,112"/>
+                <text class="lbl" x="30" y="150">reference</text><text class="lbl" x="30" y="162">frames</text>
+              </svg>
+              <ul class="keys" aria-label="Line colors">
+                <li><i style="--k: var(--sig-cue)"></i>Cue data</li>
+                <li><i style="--k: var(--sig-pic)"></i>Picture</li>
+                <li class="v v-cheap v-net"><i style="--k: var(--sig-clk)"></i>Clock</li>
+                <li><i style="--k: var(--fg)"></i>Review</li>
+                <li class="v v-cheap v-net"><i style="--k: var(--muted)"></i>The show's own path</li>
+              </ul>
+              <figcaption class="v v-cheap">The cheap route adds two things to the show: a MIDI tap into a laptop and a phone pointed at the stage. Filming the laptop's clock is what ties them together.</figcaption>
+              <figcaption class="v v-net">The networked route listens on the show network. Every machine shares one clock, and the recorder keeps both what was sent and what landed.</figcaption>
+              <figcaption class="v v-ai">The AI route sits after capture. Software reads the log, the stills and the cue sheet and drafts entries. Nothing becomes a note until a person confirms it.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="block" style="grid-area: compare">
+          <button class="block-tab" type="button" aria-controls="b-compare" aria-expanded="false">Compare</button>
+          <div class="block-body" id="b-compare">
+            <h3>What each route costs you</h3>
+            <table class="cmp">
+              <thead><tr>
+                <td></td>
+                <th scope="col" class="c-cheap"><span class="h-long">Cheap</span><span class="h-short" aria-hidden="true">C</span></th>
+                <th scope="col" class="c-net"><span class="h-long">Networked</span><span class="h-short" aria-hidden="true">N</span></th>
+                <th scope="col" class="c-ai"><span class="h-long">AI-assisted</span><span class="h-short" aria-hidden="true">AI</span></th>
+              </tr></thead>
+              <tbody>
+                <tr><th scope="row">Spend</th>
+                  <td class="c-cheap"><span class="cmp-word"><b>Lowest</b></span><span class="cmp-note">MIDI interface and thru box, on top of a phone and laptop.</span></td>
+                  <td class="c-net"><span class="cmp-word"><b>Highest</b></span><span class="cmp-note">Camera, capture machine, switch ports. Often already in the rig.</span></td>
+                  <td class="c-ai"><span class="cmp-word"><b>Additional</b></span><span class="cmp-note">Your capture route, plus analysis tools and model use.</span></td></tr>
+                <tr><th scope="row">Setup</th>
+                  <td class="c-cheap"><span class="cmp-word"><b>Quickest</b></span><span class="cmp-note">Clamp it, plug it in, film the clock.</span></td>
+                  <td class="c-net"><span class="cmp-word"><b>Longest</b></span><span class="cmp-note">Show network up, one shared clock.</span></td>
+                  <td class="c-ai"><span class="cmp-word"><b>Additional</b></span><span class="cmp-note">Capture setup, a test pass, a reference frame per scene.</span></td></tr>
+                <tr><th scope="row">Timing</th>
+                  <td class="c-cheap"><span class="cmp-word"><b>Measured</b></span><span class="cmp-note">A filmed clock reference. Measure the offset and drift.</span></td>
+                  <td class="c-net"><span class="cmp-word"><b>Measured</b></span><span class="cmp-note">Shared clocks or recorded timecode, with camera delay checked.</span></td>
+                  <td class="c-ai"><span class="cmp-word"><b>Inherited</b></span><span class="cmp-note">Whatever its capture route measured.</span></td></tr>
+                <tr><th scope="row">Review work</th>
+                  <td class="c-cheap"><span class="cmp-word"><b>Most</b></span><span class="cmp-note">Every firing found and written up by hand.</span></td>
+                  <td class="c-net"><span class="cmp-word"><b>Less</b></span><span class="cmp-note">Stills arrive filed by cue. You observe.</span></td>
+                  <td class="c-ai"><span class="cmp-word"><b>Assisted</b></span><span class="cmp-note">Drafted for you. You still confirm each one.</span></td></tr>
+                <tr><th scope="row">Evidence</th>
+                  <td class="c-cheap"><span class="cmp-word"><b>Two sources</b></span><span class="cmp-note">Cue log and one camera.</span></td>
+                  <td class="c-net"><span class="cmp-word"><b>Four sources</b></span><span class="cmp-note">Cue log, server log, program out, camera.</span></td>
+                  <td class="c-ai"><span class="cmp-word"><b>Capture's</b></span><span class="cmp-note">Plus drafts, marked unconfirmed.</span></td></tr>
+              </tbody>
+            </table>
+            <p class="small cmp-key">Costs depend on existing equipment. AI adds to a capture route; it does not replace capture or human review.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1 Gear up -->
+    <section class="panel" data-panel="gear" role="tabpanel" id="p-gear" aria-labelledby="t-gear" tabindex="0" hidden>
+      <header class="panel-head">
+        <p class="step-tag">Step 1 of 5 · <span class="route-name">Cheap route</span></p>
+        <h2>Gear up</h2>
+        <p class="kicker">What to bring for this route, and what bites.</p>
+      </header>
+      <div class="blocks" style="--n: 3">
+        <div class="block">
+          <button class="block-tab" type="button" aria-controls="b-capture" aria-expanded="true">Capture</button>
+          <div class="block-body" id="b-capture">
+            <h3>Capture kit</h3>
+            <dl class="gear v v-cheap">
+              <div><dt>Cue log</dt><dd>A laptop running a free MIDI monitor behind a USB MIDI interface: <a href="https://www.snoize.com/MIDIMonitor/" target="_blank" rel="noopener noreferrer">MIDI Monitor</a> on a Mac, <a href="https://hexler.net/protokol" target="_blank" rel="noopener noreferrer">Protokol</a> on Windows, or <a href="https://github.com/gbevin/ReceiveMIDI" target="_blank" rel="noopener noreferrer">ReceiveMIDI</a> from the command line. Feed it from a thru box or a spare output so the show line stays intact.</dd></div>
+              <div><dt>Stage picture</dt><dd>A phone on a clamp or tripod with the whole playing area in view. Power it, switch to airplane mode and record 1080p continuously.</dd></div>
+            </dl>
+            <dl class="gear v v-net">
+              <div><dt>Cue log</dt><dd>A listen-only tap on the show network: join the <a href="https://support.apple.com/guide/audio-midi-setup/share-midi-information-over-a-network-ams1012/mac" target="_blank" rel="noopener noreferrer">network MIDI session</a>, or have playback send its OSC to <a href="https://hexler.net/protokol" target="_blank" rel="noopener noreferrer">Protokol</a>. Pull the media server's own log too, so you have what it ran beside what it received.</dd></div>
+              <div><dt>Stage picture</dt><dd>A network camera on a locked preset, recorded with <a href="https://obsproject.com/" target="_blank" rel="noopener noreferrer">OBS Studio</a>. Record the media server's program output as a second feed: one shows what was sent, the other what landed.</dd></div>
+            </dl>
+
+            <dl class="gear v v-ai">
+              <div><dt>Cue log</dt><dd>The log from your capture route, with cue labels spelled exactly as they are on the cue sheet. Software can only match what's written the same way.</dd></div>
+              <div><dt>Stage picture</dt><dd>Stills at the same offsets for every firing, from a camera that never moves. A change in framing or exposure reads as a change on stage.</dd></div>
+            </dl>
+          </div>
+        </div>
+        <div class="block">
+          <button class="block-tab" type="button" aria-controls="b-clock" aria-expanded="false">Clock</button>
+          <div class="block-body" id="b-clock">
+            <h3>Clock and storage</h3>
+            <dl class="gear v v-cheap">
+              <div><dt>One clock</dt><dd>The laptop's clock, filmed by the phone at the start and end of the run. Use a clock display that shows fractions of a second.</dd></div>
+              <div><dt>Storage</dt><dd>Room on the phone for the whole run (1080p takes a few gigabytes an hour) and somewhere to offload it afterward. A spreadsheet is enough for the notes, and <a href="https://losslesscut.app/" target="_blank" rel="noopener noreferrer">LosslessCut</a> is a free way to step through the clip and save stills.</dd></div>
+            </dl>
+            <dl class="gear v v-net">
+              <div><dt>One clock</dt><dd>One NTP source for compatible machines, or LTC timecode recorded on a camera audio channel. Confirm how each recorder timestamps frames and measure offset, latency and drift.</dd></div>
+              <div><dt>Storage</dt><dd>A capture machine or NAS sized for every feed for the whole run, on a network segment that can carry the video.</dd></div>
+            </dl>
+            <dl class="gear v v-ai">
+              <div><dt>One clock</dt><dd>Whatever your capture route uses. Software can't repair timestamps that were never lined up.</dd></div>
+              <div><dt>Storage</dt><dd>Space for stills, drafts, and the prompt or thresholds you used. Keep the cue sheet as text or CSV: cue number, label, intended look.</dd></div>
+            </dl>
+          </div>
+        </div>
+        <div class="block">
+          <button class="block-tab" type="button" aria-controls="b-watchout" aria-expanded="false">Watch out</button>
+          <div class="block-body" id="b-watchout">
+            <h3>Watch out</h3>
+            <ul class="ticks v v-cheap">
+              <li>Phones overheat, take calls and stop at storage limits. Check at every break.</li>
+              <li>Autofocus and auto-exposure hunt under stage light. Lock both.</li>
+              <li>4K and high frame rates fill storage without making a cue easier to judge.</li>
+              <li>If cues travel over USB or the network, there's no cable to split. Run the monitor on the receiving computer.</li>
+            </ul>
+            <ul class="ticks v v-net">
+              <li>Listen, don't control. Some devices take one control connection at a time, so an extra client can knock the show's own session off.</li>
+              <li>Video streams can consume substantial bandwidth. Confirm network capacity with the system owner and keep capture traffic from disrupting show control.</li>
+              <li>Keep the capture machine out of the control path. If it dies, the show shouldn't notice.</li>
+            </ul>
+            <ul class="ticks v v-ai">
+              <li>Software flags what looks different, and a scene look can look like a fault.</li>
+              <li>Take timing from the logs, never from a model's description.</li>
+              <li>Cloud models mean frames leave the building. Local analysis keeps them in-house.</li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 Set up -->
+    <section class="panel" data-panel="setup" role="tabpanel" id="p-setup" aria-labelledby="t-setup" tabindex="0" hidden>
+      <header class="panel-head">
+        <p class="step-tag">Step 2 of 5 · <span class="route-name">Cheap route</span></p>
+        <h2>Set up and test it</h2>
+        <p class="kicker">Tap the feed, frame the shot, sync the clocks, then prove it end to end.</p>
+      </header>
+      <div class="blocks" style="--n: 4">
+        <div class="block">
+          <button class="block-tab" type="button" aria-controls="b-listen" aria-expanded="true">Listen</button>
+          <div class="block-body" id="b-listen">
+            <h3>Listen without touching</h3>
+            <div class="split">
+              <div>
+                <p>Set the logger to receive-only, and keep the raw messages beside any decoded labels.</p>
+                <p class="v v-cheap">Use a buffered MIDI THRU box or spare output into the laptop's interface. Do not use a passive Y cable. Check which messages carry cue numbers: MIDI Show Control does. Notes and program changes need a mapping you write down.</p>
+                <p class="v v-net">Join the network MIDI session as a listener, or have playback send OSC to your logger on each cue. Open no extra control sessions to show devices.</p>
+                <p class="v v-ai">Use the same tap as your capture route. Make the decoded labels match the cue sheet, so cue 42.1 in the log is cue 42.1 on the sheet.</p>
+              </div>
+              <figure class="msc">
+                <figcaption>Raw, with its decode</figcaption>
+                <div class="hex">F0 7F 01 02 <span class="b-fmt">01</span> <span class="b-cmd">01</span> <span class="b-cue">34 32 2E 31</span> F7</div>
+                <div class="decode"><span>MSC</span><span class="d-fmt">Lighting</span><span class="d-cmd">GO</span><span class="d-cue">Cue 42.1</span></div>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="block">
+          <button class="block-tab" type="button" aria-controls="b-frame" aria-expanded="false">Frame</button>
+          <div class="block-body" id="b-frame">
+            <h3>Frame it, lock it, check the recording</h3>
+            <div class="split">
+              <div>
+                <p>Get the surfaces the team cares about in frame. Judge focus, exposure and motion from the recording, not the viewfinder.</p>
+                <p class="v v-cheap">Lock the phone's focus and exposure so lighting changes stay visible. Clamp it where nobody will bump it, and mark the spot.</p>
+                <p class="v v-net">Recall one camera preset and lock control for the whole show. Turn off continuous autofocus and set focus by hand.</p>
+                <p class="v v-ai">Frame for the software: the same shot every run, with the areas it measures clear of heads and masking.</p>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="block">
+          <button class="block-tab" type="button" aria-controls="b-sync" aria-expanded="false">Sync</button>
+          <div class="block-body" id="b-sync">
+            <h3>Sync the clocks</h3>
+            <div class="split">
+              <div>
+                <p>Keep original timestamps and record a visible clock reference. Measure offset and drift. A test cue checks the full chain, but its response includes cue, camera and recording delay; do not treat all of that as clock offset.</p>
+                <p class="v v-cheap">Film the laptop's clock for a few seconds at the start and again at the end. The two readings give you the offset and any drift.</p>
+                <p class="v v-net">Use the approved NTP source or record LTC on the camera's audio. Verify how that reference maps to recorded frames at both ends of the run.</p>
+                <p class="v v-ai">Do this on the capture route, then hand the software the measured offset as a number. Don't let it estimate one.</p>
+
+              </div>
+              <div class="offset" role="group" aria-label="Example offset note"><span class="label">Example offset note</span><br><b>Camera −0.42 s</b> vs logger<br>Measured 18:55 · ±0.05 s</div>
+            </div>
+          </div>
+        </div>
+        <div class="block">
+          <button class="block-tab" type="button" aria-controls="b-test" aria-expanded="false">Test</button>
+          <div class="block-body" id="b-test">
+            <h3>Run a full test</h3>
+            <div class="split">
+              <div>
+                <p>Fire a known test cue. Find it in the saved log with the right source and label, then open the actual clip or stills.</p>
+                <p class="v v-cheap">Use the recorded clock reference to map the logged firing into the clip. If the expected change is missing, check clock alignment, response delay and capture gaps before the run.</p>
+                <p class="v v-net">Let the capture script grab its stills unprompted: a trigger frame plus +1, +2 and +3 s suits short transitions. A rolling buffer shows what happened before the GO.</p>
+                <p class="v v-ai">Push the test firing through the whole pipeline and check the draft against the frame yourself. Give the software a reference frame for each scene look.</p>
+              </div>
+              <div>
+                <div class="timeline v v-net v-ai" role="img" aria-label="Rolling buffer before the GO, then stills at the trigger and at plus 1, 2 and 3 seconds">
+                  <div class="tl-axis">
+                    <span class="tl-buffer"><span>Rolling buffer</span></span>
+                    <span class="tl-tick is-go" style="--x: 25%"><b>GO</b></span>
+                    <span class="tl-tick" style="--x: 43.75%"><b>+1 s</b></span>
+                    <span class="tl-tick" style="--x: 62.5%"><b>+2 s</b></span>
+                    <span class="tl-tick" style="--x: 81.25%"><b>+3 s</b></span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 The run -->
+    <section class="panel" data-panel="run" role="tabpanel" id="p-run" aria-labelledby="t-run" tabindex="0" hidden>
+      <header class="panel-head">
+        <p class="step-tag">Step 3 of 5 · <span class="route-name">Cheap route</span></p>
+        <h2>During the run</h2>
+        <p class="kicker">Two feeds, watched separately.</p>
+      </header>
+      <div class="blocks" style="--n: 3">
+        <div class="block" style="grid-area: watch">
+          <button class="block-tab" type="button" aria-controls="b-watch" aria-expanded="true">Watch</button>
+          <div class="block-body" id="b-watch">
+            <h3>Watch the log and the picture as two feeds</h3>
+            <div class="feeds">
+              <div class="feed"><p class="label">Cue log</p><p>A quiet stretch with no cues is normal. Check the logger's connection or heartbeat if it has one.</p></div>
+              <div class="feed"><p class="label">Picture</p><p>Make sure the camera still shows live motion and hasn't frozen.</p></div>
+            </div>
+            <p class="v v-cheap">At every break, look at the phone: still recording, not hot, storage left.</p>
+            <p class="v v-net">Watch the recorder's inputs and the clock status. When program out and the camera disagree, that's a finding to log, not a fault to chase.</p>
+            <p class="v v-ai">A live watcher will flag frames mid-show. Note the time and keep going. Judging them is for review.</p>
+          </div>
+        </div>
+        <div class="block" style="grid-area: notes">
+          <button class="block-tab" type="button" aria-controls="b-notes" aria-expanded="false">Notes</button>
+          <div class="block-body" id="b-notes">
+            <h3>Timestamp every interruption</h3>
+            <p>Keep a timestamped run-notes file or spreadsheet. Record the run ID, date, time zone, operator, sources and start time, then every hold, restart, skipped cue and capture gap.</p>
+            <p class="v v-cheap">Read times off the laptop clock you filmed, so the notes and the log agree.</p>
+            <p class="v v-net">Stamp from a machine that's on the show's NTP source.</p>
+            <p class="v v-ai">Restarts repeat cue numbers. Log them, or the software will merge two firings into one.</p>
+            <table class="log">
+              <caption>Example run notes</caption>
+              <tbody>
+                <tr><td>19:31:07</td><td><span class="tag">Hold</span></td><td>Stage management hold</td></tr>
+                <tr><td>19:35:22</td><td><span class="tag">Restart</span></td><td>From cue 38</td></tr>
+                <tr><td>19:44:10</td><td><span class="tag">Gap</span></td><td>Camera dropped, back at 19:44:52</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="block" style="grid-area: drops">
+          <button class="block-tab" type="button" aria-controls="b-drops" aria-expanded="false">Drops</button>
+          <div class="block-body" id="b-drops">
+            <div class="drop-img"></div>
+            <h3>If capture drops</h3>
+            <ol class="steps">
+              <li>Note the last good event or frame, and when capture came back.</li>
+              <li>Leave the existing files alone.</li>
+              <li>Start a new segment and log the break.</li>
+              <li>Save restarts and routing changes on show machines for a break.</li>
+            </ol>
+            <p class="v v-cheap">Phone stopped? Start a new clip and film the clock again before carrying on.</p>
+            <p class="v v-net">If the recorder drops, the media server's own log still shows what ran.</p>
+            <p class="v v-ai">Mark the gap, so nothing gets judged from frames that don't exist.</p>
+
+          </div>
+        </div>
+        <div class="block v v-ai" style="grid-area: flagged">
+          <button class="block-tab" type="button" aria-controls="b-flagged" aria-expanded="false">Flagged</button>
+          <div class="block-body" id="b-flagged">
+            <h3>Check an alert against the scene</h3>
+            <p>A dark scene, fade or change in color can trigger a false alert. Check the original frame, its time and the intended look before calling it a fault.</p>
+            <p>Keep the flag as unconfirmed until a person records the finding. Missing or stale frames stay marked as gaps.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Review -->
+    <section class="panel" data-panel="review" role="tabpanel" id="p-review" aria-labelledby="t-review" tabindex="0" hidden>
+      <header class="panel-head">
+        <p class="step-tag">Step 4 of 5 · <span class="route-name">Cheap route</span></p>
+        <h2>Review</h2>
+        <p class="kicker">Turn the log and footage into notes the team can trust.</p>
+      </header>
+      <div class="blocks" style="--n: 3">
+        <div class="block" style="grid-area: evidence">
+          <button class="block-tab" type="button" aria-controls="b-evidence" aria-expanded="true">Evidence</button>
+          <div class="block-body" id="b-evidence">
+            <h3>What each source proves</h3>
+            <p>Each source answers a different question, so don't let one stand in for another.</p>
+            <table class="evidence">
+              <thead><tr><th scope="col">Evidence</th><th scope="col">What it tells you</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Incoming MIDI</th><td>A command reached the tap at the logged time. It doesn't show the cue ran.</td></tr>
+                <tr><th scope="row">Playback or console log</th><td>What the receiving app reports it ran, when you can get it.</td></tr>
+                <tr class="v v-net"><th scope="row">Program out</th><td>What the media server sent, frame by frame.</td></tr>
+                <tr><th scope="row">Camera frame or clip</th><td>What the stage looked like at that media time.</td></tr>
+                <tr><th scope="row">Cue sheet</th><td>What the cue was supposed to do.</td></tr>
+                <tr class="v v-ai"><th scope="row">AI draft</th><td>A pointer to what to check. Not evidence until a person confirms it.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="block" style="grid-area: entries">
+          <button class="block-tab" type="button" aria-controls="b-entries" aria-expanded="false">Entries</button>
+          <div class="block-body" id="b-entries">
+            <h3>One entry per firing</h3>
+            <div class="entry-split">
+            <p>Every firing gets its own entry, including repeats during notes or pickups.
+              <span class="v v-cheap">Map each logged firing into the clip using the clock reference, and write what you see.</span>
+              <span class="v v-net">Stills arrive filed by cue and firing. Your job is the observation.</span>
+              <span class="v v-ai">The software drafts each one. Confirm, correct or reject every draft.</span>
+            </p>
+            <div class="entry" role="group" aria-label="Example review entry">
+              <span class="e-cue">Cue 42.1</span><span>19:42:18 local</span><span>second firing</span><span>GO received</span><span>picture at +2.1 s</span><span>center image still visible</span><span class="e-todo">check intended fade against cue sheet</span>
+            </div>
+            <ul class="labels">
+              <li><span class="pill is-warn">Late still</span><span>Record its real timing.</span></li>
+              <li><span class="pill is-stale">Stalled picture</span><span>Mark it stale.</span></li>
+              <li><span class="pill is-bad">Missing frame</span><span>Leave it blank and give the reason.</span></li>
+              <li><span class="pill is-open">Can't tell</span><span>Leave the question open.</span></li>
+              <li class="v v-ai"><span class="pill is-ai">AI draft</span><span>Unconfirmed until a person checks the frame.</span></li>
+            </ul>
+            </div>
+          </div>
+        </div>
+        <div class="block v v-cheap v-net" style="grid-area: extra">
+          <button class="block-tab" type="button" aria-controls="b-still" aria-expanded="false">Still</button>
+          <div class="block-body" id="b-still">
+            <h3>File the picture with the firing</h3>
+            <p>Keep a still at each chosen offset with the relevant playing area in view. Name it by cue and firing time, and record the actual frame time.</p>
+
+          </div>
+        </div>
+        <div class="block v v-ai" style="grid-area: extra">
+          <button class="block-tab" type="button" aria-controls="b-machine" aria-expanded="false">Watch data</button>
+          <div class="block-body" id="b-machine">
+            <h3>A machine flags. A person decides.</h3>
+            <p>Use the cue sheet and a known reference frame to check each draft. A difference in brightness or color alone does not establish a fault.</p>
+            <ul class="ticks"><li>Confirm the firing and actual frame time.</li><li>Check the original image and intended look.</li><li>Confirm, correct or reject the draft.</li><li>Record who reviewed it and preserve uncertainty.</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 Wrap up -->
+    <section class="panel" data-panel="wrap" role="tabpanel" id="p-wrap" aria-labelledby="t-wrap" tabindex="0" hidden>
+      <header class="panel-head">
+        <p class="step-tag">Step 5 of 5 · <span class="route-name">Cheap route</span></p>
+        <h2>Wrap and hand off</h2>
+        <p class="kicker">Check it, bundle it, send it.</p>
+      </header>
+      <div class="blocks" style="--n: 3">
+        <div class="block">
+          <button class="block-tab" type="button" aria-controls="b-stop" aria-expanded="true">Stop</button>
+          <div class="block-body" id="b-stop">
+            <h3>Stop and spot-check</h3>
+            <p>Stop capture and let the files finish writing. Then check:</p>
+            <ul class="ticks">
+              <li>The first, middle and last recordings or stills</li>
+              <li>The expected cues are covered</li>
+              <li>No missing intervals</li>
+              <li>The timing reference still lines up</li>
+            </ul>
+            <p class="fieldnote v v-cheap"><b>Cheap route</b>Offload the phone before it leaves the building.</p>
+            <p class="fieldnote v v-net"><b>Networked route</b>Export playback logs before anyone power-cycles the show machines.</p>
+            <p class="fieldnote v v-ai"><b>AI route</b>Run the analysis on finished files only, never on ones still being written.</p>
+          </div>
+        </div>
+        <div class="block">
+          <button class="block-tab" type="button" aria-controls="b-bundle" aria-expanded="false">Bundle</button>
+          <div class="block-body" id="b-bundle">
+            <h3>Keep the originals together</h3>
+            <div class="split">
+            <div>
+            <p>Edit and annotate copies, never the originals. Link media with relative paths so the archive still works after it moves.</p>
+
+            </div>
+            <pre class="tree" aria-label="Example archive layout"><b>RUN-03/</b>
+├─ cue-log/     original export
+├─ media/       clips and stills
+<span class="v v-net">├─ program/     media server output
+├─ server-log/  what playback ran
+</span><span class="v v-ai">├─ ai/          drafts, prompt, thresholds
+</span>├─ notes/       timing and run notes
+├─ reference/   cue-sheet version
+└─ copies/      edits and exports</pre>
+            </div>
+          </div>
+        </div>
+        <div class="block">
+          <button class="block-tab" type="button" aria-controls="b-handoff" aria-expanded="false">Hand off</button>
+          <div class="block-body" id="b-handoff">
+            <h3>Check the archive, then hand off</h3>
+            <p>Open the archive copy and check that every file and link works. Then send:</p>
+            <ul class="chips">
+              <li>The cue</li><li>Firing time</li><li>What you saw</li><li>Clip or still</li>
+            </ul>
+            <p style="margin-top: 10px">Record the capture stop time in your run notes and include them in the archive.</p>
+            <p class="v v-ai">Say which observations started as AI drafts and who confirmed them.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sessions -->
+
+  </main><dialog id="mac-kit"><form method="dialog"><strong>Mac recorder</strong><button>Close</button></form><article><h2>Record a rehearsal on one Mac</h2><p>Use one MIDI input and one picture source per recording. The app records a silent 640 × 360 H.264 movie and JPEGs for MIDI Show Control (MSC) GO messages. Cue numbers stay text. Two firings of 68.10 get separate images. The other gear and AI suggestions in the guide are optional.</p><h3>Install once</h3><p>Use macOS 14 or later with Apple&#x27;s Command Line Tools. Open Terminal, run <code>xcode-select -p</code>, and, if it reports no tools, run <code>xcode-select --install</code> and finish Apple&#x27;s installer. In Finder make a folder called Rehearsal Capture Kit in Downloads. In the HTML guide open <strong>Mac recorder</strong> and use the Save buttons to put <strong>Capture.m</strong>, <strong>Info.plist</strong> and <strong>build.command</strong> there. Keep their filenames. If you already extracted the source kit, use its folder instead.</p><p>In Terminal type <code>cd </code> (including the space), drag the folder from Finder into Terminal, press Return, then run:</p><p><button type="button" data-src="src-0" data-name="Capture.m">Save Capture.m</button> <button type="button" data-src="src-1" data-name="Info.plist">Save Info.plist</button> <button type="button" data-src="src-2" data-name="build.command">Save build.command</button></p><pre>/bin/zsh build.command --open</pre><p>This builds and opens the app. Each build goes into its own Build folder inside Rehearsal Capture Builds, in the Applications folder of your home folder. Terminal prints the app&#x27;s location and a ready-made <code>open</code> line. Paste that line to open the app for later runs, or open the app from the newest Build folder in Finder. The first build requires the tools. USB, QuickTime and practice subsequently work offline. For the RTSP source also install FFmpeg from Homebrew with <code>brew install ffmpeg</code>; the app checks /opt/homebrew/bin/ffmpeg and /usr/local/bin/ffmpeg. Install the optional tool before rehearsal. Official references: developer.apple.com/xcode/resources, brew.sh, ffmpeg.org.</p><h3>Prove the software first</h3><p>Open the app and choose <strong>Practice with generated cues and video</strong>. Choose a writable folder on a disk with room for the session. Watch for a changing picture, two GO firings and a growing frame count. Wait at least ten seconds, then choose <strong>Stop and save</strong>. In the new Capture folder, open rehearsal.mov in QuickTime Player. Look for continuous changing color and eight JPEGs (two firings, four offsets each). Each firing should say 68.10 in events.jsonl. Practice opens no camera or MIDI input. Quit and reopen the app for each new session.</p><h3>Connect MIDI</h3><p>Ask the console or playback operator for the duplicate cue output. Wire its spare MIDI OUT or an isolated THRU-box output to MIDI IN on your USB interface, then connect the interface to the Mac. Leave the interface&#x27;s MIDI OUT unplugged. For an existing network MIDI session, open Audio MIDI Setup, show MIDI Studio, open the Network MIDI setup, and join the operator-provided session. Leave live routings to show outputs empty. Choose that session&#x27;s input in the recorder. The app opens a CoreMIDI input port only.</p><p>Choose a camera route, select the named MIDI input, then enter the MSC device ID (decimal 0 to 127) or <strong>all</strong>. Enter the requested photo offsets in seconds, such as 0,1,2,3 or 0,3,6,9. Note On, Program Change and other non-MSC data can appear as raw packets. Only MSC GO creates a firing here. If packet count rises but GO stays at zero, confirm message type and device ID with the operator.</p><h3>Connect the picture</h3><p><strong>USB or HDMI.</strong> Connect the camera&#x27;s USB video output, or connect HDMI OUT to an HDMI-to-USB capture device and plug that into the Mac. Use clean HDMI if available. Select the USB route and then the camera or capture device by name. Allow Camera access. If it is absent, confirm that macOS sees it in QuickTime Player&#x27;s New Movie Recording camera menu, close the preview to release the device, and reopen the app.</p><p><strong>iPhone through QuickTime.</strong> Connect and unlock the iPhone. If asked, trust the Mac. In QuickTime Player choose File &gt; New Movie Recording. Select the iPhone in the camera menu and confirm a moving stage image. If the USB connection offers the phone screen, open the phone camera and check what the preview actually shows. Leave the preview open, unobscured by controls, with its pointer outside the picture. Choose the iPhone route and select that QuickTime window. Grant Screen &amp; System Audio Recording permission to the recorder if macOS asks, then reopen it. The recording contains the window&#x27;s visible picture, including any overlays. A camera selectable directly in macOS can also use the USB route.</p><p><strong>Network camera.</strong> Ask the camera operator for a read-only RTSP stream reachable from the recording Mac, and confirm a second viewer is supported. Use the RTSP URL supplied by the operator, including its port and path. This version supports RTSP over TCP with a credential-free URL. For a camera requiring credentials, use an approved read-only relay or take its HDMI output through a capture device. Select Network camera and enter the stream URL. The recorder reads video only and provides no PTZ controls. A frozen picture, interleaved transport failure or an unsupported codec calls for checking the approved stream with the operator.</p><h3>Sync and verify on the recording Mac</h3><ol><li>Choose the session disk. Starting creates a unique Capture folder. Check framing, focus and exposure on the recorded picture. Keep the Mac on power, prevent sleep and budget storage from a representative sample (sample bytes × planned minutes / sample minutes, plus spare room).</li><li>Have the operator fire the same known rehearsal cue twice with a visible change in frame. For alignment, also film a time display or a slate visible on cue. Write down the cue label, planned offsets and expected visual change. Keep recording through the largest offset plus one second.</li><li>Stop and save. Check for two distinct firing numbers, the exact cue/list text, moving video and the expected JPEGs. Open images.jsonl in a text editor. Each saved row names its file, actual host time, movie position and lateness. Seek the movie to movieSeconds and compare the stage look with the JPEG. A missing slot has a reason. Compare a second sync reference near the end of a long run to check drift. A logged GO proves receipt; use the image to judge the stage.</li><li>USB timestamps use sample PTS converted to Mac host time. QuickTime timestamps belong to the delivered window frames. RTSP uses arrival after decoding, which includes network and decoder delay. Compare the filmed reference with the log to estimate timing uncertainty for each setup. A visual cue can include stage response latency. Record any measured delay alongside the archive. The recorder does not automatically correct camera latency.</li><li>If the camera stalls, check the age of the last frame and the saved movie. If MIDI continues, the listener can still log cues. Restore the source outside the recorder and start a fresh session if reconnection is necessary. Preserve the interrupted folder and mark the gap. Empty slots are preferable to assigning an unrelated frame.</li></ol><h3>Recover and hand off</h3><p>Stop only after the last photo window. Open the movie and JPEGs directly from a copy of the whole Capture folder. Keep the JSONL logs with them. Each line is a separate record; events.jsonl groups by firing number, and images.jsonl maps the firing and requested offset to the saved filename. checksums.json contains SHA-256 hashes of the files at stop. Compare the originals and copy before deleting or moving anything. A forced quit or full disk can leave an unfinished movie; keep the raw logs and start a new folder for the next attempt. This recorder does not resume an interrupted movie or combine separate runs.</p><h3>Automated replay (optional)</h3><p>The replay opens no camera or MIDI input. It closes during its third cue to exercise the missing-image case. Expected result is 55 frames, three separate firings of 68.10, nine saved images and three missing slots. The verifier needs Python 3 and FFmpeg.</p><p>In the HTML guide use <strong>Save verify.py</strong> to put <strong>verify.py</strong> in the Rehearsal Capture Kit folder. The source kit already includes it. In Terminal, in that folder, make a fresh test folder:</p><p><button type="button" data-src="src-3" data-name="verify.py">Save verify.py</button></p><pre>mkdir -p Practice</pre><p>Paste the automated replay line that build.command printed. It contains the full path of the built app and ends in <code>--self-test Practice</code>. If that Terminal output is gone, run <code>/bin/zsh build.command</code> again to build a fresh copy and print a new line. The replay finishes within a few seconds and creates a Capture folder inside Practice.</p><p>Copy that Capture folder to another location. In Terminal type <code>python3 verify.py </code> (including the space), drag the copy from Finder into Terminal and press Return. The verifier compares the frame identifiers in the movie and all nine JPEGs, and prints a line beginning with PASS. The manual practice check above works without the verifier.</p><h3>Capture source and build files</h3><details><summary>Capture.m</summary><pre id="src-0">// macOS rehearsal capture. Capture callbacks are serialized on the evidence queue.
+#import &lt;Cocoa/Cocoa.h&gt;
+#import &lt;AVFoundation/AVFoundation.h&gt;
+#import &lt;CoreMIDI/CoreMIDI.h&gt;
+#import &lt;ScreenCaptureKit/ScreenCaptureKit.h&gt;
+#import &lt;CoreImage/CoreImage.h&gt;
+#import &lt;CommonCrypto/CommonDigest.h&gt;
+#import &lt;mach/mach_time.h&gt;
+
+static double now(void){return CMTimeGetSeconds(CMClockGetTime(CMClockGetHostTimeClock()));}
+static NSString *hex(const UInt8 *b,NSUInteger n){
+    NSMutableString *s=[NSMutableString new]; for(NSUInteger i=0;i&lt;n;i++) [s appendFormat:@&quot;%02x&quot;,b[i]]; return s;
+}
+static NSString *sourceName(MIDIEndpointRef ep){
+    CFStringRef s=NULL; MIDIObjectGetStringProperty(ep,kMIDIPropertyDisplayName,&amp;s);
+    return CFBridgingRelease(s) ?: @&quot;Unnamed input&quot;;
+}
+static NSString *problem;
+static NSURL *root;
+static dispatch_queue_t q;
+static NSMutableDictionary&lt;NSString *,NSFileHandle *&gt; *logs;
+static void row(NSString *file,NSDictionary *fields){
+    if(problem)return;
+    NSError *e=nil; NSData *d=[NSJSONSerialization dataWithJSONObject:fields options:0 error:&amp;e];
+    NSFileHandle *f=logs[file];
+    if(!f){
+        NSURL *u=[root URLByAppendingPathComponent:file];
+        if(![[NSFileManager defaultManager] createFileAtPath:u.path contents:nil attributes:nil]){problem=@&quot;Cannot create evidence file&quot;;return;}
+        f=[NSFileHandle fileHandleForWritingToURL:u error:&amp;e]; if(f)logs[file]=f;
+    }
+    NSMutableData *line=[d mutableCopy];[line appendBytes:&quot;\n&quot; length:1];
+    if(!f||!d||![f writeData:line error:&amp;e])problem=e.localizedDescription ?: @&quot;Evidence write failed&quot;;
+}
+static NSString *sha(NSURL *u){
+    NSInputStream *s=[NSInputStream inputStreamWithURL:u];[s open];CC_SHA256_CTX ctx;CC_SHA256_Init(&amp;ctx);
+    uint8_t buf[65536];NSInteger n;
+    while((n=[s read:buf maxLength:sizeof(buf)])&gt;0)CC_SHA256_Update(&amp;ctx,buf,(CC_LONG)n);
+    [s close];if(n&lt;0)return nil;uint8_t out[CC_SHA256_DIGEST_LENGTH];CC_SHA256_Final(out,&amp;ctx);return hex(out,sizeof(out));
+}
+static NSImage *picture(CIImage *im, CIContext *ctx){
+    CGImageRef cg=[ctx createCGImage:im fromRect:im.extent];if(!cg)return nil;
+    NSImage *v=[[NSImage alloc] initWithCGImage:cg size:NSZeroSize];CGImageRelease(cg);return v;
+}
+static BOOL active; static NSUInteger firing, packets, frames, missing;
+static NSMutableData *fragment;static NSMutableArray *pending;
+static NSArray&lt;NSNumber *&gt; *offsets;static int filterID;
+static NSString *inputName,*mediaHealth;static double lastFrame,firstFrame;
+static AVAssetWriter *writer;static AVAssetWriterInput *video;
+static AVAssetWriterInputPixelBufferAdaptor *adaptor;static CIContext *ctx;
+static NSImage *preview;
+static void packet(NSData *d,double t,UInt64 ticks,double received){
+    if(!active)return;
+    row(@&quot;midi.jsonl&quot;,@{@&quot;packet&quot;:@(++packets),@&quot;input&quot;:inputName,@&quot;sourceHostTicks&quot;:@(ticks),@&quot;hostSeconds&quot;:@(t),@&quot;receiptHostSeconds&quot;:@(received),@&quot;hex&quot;:hex(d.bytes,d.length)});
+    const uint8_t *b=d.bytes;
+    for(NSUInteger i=0;i&lt;d.length;i++){
+        uint8_t c=b[i];if(c&gt;=0xf8)continue;
+        if(c==0xf0)fragment=[NSMutableData new];
+        else if(c&gt;=0x80 &amp;&amp; c!=0xf7){fragment=nil;continue;}
+        if(!fragment)continue;
+        [fragment appendBytes:&amp;c length:1];if(fragment.length&gt;65536){fragment=nil;continue;}
+        if(c!=0xf7)continue;
+        NSData *msg=fragment;fragment=nil;const uint8_t *v=msg.bytes;
+        if(msg.length&lt;7||v[1]!=0x7f||v[3]!=2||v[5]!=1)continue;
+        if(filterID&gt;=0&amp;&amp;filterID!=v[2]){row(@&quot;filtered.jsonl&quot;,@{@&quot;packet&quot;:@(packets),@&quot;device&quot;:@(v[2])});continue;}
+        NSString *payload=[[NSString alloc] initWithBytes:v+6 length:msg.length-7 encoding:NSASCIIStringEncoding];
+        NSArray *fields=[payload componentsSeparatedByString:[NSString stringWithCharacters:(unichar[]){0} length:1]];
+        NSString *cue=[fields.firstObject length]?fields.firstObject:@&quot;current&quot;;
+        NSUInteger eid=++firing;row(@&quot;events.jsonl&quot;,@{@&quot;firing&quot;:@(eid),@&quot;cue&quot;:cue,@&quot;list&quot;:fields.count&gt;1?fields[1]:@&quot;&quot;,@&quot;device&quot;:@(v[2]),@&quot;hostSeconds&quot;:@(t),@&quot;packet&quot;:@(packets)});
+        for(NSNumber *n in offsets)[pending addObject:@{@&quot;firing&quot;:@(eid),@&quot;cue&quot;:cue,@&quot;offset&quot;:n,@&quot;target&quot;:@(t+n.doubleValue)}];
+    }
+}
+static void resolve(NSDictionary *item,NSString *status,NSDictionary *extra){
+    NSMutableDictionary *rec=[item mutableCopy];rec[@&quot;status&quot;]=status;[rec addEntriesFromDictionary:extra];row(@&quot;images.jsonl&quot;,rec);
+    if([status isEqual:@&quot;missing&quot;])missing++;[pending removeObjectIdenticalTo:item];
+}
+static void frame(CIImage *im,double t,NSString *basis){
+    if(!active||problem||!isfinite(t)||t&lt;=lastFrame||!im||CGRectIsEmpty(im.extent))return;
+    CGRect r=im.extent;CGFloat scale=MIN(640/r.size.width,360/r.size.height);
+    CIImage *scaled=[im imageByApplyingTransform:CGAffineTransformMakeScale(scale,scale)];
+    CGRect a=scaled.extent;scaled=[scaled imageByApplyingTransform:CGAffineTransformMakeTranslation((640-a.size.width)/2-a.origin.x,(360-a.size.height)/2-a.origin.y)];
+    CIImage *image=[[scaled imageByCompositingOverImage:[CIImage imageWithColor:CIColor.blackColor]] imageByCroppingToRect:CGRectMake(0,0,640,360)];
+    if(!frames){if(writer.status==AVAssetWriterStatusUnknown){if(![writer startWriting]){mediaHealth=writer.error.localizedDescription;return;}[writer startSessionAtSourceTime:kCMTimeZero];}firstFrame=t;}
+    if(!video.readyForMoreMediaData){mediaHealth=writer.error.localizedDescription ?: @&quot;Recorder busy; skipped frame&quot;;return;}
+    CVPixelBufferRef buf=NULL;
+    if(!adaptor.pixelBufferPool||CVPixelBufferPoolCreatePixelBuffer(NULL,adaptor.pixelBufferPool,&amp;buf)!=kCVReturnSuccess){mediaHealth=@&quot;Pixel buffer unavailable&quot;;return;}
+    CGColorSpaceRef working=CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
+    [ctx render:image toCVPixelBuffer:buf bounds:CGRectMake(0,0,640,360) colorSpace:working];CGColorSpaceRelease(working);CMTime pts=CMTimeMakeWithSeconds(t-firstFrame,60000);
+    BOOL saved=[adaptor appendPixelBuffer:buf withPresentationTime:pts];CVPixelBufferRelease(buf);
+    if(!saved){mediaHealth=writer.error.localizedDescription ?: @&quot;Video write failed&quot;;return;}
+    lastFrame=t;frames++;mediaHealth=@&quot;Recording&quot;;
+    row(@&quot;frames.jsonl&quot;,@{@&quot;seq&quot;:@(frames),@&quot;hostSeconds&quot;:@(t),@&quot;movieSeconds&quot;:@(CMTimeGetSeconds(pts)),@&quot;basis&quot;:basis});
+    if(frames%5==1)preview=picture(image,ctx);
+    for(NSDictionary *s in [pending copy]){
+        double lag=t-[s[@&quot;target&quot;] doubleValue];if(lag&lt;0)continue;
+        if(lag&gt;0.75){resolve(s,@&quot;missing&quot;,@{@&quot;reason&quot;:@&quot;no eligible frame in window&quot;});continue;}
+        NSString *name=[NSString stringWithFormat:@&quot;cue-%05ld-plus-%@.jpg&quot;,(long)[s[@&quot;firing&quot;] integerValue],s[@&quot;offset&quot;]];
+        CGColorSpaceRef cs=CGColorSpaceCreateWithName(kCGColorSpaceSRGB);NSError *e=nil;
+        BOOL ok=[ctx writeJPEGRepresentationOfImage:image toURL:[root URLByAppendingPathComponent:name] colorSpace:cs options:@{} error:&amp;e];CGColorSpaceRelease(cs);
+        if(ok)resolve(s,@&quot;saved&quot;,@{@&quot;file&quot;:name,@&quot;frame&quot;:@(frames),@&quot;actualHostSeconds&quot;:@(t),@&quot;movieSeconds&quot;:@(CMTimeGetSeconds(pts)),@&quot;lateBySeconds&quot;:@(lag)});
+        else resolve(s,@&quot;missing&quot;,@{@&quot;reason&quot;:e.localizedDescription ?: @&quot;JPEG write failed&quot;});
+    }
+}
+static BOOL prepare(NSURL *folder,NSString *mode,NSString *source){
+    NSError *e=nil;root=[folder URLByAppendingPathComponent:[@&quot;Capture-&quot; stringByAppendingString:NSUUID.UUID.UUIDString]];
+    if(![NSFileManager.defaultManager createDirectoryAtURL:root withIntermediateDirectories:NO attributes:nil error:&amp;e]){problem=e.localizedDescription;return NO;}
+    logs=[NSMutableDictionary new];pending=[NSMutableArray new];fragment=nil;problem=nil;frames=firing=packets=missing=0;preview=nil;lastFrame=0;mediaHealth=@&quot;Waiting for frames&quot;;
+    writer=[[AVAssetWriter alloc] initWithURL:[root URLByAppendingPathComponent:@&quot;rehearsal.mov&quot;] fileType:AVFileTypeQuickTimeMovie error:&amp;e];
+    video=[AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:@{AVVideoCodecKey:AVVideoCodecTypeH264,AVVideoWidthKey:@640,AVVideoHeightKey:@360}];
+    video.expectsMediaDataInRealTime=YES;
+    adaptor=[AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:video sourcePixelBufferAttributes:@{(id)kCVPixelBufferPixelFormatTypeKey:@(kCVPixelFormatType_32BGRA),(id)kCVPixelBufferWidthKey:@640,(id)kCVPixelBufferHeightKey:@360}];
+    if(!writer||![writer canAddInput:video]){problem=e.localizedDescription ?: @&quot;Cannot open movie writer&quot;;return NO;}
+    [writer addInput:video];ctx=[CIContext contextWithOptions:@{kCIContextCacheIntermediates:@NO}];
+    row(@&quot;session.jsonl&quot;,@{@&quot;version&quot;:@1,@&quot;session&quot;:root.lastPathComponent,@&quot;camera&quot;:mode,@&quot;source&quot;:source,@&quot;midi&quot;:inputName,@&quot;offsets&quot;:offsets,@&quot;filter&quot;:@(filterID),@&quot;macUnix&quot;:@(NSDate.date.timeIntervalSince1970),@&quot;hostSeconds&quot;:@(now())});
+    active=YES;return !problem;
+}
+static NSString *finish(void){
+    for(NSDictionary *s in [pending copy])resolve(s,@&quot;missing&quot;,@{@&quot;reason&quot;:[s[@&quot;target&quot;] doubleValue]&lt;=lastFrame?@&quot;no eligible frame in window&quot;:@&quot;capture ended before an eligible frame&quot;});
+    active=NO;
+    if(writer.status==AVAssetWriterStatusWriting){[video markAsFinished];dispatch_semaphore_t sem=dispatch_semaphore_create(0);
+        [writer finishWritingWithCompletionHandler:^{dispatch_semaphore_signal(sem);}];dispatch_semaphore_wait(sem,DISPATCH_TIME_FOREVER);}
+    BOOL ok=writer.status==AVAssetWriterStatusCompleted &amp;&amp; frames&gt;0;
+    row(@&quot;session.jsonl&quot;,@{@&quot;end&quot;:@YES,@&quot;movieFinalized&quot;:@(ok),@&quot;frames&quot;:@(frames),@&quot;firings&quot;:@(firing),@&quot;missing&quot;:@(missing),@&quot;mediaState&quot;:mediaHealth ?: @&quot;unknown&quot;});
+    for(NSFileHandle *f in logs.allValues){NSError *e=nil;if(![f closeAndReturnError:&amp;e])problem=e.localizedDescription;}
+    NSMutableDictionary *digests=[NSMutableDictionary new];NSError *e=nil;
+    for(NSURL *u in [NSFileManager.defaultManager contentsOfDirectoryAtURL:root includingPropertiesForKeys:nil options:0 error:&amp;e]){
+        NSString *h=sha(u);if(h)digests[u.lastPathComponent]=h;else problem=@&quot;Cannot hash archive&quot;;
+    }
+    NSData *data=[NSJSONSerialization dataWithJSONObject:digests options:NSJSONWritingPrettyPrinted error:&amp;e];
+    if(![data writeToURL:[root URLByAppendingPathComponent:@&quot;checksums.json&quot;] options:NSDataWritingAtomic error:&amp;e]||e)problem=e.localizedDescription;
+    return problem ?: (ok?@&quot;Movie and evidence saved.&quot;:@&quot;Partial capture. No finalized movie.&quot;);
+}
+@interface Feed:NSObject&lt;AVCaptureVideoDataOutputSampleBufferDelegate,SCStreamOutput,SCStreamDelegate&gt;
+@property (weak) AVCaptureSession *cameraSession;
+@end
+@implementation Feed
+-(void)captureOutput:(AVCaptureOutput*)out didOutputSampleBuffer:(CMSampleBufferRef)s fromConnection:(AVCaptureConnection*)c{
+    CVImageBufferRef b=CMSampleBufferGetImageBuffer(s);
+    CMClockRef clock=self.cameraSession.masterClock;
+    if(b &amp;&amp; clock)frame([CIImage imageWithCVPixelBuffer:b],CMTimeGetSeconds(CMSyncConvertTime(CMSampleBufferGetPresentationTimeStamp(s),clock,CMClockGetHostTimeClock())),@&quot;AVFoundation PTS converted to host clock&quot;);
+}
+-(void)stream:(SCStream*)stream didOutputSampleBuffer:(CMSampleBufferRef)s ofType:(SCStreamOutputType)type{
+    NSArray *arr=(__bridge NSArray*)CMSampleBufferGetSampleAttachmentsArray(s,false);
+    NSNumber *status=arr.firstObject[SCStreamFrameInfoStatus];
+    CVImageBufferRef b=CMSampleBufferGetImageBuffer(s);
+    if(type==SCStreamOutputTypeScreen &amp;&amp; status &amp;&amp; status.integerValue==SCFrameStatusComplete &amp;&amp; b)
+        frame([CIImage imageWithCVPixelBuffer:b],CMTimeGetSeconds(CMSampleBufferGetPresentationTimeStamp(s)),@&quot;QuickTime preview presentation on host clock&quot;);
+}
+-(void)stream:(SCStream*)stream didStopWithError:(NSError*)error{dispatch_async(q,^{mediaHealth=@&quot;Window capture interrupted&quot;;});}
+@end
+static NSAlert *dialog(NSString *title,NSString *body){
+    NSAlert *a=[NSAlert new];a.messageText=title;a.informativeText=body;return a;
+}
+static NSInteger selectItem(NSString *title,NSArray&lt;NSString*&gt; *items){
+    NSAlert *a=dialog(title,items.count?@&quot;Select the source for this run.&quot;:@&quot;No matching sources found. Check the connection and permissions, then reopen the app.&quot;);
+    if(!items.count){[a runModal];return -1;}
+    NSPopUpButton *p=[[NSPopUpButton alloc] initWithFrame:NSMakeRect(0,0,360,28) pullsDown:NO];[p addItemsWithTitles:items];a.accessoryView=p;
+    [a addButtonWithTitle:@&quot;Continue&quot;];[a addButtonWithTitle:@&quot;Cancel&quot;];return [a runModal]==NSAlertFirstButtonReturn?p.indexOfSelectedItem:-1;
+}
+static NSString *ask(NSString *title,NSString *body,NSString *initial){
+    NSAlert *a=dialog(title,body);NSTextField *f=[[NSTextField alloc]initWithFrame:NSMakeRect(0,0,360,24)];f.stringValue=initial;a.accessoryView=f;
+    [a addButtonWithTitle:@&quot;Continue&quot;];[a addButtonWithTitle:@&quot;Cancel&quot;];[a.window setInitialFirstResponder:f];
+    return [a runModal]==NSAlertFirstButtonReturn?f.stringValue:nil;
+}
+static void waitFlag(BOOL (^done)(void)){while(!done())[NSRunLoop.currentRunLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.03]];}
+static NSString *run(void){
+    NSArray *routes=@[@&quot;USB camera or HDMI capture device&quot;,@&quot;iPhone in QuickTime Player&quot;,@&quot;Network camera (RTSP)&quot;,@&quot;Practice with generated cues and video&quot;];
+    NSInteger mode=selectItem(@&quot;Camera for this session&quot;,routes);if(mode&lt;0)return nil;
+    MIDIEndpointRef ep=0;inputName=@&quot;Synthetic fixture&quot;;filterID=-1; offsets=@[@0,@1,@2,@3];
+    if(mode!=3){
+        NSMutableArray *names=[NSMutableArray new],*ids=[NSMutableArray new];
+        for(ItemCount i=0;i&lt;MIDIGetNumberOfSources();i++){MIDIEndpointRef src=MIDIGetSource(i);if(src){[names addObject:sourceName(src)];[ids addObject:@(src)];}}
+        NSInteger which=selectItem(@&quot;MIDI input (receive only)&quot;,names);if(which&lt;0)return nil;ep=[ids[which] unsignedIntValue];inputName=names[which];
+        NSString *filter=ask(@&quot;MSC device filter&quot;,@&quot;Enter all or a device ID from 0 to 127. All packets are retained. Only matching MIDI Show Control GO messages trigger pictures.&quot;,@&quot;all&quot;);if(!filter)return nil;
+        if(![filter isEqual:@&quot;all&quot;]){NSScanner *sc=[NSScanner scannerWithString:filter];if(![sc scanInt:&amp;filterID]||!sc.isAtEnd||filterID&lt;0||filterID&gt;127)return @&quot;Invalid device ID.&quot;;}
+        NSString *cadence=ask(@&quot;Photo timing&quot;,@&quot;Seconds after each GO, separated by commas. Example: 0,1,2,3. Set this for the pace of the scene.&quot;,@&quot;0,1,2,3&quot;);if(!cadence)return nil;
+        NSMutableArray *values=[NSMutableArray new];for(NSString *v in [cadence componentsSeparatedByString:@&quot;,&quot;]){double n;NSScanner *sc=[NSScanner scannerWithString:v];if(![sc scanDouble:&amp;n]||!sc.isAtEnd||!isfinite(n)||n&lt;0||n&gt;60||[values containsObject:@(n)]||values.count&gt;=12)return @&quot;Use up to 12 distinct offsets between 0 and 60 seconds.&quot;;[values addObject:@(n)];}offsets=values;
+    }
+    Feed *feed=[Feed new];AVCaptureSession *session=nil;SCStream *stream=nil;NSTask *decoder=nil;NSPipe *pipe=nil;
+    NSString *source=routes[mode];
+    if(mode==0){
+        __block BOOL done=NO,allow=NO;[AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL allowed){dispatch_async(dispatch_get_main_queue(),^{allow=allowed;done=YES;});}];waitFlag(^BOOL{return done;});if(!allow)return @&quot;Allow Camera access in System Settings, then reopen.&quot;;
+        NSArray *devices=[AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];NSInteger idx=selectItem(@&quot;Camera recognized by macOS&quot;,[devices valueForKey:@&quot;localizedName&quot;]);if(idx&lt;0)return nil;
+        AVCaptureDevice *device=devices[idx];source=device.localizedName;NSError *e=nil;AVCaptureDeviceInput *in=[AVCaptureDeviceInput deviceInputWithDevice:device error:&amp;e];if(!in)return e.localizedDescription;
+        session=[AVCaptureSession new];if([session canSetSessionPreset:AVCaptureSessionPreset640x480])session.sessionPreset=AVCaptureSessionPreset640x480;
+        AVCaptureVideoDataOutput *out=[AVCaptureVideoDataOutput new];out.alwaysDiscardsLateVideoFrames=YES;[out setSampleBufferDelegate:feed queue:q];
+        if(![session canAddInput:in])return @&quot;Cannot use that camera input.&quot;;[session addInput:in];if(![session canAddOutput:out])return @&quot;Cannot receive camera frames.&quot;;[session addOutput:out];
+        feed.cameraSession=session;
+    }else if(mode==1){
+        __block NSArray *wins=nil;__block BOOL done=NO;__block NSError *err;
+        [SCShareableContent getShareableContentExcludingDesktopWindows:YES onScreenWindowsOnly:NO completionHandler:^(SCShareableContent *s,NSError *e){dispatch_async(dispatch_get_main_queue(),^{wins=[s.windows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SCWindow *w,NSDictionary *unused){return [w.owningApplication.bundleIdentifier isEqual:@&quot;com.apple.QuickTimePlayerX&quot;]&amp;&amp;w.title.length&gt;0;}]];err=e;done=YES;});}];waitFlag(^BOOL{return done;});if(err)return err.localizedDescription;
+        NSMutableArray *titles=[NSMutableArray new];for(SCWindow *w in wins)[titles addObject:[NSString stringWithFormat:@&quot;%@ (%u)&quot;,w.title,w.windowID]];
+        NSInteger idx=selectItem(@&quot;Select the iPhone movie preview window&quot;,titles);if(idx&lt;0)return nil;
+        SCWindow *w=wins[idx];source=titles[idx];SCStreamConfiguration *cfg=[SCStreamConfiguration new];cfg.width=640;cfg.height=MAX(2,(NSInteger)(640*w.frame.size.height/MAX(1,w.frame.size.width)/2)*2);cfg.minimumFrameInterval=CMTimeMake(1,15);cfg.showsCursor=NO;
+        stream=[[SCStream alloc]initWithFilter:[[SCContentFilter alloc]initWithDesktopIndependentWindow:w] configuration:cfg delegate:feed];
+        NSError *e=nil;if(![stream addStreamOutput:feed type:SCStreamOutputTypeScreen sampleHandlerQueue:q error:&amp;e])return e.localizedDescription;
+    }else if(mode==2){
+        NSString *url=ask(@&quot;Camera read-only stream&quot;,@&quot;Use an operator-provided RTSP stream on the local network. Use a credential-free read-only feed for this version.&quot;,@&quot;rtsp://&quot;);if(!url)return nil;
+        NSURLComponents *parts=[NSURLComponents componentsWithString:url];
+        if(![parts.scheme.lowercaseString isEqual:@&quot;rtsp&quot;]||!parts.host.length||parts.user||parts.password||parts.query||parts.fragment)return @&quot;Expected a read-only RTSP URL without embedded credentials or tokens.&quot;;
+        NSString *exe=nil;for(NSString *p in @[@&quot;/opt/homebrew/bin/ffmpeg&quot;,@&quot;/usr/local/bin/ffmpeg&quot;])if([NSFileManager.defaultManager isExecutableFileAtPath:p]){exe=p;break;}
+        if(!exe)return @&quot;Install FFmpeg first (see the guide), then reopen.&quot;;
+        decoder=[NSTask new];pipe=[NSPipe pipe];decoder.executableURL=[NSURL fileURLWithPath:exe];decoder.arguments=@[@&quot;-nostdin&quot;,@&quot;-loglevel&quot;,@&quot;error&quot;,@&quot;-rtsp_transport&quot;,@&quot;tcp&quot;,@&quot;-timeout&quot;,@&quot;5000000&quot;,@&quot;-i&quot;,url,@&quot;-an&quot;,@&quot;-vf&quot;,@&quot;scale=640:360:force_original_aspect_ratio=decrease,pad=640:360:(ow-iw)/2:(oh-ih)/2&quot;,@&quot;-fps_mode&quot;,@&quot;passthrough&quot;,@&quot;-pix_fmt&quot;,@&quot;bgra&quot;,@&quot;-f&quot;,@&quot;rawvideo&quot;,@&quot;pipe:1&quot;];decoder.standardOutput=pipe;decoder.standardError=NSFileHandle.fileHandleWithNullDevice;source=@&quot;Operator-selected RTSP feed&quot;;
+    }
+    NSOpenPanel *panel=[NSOpenPanel openPanel];panel.canChooseDirectories=YES;panel.canChooseFiles=NO;panel.canCreateDirectories=YES;panel.prompt=@&quot;Use for this run&quot;;if([panel runModal]!=NSModalResponseOK)return nil;
+    NSNumber *space=nil;[panel.URL getResourceValue:&amp;space forKey:NSURLVolumeAvailableCapacityKey error:nil];
+    if(space &amp;&amp; space.longLongValue&lt;512LL*1024*1024)return @&quot;Choose a recording disk with at least 512 MB free. Budget the full run from a test recording.&quot;;
+    if(!prepare(panel.URL,routes[mode],source))return problem;
+    MIDIClientRef client=0;MIDIPortRef port=0;NSString *startError=nil;
+    if(mode!=3){
+        OSStatus rc=MIDIClientCreate(CFSTR(&quot;Cue Capture&quot;),NULL,NULL,&amp;client);
+        if(!rc)rc=MIDIInputPortCreateWithBlock(client,CFSTR(&quot;Listen only&quot;),&amp;port,^(const MIDIPacketList *list,void *ref){
+            const MIDIPacket *p=&amp;list-&gt;packet[0];for(UInt32 i=0;i&lt;list-&gt;numPackets;i++,p=MIDIPacketNext(p)){
+                NSData *d=[NSData dataWithBytes:p-&gt;data length:p-&gt;length];UInt64 ticks=p-&gt;timeStamp;double at=now();
+                static mach_timebase_info_data_t tb;static dispatch_once_t once;dispatch_once(&amp;once,^{mach_timebase_info(&amp;tb);});
+                double host=ticks?ticks*(double)tb.numer/tb.denom/1e9:at;dispatch_async(q,^{packet(d,host,ticks,at);});
+            }});
+        if(!rc)rc=MIDIPortConnectSource(port,ep,NULL);if(rc)startError=@&quot;MIDI input could not connect. Recheck Audio MIDI Setup.&quot;;
+    }
+    if(!startError &amp;&amp; session)[session startRunning];
+    if(!startError &amp;&amp; stream){__block BOOL done=NO;__block NSString *why=nil;[stream startCaptureWithCompletionHandler:^(NSError *e){dispatch_async(dispatch_get_main_queue(),^{why=e.localizedDescription;done=YES;});}];waitFlag(^BOOL{return done;});startError=why;}
+    if(!startError &amp;&amp; decoder){
+        NSError *e=nil;if(![decoder launchAndReturnError:&amp;e])startError=e.localizedDescription;
+        else dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED,0),^{
+            NSFileHandle *f=pipe.fileHandleForReading;NSUInteger size=640*360*4;NSMutableData *bytes=[NSMutableData new];
+            for(;;){@autoreleasepool{NSData *more=[f readDataOfLength:size-bytes.length];if(!more.length)break;[bytes appendData:more];if(bytes.length==size){
+                double at=now();NSData *pixels=[bytes copy];[bytes setLength:0];dispatch_sync(q,^{CGColorSpaceRef cs=CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
+                    CIImage *im=[CIImage imageWithBitmapData:pixels bytesPerRow:640*4 size:CGSizeMake(640,360) format:kCIFormatBGRA8 colorSpace:cs];CGColorSpaceRelease(cs);frame(im,at,@&quot;decoder receipt on Mac; camera exposure time unknown&quot;);});}}}
+            dispatch_async(q,^{mediaHealth=@&quot;Network stream ended&quot;;});
+        });
+    }
+    void (^practice)(NSUInteger)=^(NSUInteger n){
+        double t=now();if(n==4||n==15){UInt8 b[]={0xf0,0x7f,1,2,1,1,&#x27;6&#x27;,&#x27;8&#x27;,&#x27;.&#x27;,&#x27;1&#x27;,&#x27;0&#x27;,0,&#x27;1&#x27;,0xf7};packet([NSData dataWithBytes:b length:8],t,0,t);packet([NSData dataWithBytes:b+8 length:sizeof(b)-8],t,0,t);}
+        frame([[CIImage imageWithColor:[CIColor colorWithRed:(n%30)/30.0 green:0.4 blue:0.7]] imageByCroppingToRect:CGRectMake(0,0,320,180)],t,@&quot;generated host time&quot;);
+    };
+    if(!startError){
+        NSAlert *a=dialog(@&quot;Rehearsal capture&quot;,source);[a addButtonWithTitle:@&quot;Stop and save&quot;];
+        NSImageView *view=[[NSImageView alloc]initWithFrame:NSMakeRect(0,0,400,225)];view.imageScaling=NSImageScaleProportionallyUpOrDown;a.accessoryView=view;
+        __block NSUInteger tick=0;
+        NSTimer *timer=[NSTimer timerWithTimeInterval:0.2 repeats:YES block:^(NSTimer *unused){__block NSString *status;__block NSImage *image;
+            dispatch_sync(q,^{if(mode==3)practice(++tick);image=preview;status=[NSString stringWithFormat:@&quot;%@  |  %lu packets  |  %lu GO  |  %lu frames\n%@  |  Last frame %@\n%@&quot;,inputName,packets,firing,frames,mediaHealth,lastFrame?[NSString stringWithFormat:@&quot;%.1f s ago&quot;,MAX(0,now()-lastFrame)]:@&quot;pending&quot;,problem ?: @&quot;&quot;];});a.informativeText=status;view.image=image;}];
+        [NSRunLoop.mainRunLoop addTimer:timer forMode:NSModalPanelRunLoopMode];[a runModal];[timer invalidate];
+    }
+    if(port){MIDIPortDisconnectSource(port,ep);MIDIPortDispose(port);}if(client)MIDIClientDispose(client);
+    [session stopRunning];if(stream){__block BOOL done=NO;[stream stopCaptureWithCompletionHandler:^(NSError *e){dispatch_async(dispatch_get_main_queue(),^{done=YES;});}];waitFlag(^BOOL{return done;});}
+    if(decoder.running)[decoder terminate];__block NSString *result;dispatch_sync(q,^{result=finish();});[NSWorkspace.sharedWorkspace openURL:root];
+    return startError ?: result;
+}
+int main(int argc,const char **argv){@autoreleasepool{
+    q=dispatch_queue_create(&quot;capture.evidence&quot;,DISPATCH_QUEUE_SERIAL);
+    if(argc==3 &amp;&amp; !strcmp(argv[1],&quot;--self-test&quot;)){
+        inputName=@&quot;Synthetic fixture&quot;;offsets=@[@0,@1,@2,@3];filterID=1;
+        if(!prepare([NSURL fileURLWithPath:@(argv[2])],@&quot;Synthetic&quot;,@&quot;Generated frames&quot;))return 2;
+        for(int n=0;n&lt;55;n++){@autoreleasepool{
+            double t=100+n/10.0;if(n==4||n==7||n==54){UInt8 b[]={0xf0,0x7f,1,2,1,1,&#x27;6&#x27;,&#x27;8&#x27;,&#x27;.&#x27;,&#x27;1&#x27;,&#x27;0&#x27;,0,&#x27;1&#x27;,0xf7};packet([NSData dataWithBytes:b length:7],t,0,t);packet([NSData dataWithBytes:b+7 length:7],t,0,t);}
+            CIImage *card=[[CIImage imageWithColor:CIColor.blackColor] imageByCroppingToRect:CGRectMake(0,0,320,180)];
+            for(int bit=0;bit&lt;6;bit++){if(n &amp; (1&lt;&lt;bit)){CIImage *bar=[[CIImage imageWithColor:CIColor.whiteColor] imageByCroppingToRect:CGRectMake(bit*50,0,45,180)];card=[bar imageByCompositingOverImage:card];}}
+            frame(card,t,@&quot;synthetic&quot;);[NSThread sleepForTimeInterval:.015];
+        }}
+        NSString *result=finish();NSLog(@&quot;%@ %@&quot;,result,root.path);return problem||firing!=3||missing!=3||writer.status!=AVAssetWriterStatusCompleted?3:0;
+    }
+    NSApplication *app=NSApplication.sharedApplication;[app setActivationPolicy:NSApplicationActivationPolicyRegular];[app finishLaunching];[app activateIgnoringOtherApps:YES];
+    NSString *result=run();if(result)[dialog(@&quot;Capture session&quot;,result) runModal];return 0;
+}}
+</pre></details><details><summary>Info.plist</summary><pre id="src-1">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+&lt;dict&gt;
+	&lt;key&gt;CFBundleExecutable&lt;/key&gt;
+	&lt;string&gt;Capture&lt;/string&gt;
+	&lt;key&gt;CFBundleIdentifier&lt;/key&gt;
+	&lt;string&gt;org.theaterguide.RehearsalCapture&lt;/string&gt;
+	&lt;key&gt;CFBundleName&lt;/key&gt;
+	&lt;string&gt;Rehearsal Capture&lt;/string&gt;
+	&lt;key&gt;CFBundlePackageType&lt;/key&gt;
+	&lt;string&gt;APPL&lt;/string&gt;
+	&lt;key&gt;CFBundleShortVersionString&lt;/key&gt;
+	&lt;string&gt;0.1&lt;/string&gt;
+	&lt;key&gt;CFBundleVersion&lt;/key&gt;
+	&lt;string&gt;1&lt;/string&gt;
+	&lt;key&gt;LSMinimumSystemVersion&lt;/key&gt;
+	&lt;string&gt;14.0&lt;/string&gt;
+	&lt;key&gt;NSCameraUsageDescription&lt;/key&gt;
+	&lt;string&gt;Record the stage camera you select for this rehearsal.&lt;/string&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
+</pre></details><details><summary>build.command</summary><pre id="src-2">#!/bin/zsh
+set -eu
+cd &quot;${0:A:h}&quot;
+installbase=&quot;${CAPTURE_INSTALL_ROOT:-$HOME/Applications/Rehearsal Capture Builds}&quot;
+mkdir -p &quot;$installbase&quot;
+builddir=$(mktemp -d &quot;$installbase/Build.XXXXXX&quot;)
+app=&quot;$builddir/Rehearsal Capture.app&quot;
+mkdir -p &quot;$app/Contents/MacOS&quot;
+cp Info.plist &quot;$app/Contents/Info.plist&quot;
+xcrun clang -fobjc-arc -Wno-deprecated-declarations -mmacosx-version-min=14.0 -framework Cocoa -framework AVFoundation -framework ScreenCaptureKit -framework CoreMIDI -framework CoreMedia -framework CoreImage -framework CoreVideo -framework CoreGraphics -o &quot;$app/Contents/MacOS/Capture&quot; Capture.m
+codesign --force --sign - &quot;$app&quot;
+codesign --verify --strict &quot;$app&quot;
+bin=&quot;$app/Contents/MacOS/Capture&quot;
+echo &quot;Built $app&quot;
+echo &quot;To open it again, paste this line into Terminal:&quot;
+echo &quot;open ${(q-)app}&quot;
+echo &quot;To run the automated replay, paste this line into Terminal:&quot;
+echo &quot;${(q-)bin} --self-test Practice&quot;
+if [[ &quot;${1:-}&quot; == &quot;--open&quot; ]]; then open &quot;$app&quot;; fi
+</pre></details><details><summary>verify.py</summary><pre id="src-3">&quot;&quot;&quot;Verify a copied --self-test session using FFmpeg and Python 3.&quot;&quot;&quot;
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+root = Path(sys.argv[1])
+def rows(name):
+    return [json.loads(line) for line in (root / name).read_text().splitlines()]
+
+def decoded_frame(path, time=None):
+    args = [&#x27;ffmpeg&#x27;, &#x27;-v&#x27;, &#x27;error&#x27;, &#x27;-i&#x27;, str(path)]
+    if time is not None:
+        args += [&#x27;-ss&#x27;, f&#x27;{time:.5f}&#x27;]
+    raw = subprocess.check_output(args + [&#x27;-frames:v&#x27;, &#x27;1&#x27;, &#x27;-vf&#x27;, &#x27;scale=64:36&#x27;,
+                                          &#x27;-pix_fmt&#x27;, &#x27;gray&#x27;, &#x27;-f&#x27;, &#x27;rawvideo&#x27;, &#x27;pipe:1&#x27;])
+    assert len(raw) == 64 * 36, (path, time)
+    return sum(1 &lt;&lt; bit for bit in range(6) if raw[18*64+bit*10+4] &gt; 128)
+
+for name, digest in json.loads((root/&#x27;checksums.json&#x27;).read_text()).items():
+    assert hashlib.sha256((root/name).read_bytes()).hexdigest() == digest
+events = rows(&#x27;events.jsonl&#x27;)
+assert [row[&#x27;cue&#x27;] for row in events] == [&#x27;68.10&#x27;] * 3
+assert len({row[&#x27;firing&#x27;] for row in events}) == 3
+assert len(rows(&#x27;frames.jsonl&#x27;)) == 55
+images = rows(&#x27;images.jsonl&#x27;)
+saved = [row for row in images if row[&#x27;status&#x27;] == &#x27;saved&#x27;]
+assert len(images) == 12 and len(saved) == 9
+for row in saved:
+    expected = row[&#x27;frame&#x27;] - 1
+    assert decoded_frame(root/row[&#x27;file&#x27;]) == expected
+    assert decoded_frame(root/&#x27;rehearsal.mov&#x27;,row[&#x27;movieSeconds&#x27;]) == expected
+    assert 0 &lt;= row[&#x27;lateBySeconds&#x27;] &lt;= 0.75
+assert {row[&#x27;offset&#x27;] for row in images if row[&#x27;status&#x27;]==&#x27;missing&#x27;} == {1, 2, 3}
+print(&#x27;PASS: hashes, 3 repeated decimal cues, 55 video frames, 9 exact image/movie matches, 3 missing slots.&#x27;)
+</pre></details></article></dialog>
+</div>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const el = id => document.getElementById(id);
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch {} }
+  };
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ---------- Theme ---------- */
+  const themeBtn = el('theme');
+  const darkMQ = matchMedia('(prefers-color-scheme: dark)');
+  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : darkMQ.matches;
+  const syncTheme = () => themeBtn.setAttribute('aria-pressed', String(isDark()));
+  const savedTheme = store.get('theater-cue-guide-theme');
+  if (savedTheme === 'dark' || savedTheme === 'light') root.dataset.theme = savedTheme;
+  themeBtn.addEventListener('click', () => {
+    const next = isDark() ? 'light' : 'dark';
+    root.dataset.theme = next;
+    store.set('theater-cue-guide-theme', next);
+    syncTheme();
+  });
+  if (darkMQ.addEventListener) darkMQ.addEventListener('change', syncTheme);
+  new MutationObserver(syncTheme).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  syncTheme();
+
+  /* ---------- Blocks: open grid, or sub-tabs when space runs short ---------- */
+  const ROUTES = { cheap: 'Cheap', net: 'Networked', ai: 'AI-assisted' };
+  let route = ROUTES[root.dataset.activeRoute] ? root.dataset.activeRoute : 'cheap';
+  const isOn = node => !node.classList.contains('v') || node.classList.contains('v-' + route);
+  const allBlocks = blocks => [...blocks.querySelectorAll(':scope > .block')];
+  const blockList = blocks => allBlocks(blocks).filter(isOn);
+  function setActive(blocks, i) {
+    const list = blockList(blocks);
+    i = Math.max(0, Math.min(i, list.length - 1));
+    allBlocks(blocks).forEach(b => {
+      const on = b === list[i];
+      b.querySelector('.block-tab').setAttribute('aria-expanded', String(on));
+      b.querySelector('.block-body').classList.toggle('is-active', on);
+    });
+    blocks.dataset.active = String(i);
+    blocks.style.setProperty('--n', String(list.length));
+  }
+  const overflowing = node => node.scrollHeight > node.clientHeight + 1 || node.scrollWidth > node.clientWidth + 1;
+  function anyBlockOverflows(panel, blocks) {
+    const keep = Number(blocks.dataset.active || 0);
+    let bad = false;
+    for (let i = 0; i < blockList(blocks).length && !bad; i++) { setActive(blocks, i); bad = overflowing(panel); }
+    setActive(blocks, keep);
+    return bad;
+  }
+  function setScrollable(panel, on) {
+    panel.querySelectorAll('.block-body').forEach(body => {
+      if (on) {
+        body.tabIndex = 0; body.setAttribute('role', 'region');
+        const h = body.querySelector('h3');
+        body.setAttribute('aria-label', h ? h.textContent : 'Section');
+      } else {
+        body.removeAttribute('tabindex'); body.removeAttribute('role'); body.removeAttribute('aria-label');
+      }
+    });
+  }
+  function fit(panel) {
+    if (!panel || panel.hidden) return;
+    const blocks = panel.querySelector('.blocks');
+    panel.classList.remove('is-strip', 'is-compact', 'is-scroll');
+    setScrollable(panel, false);
+    if (!overflowing(panel)) return;
+    panel.classList.add('is-strip');
+    if (!anyBlockOverflows(panel, blocks)) return;
+    panel.classList.add('is-compact');
+    if (!anyBlockOverflows(panel, blocks)) return;
+    panel.classList.add('is-scroll');
+    setScrollable(panel, true);
+  }
+  function showBlock(bodyId) {
+    const body = el(bodyId), blocks = body.closest('.blocks');
+    const i = blockList(blocks).indexOf(body.parentElement);
+    if (i >= 0) setActive(blocks, i);
+  }
+  document.querySelectorAll('.blocks').forEach(blocks => {
+    allBlocks(blocks).forEach(b => b.querySelector('.block-tab').addEventListener('click', () => setActive(blocks, blockList(blocks).indexOf(b))));
+    setActive(blocks, 0);
+  });
+
+  let fitFrame = 0;
+  const refit = () => {
+    cancelAnimationFrame(fitFrame);
+    fitFrame = requestAnimationFrame(() => fit(document.querySelector('.panel:not([hidden])')));
+  };
+
+  /* ---------- Route ---------- */
+  function setRoute(name, save) {
+    if (!ROUTES[name]) name = 'cheap';
+    route = name;
+    root.dataset.activeRoute = name;
+    if (save) store.set('theater-cue-guide-route', name);
+    document.querySelectorAll('input[name="route"]').forEach(r => { r.checked = r.value === name; });
+    document.querySelectorAll('.route-card').forEach(c => c.setAttribute('aria-pressed', String(c.dataset.route === name)));
+    document.querySelectorAll('.route-name').forEach(n => { n.textContent = ROUTES[name] + ' route'; });
+    document.querySelectorAll('.cmp th, .cmp td').forEach(c => c.classList.toggle('is-on', c.classList.contains('c-' + name)));
+    document.querySelectorAll('.blocks').forEach(b => setActive(b, Number(b.dataset.active || 0)));
+    fit(document.querySelector('.panel:not([hidden])'));
+  }
+  document.querySelectorAll('input[name="route"]').forEach(r => r.addEventListener('change', () => { if (r.checked) setRoute(r.value, true); }));
+  document.querySelectorAll('.route-card').forEach(c => c.addEventListener('click', () => setRoute(c.dataset.route, true)));
+
+  /* ---------- Tabs, routed on the hash ---------- */
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  const names = tabs.map(t => t.dataset.hash);
+  const panelOf = t => el(t.getAttribute('aria-controls'));
+  let selected = null;
+  function show(name, focusPanel) {
+    tabs.forEach(t => {
+      const on = t.dataset.hash === name;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      panelOf(t).hidden = !on;
+    });
+    const panel = panelOf(tabs[names.indexOf(name)]);
+    fit(panel);
+    if (focusPanel) panel.focus({ preventScroll: true });
+  }
+  function select(name, { focusPanel = false, initial = false } = {}) {
+    if (!names.includes(name)) name = names[0];
+    if (name !== selected) {
+      selected = name;
+      const run = () => show(name, focusPanel);
+      if (!initial && document.startViewTransition && !reduceMotion.matches) {
+        const vt = document.startViewTransition(run);
+        if (vt) [vt.ready, vt.finished, vt.updateCallbackDone].forEach(p => { if (p && p.catch) p.catch(() => {}); });
+      } else run();
+    } else if (focusPanel) {
+      panelOf(tabs[names.indexOf(name)]).focus({ preventScroll: true });
+    }
+    if (!initial && location.hash.slice(1) !== name) location.hash = name;
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t.dataset.hash, { focusPanel: true }));
+    t.addEventListener('keydown', e => {
+      const map = { ArrowRight: i + 1, ArrowLeft: i - 1, ArrowDown: i + 1, ArrowUp: i - 1, Home: 0, End: tabs.length - 1 };
+      if (!(e.key in map)) return;
+      e.preventDefault();
+      const next = tabs[(map[e.key] + tabs.length) % tabs.length];
+      next.focus();
+      select(next.dataset.hash);
+    });
+  });
+  addEventListener('hashchange', () => select(location.hash.slice(1)));
+  setRoute(route, false);
+  select(location.hash.slice(1), { initial: true });
+
+  new ResizeObserver(refit).observe(document.querySelector('.panels'));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+  addEventListener('load', refit);
+
+
+})();
+</script>
+
+<script>
+document.getElementById("open-kit").onclick=()=>document.getElementById("mac-kit").showModal();
+document.querySelectorAll("#mac-kit button[data-src]").forEach(button=>button.onclick=()=>{
+ const link=document.createElement("a");const url=URL.createObjectURL(new Blob([document.getElementById(button.dataset.src).textContent],{type:"text/plain;charset=utf-8"}));
+ link.href=url;link.download=button.dataset.name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+});
+</script></body></html>
